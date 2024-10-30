@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.7;
+}
+
+
+.fade-to-black {
+  height: 20vh;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, #0b1d26 100%);
+}
+
+.fade-to-dark-blue {
+  height: 20vh;
+  background: linear-gradient(to bottom, rgb(11, 29, 38) 0%, #0e2530 100%);
+}
+
+.fade-to-blue {
+  height: 20vh;
+  background: linear-gradient(to bottom, #0e2530 0%,  #0b1d26 100%);
+}
+
+.go-top-btn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  font-size: 18px;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.go-top-btn:hover {
+  background-color: #555;
+}
+.fade-to-finder-blue {
+  height: 20vh;
+  background: linear-gradient(to bottom, #192229 0%,  #0b1d26 100%);
+}

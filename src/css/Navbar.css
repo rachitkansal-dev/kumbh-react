@@ -1,0 +1,61 @@
+.navbar {
+    position: relative;
+    padding: 20px 120px;
+    z-index: 1;
+    background-color: rgba(2, 8, 10, 0.8); /* Adjusted transparency (0.8 is 80% opacity) */
+    transition: background-color 0.5s ease; /* Smooth transition for any future changes */
+  }
+  
+  /* Black overlay */
+  
+  /* Optional hover effect if you want further transparency on hover */
+  .navbar:hover {
+    background-color: rgba(2, 8, 10, 0.7); /* More transparency on hover */
+  }
+
+.navbar ul {
+    color: white;
+    font-weight: bold;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-items {
+    display: flex;
+}
+
+.logo, .sign-up {
+    font-size: 20px;
+}
+
+.logo a, .sign-up a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.navbar ul li {
+    margin-right: 20px;
+}
+
+.navbar ul li a {
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: none;
+    transition: text-decoration 0.3s ease 1s;
+}
+
+.navbar ul li a:hover {
+    text-decoration: underline;
+}
+
+.sign-up img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.navbar ul .activeg a{
+    color: #d0ad53;
+}
