@@ -30,7 +30,7 @@ router.post('/items', upload.single('photo'), async (req, res) => {
             description: req.body.description,
             location: req.body.location,
             date: req.body.date,
-            phone: req.body.phone,
+            contact: req.body.contact,
             photo: req.file ? `/uploads/${req.file.filename}` : null
         });
         await newItem.save();
@@ -79,7 +79,7 @@ router.post('/claim-item', async (req, res) => {
         const newClaimedItem = new Item2({
             id: req.body.userid,
             description: req.body.description,
-            phone: req.body.phone
+            contact: req.body.contact
         });
         await newClaimedItem.save();
         res.status(201).json(newClaimedItem);

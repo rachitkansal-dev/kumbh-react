@@ -5,7 +5,6 @@ import LfContext from '../context/LfContext';
 export default function Navbar(props) {
   let location = useLocation();
   useEffect(()=>{
-    console.log(location.pathname);
   },[location]);
   const a = useContext(LfContext)
   return (

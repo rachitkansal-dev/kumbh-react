@@ -1,8 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import LfContext from '../context/LfContext';
 
 export default function Finder() {
-  const { items, setItems } = useContext(LfContext); // Assuming your context provides these
+  const { items, getItems } = useContext(LfContext);
+  const [item,setItem] = useState({
+    "_id": "",
+    "landf": "",
+    "type": "",
+    "description": "",
+    "location": "",
+    "date": "",
+    "photo": "",
+    "contact": "",
+    "__v": 0
+  });
+  useEffect(() => {
+    getItems();   
+  }, []);
 
   return (
     <div>
@@ -22,7 +36,7 @@ export default function Finder() {
                 <label htmlFor="location">Location</label>
                 <select id="location">
                   <option value="">Select Location</option>
-                  <option value="railwa">Railway Station</option>
+                  <option value="railway">Railway Station</option>
                   <option value="airport">Airport</option>
                   <option value="sangam">Triveni Sangam</option>
                   <option value="park">Chandarshekhar Park</option>
@@ -34,7 +48,7 @@ export default function Finder() {
                   <option value="">Select Item Type</option>
                   <option value="bags">Bags</option>
                   <option value="watch">Watches</option>
-                  <option value="Jewelry">Jewelry</option>
+                  <option value="jewelry">Jewelry</option>
                 </select>
               </div>
               <button type="submit" className="searching-btn btn-primary-finder lost-btn-finder">
@@ -48,9 +62,9 @@ export default function Finder() {
               {items.map((item, index) => (
                 <div key={index} className="finder-item-card">
                   <img src={item.image || "#"} alt={item.type || "Item"} />
-                  <h3>{item.type}</h3>
-                  <p>Location: {item.location}</p>
-                  <p>Status: {item.status}</p>
+                  <h3>{item.type || "Unknown Type"}</h3>
+                  <p>Location: {item.location || "Unknown Location"}</p>
+                  <p>Status: {item.landf || "Unknown Status"}</p>
                   <button type="button" className="btn-primary-finder lost-btn-finder">
                     View
                   </button>

@@ -1,14 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import LfContext from '../context/LfContext';
 import { Link } from 'react-router-dom';
-export default function Showcaselostandfound() {
-  const [isActive, setIsActive] = useState(false); // State to control form visibility
 
-  // Function to open the form
+export default function Showcaselostandfound() {
+  const { addItems } = useContext(LfContext);
+  const [item, setItem] = useState({
+    landf: "",
+    type: "",
+    description: "",
+    location: "",
+    date: "",
+    photo: null,
+    contact: "",
+  });
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log(item.photo)
+    addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact);
+  };
+
+  const onChange = (e) => {
+    const { name, value, type, files } = e.target;
+    console.log(files)
+    if (type === 'file') {
+        setItem({ ...item, [name]: files[0] }); 
+    } else {
+        setItem({ ...item, [name]: value });
+    }
+};
+
+
+  const [isActive, setIsActive] = useState(false);
+
+  
   const openForm = () => {
     setIsActive(true);
   };
 
-  // Function to close the form
+  
   const closeForm = () => {
     setIsActive(false);
   };
@@ -33,7 +63,7 @@ export default function Showcaselostandfound() {
             <div className="form-container">
               <div>
                 <label htmlFor="itemType"> <i className="fa-solid fa-circle-chevron-right"></i> Lost What : </label>
-                <select id="itemType" name="itemType">
+                <select id="itemType" name="type" onChange={onChange}>
                   <option value="Phone">Phone</option>
                   <option value="Person">Person</option>
                   <option value="Wallet">Wallet</option>
@@ -43,7 +73,7 @@ export default function Showcaselostandfound() {
                 </select>
                 
                 <label htmlFor="location"> <i className="fa-solid fa-circle-chevron-right"></i> Location : </label>
-                <select id="location" name="location">
+                <select id="location" name="location" onChange={onChange}>
                   <option value="Railway-station">Railway-station</option>
                   <option value="Sangam">Sangam</option>
                   <option value="Company-museum">Company-museum</option>
@@ -83,9 +113,10 @@ export default function Showcaselostandfound() {
               name="title"
               placeholder="Give title in about 20 words"
               required
+              onChange={onChange}
             />
 
-            <select className="unique-select" name="landf" defaultValue="" required>
+            <select className="unique-select" name="landf" defaultValue="" onChange={onChange} required>
               <option value="" disabled>
                 Lost/Found
               </option>
@@ -93,7 +124,7 @@ export default function Showcaselostandfound() {
               <option value="found">Found</option>
             </select>
 
-            <select className="unique-select" name="type" defaultValue="" required>
+            <select className="unique-select" name="type" defaultValue="" onChange={onChange} required>
               <option value="" disabled>
                 Select Item Type
               </option>
@@ -118,10 +149,11 @@ export default function Showcaselostandfound() {
               className="unique-input"
               name="description"
               placeholder="Description"
+              onChange={onChange}
               required
             ></textarea>
 
-            <select className="unique-select" name="location" defaultValue="" required>
+            <select className="unique-select" name="location" defaultValue="" onChange={onChange} required>
               <option value="" disabled>
                 Select Location
               </option>
@@ -139,6 +171,7 @@ export default function Showcaselostandfound() {
               type="date"
               id="date"
               name="date"
+              onChange={onChange}
               required
             />
 
@@ -146,17 +179,19 @@ export default function Showcaselostandfound() {
               className="unique-input"
               type="file"
               name="photo"
+              onChange={onChange}
               accept="image/*"
             />
             <input
               className="unique-input"
               type="text"
-              name="phone"
+              name="contact" 
               placeholder="+91 XXXXXXXXXX"
+              onChange={onChange}
               required
             />
 
-            <button className="btn-primary lost-btn new-btn" type="submit">
+            <button className="btn-primary lost-btn new-btn" type="submit" onClick={handleClick}>
               Submit
             </button>
           </form>

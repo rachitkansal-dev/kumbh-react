@@ -8,7 +8,7 @@ const itemSchema = new mongoose.Schema({
     location: String,
     date: Date,
     photo: String,
-    phone: String
+    contact: String
 });
 
 const Item = mongoose.model('Item', itemSchema);
