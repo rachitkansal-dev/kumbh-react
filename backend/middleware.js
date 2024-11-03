@@ -6,10 +6,15 @@ require('dotenv').config();
 // Middleware to check if the user is logged in
 function validate(req, res, next) {
     if (!req.session.isLogin) {
-        return res.redirect('/login');
+        if (req.method === 'GET') {
+            return res.redirect('/login');
+        } else {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
     }
     next();
 }
+
 
 // Set up email transporter for nodemailer
 const transporter = nodemailer.createTransport({

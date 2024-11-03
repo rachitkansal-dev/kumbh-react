@@ -28,8 +28,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 
-// CORS middleware setup
-app.use(cors()); // Enable CORS for all routes
+const corsOptions = {
+    origin: 'http://localhost:3000', // Allow your React app's origin
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+};
+
+app.use(cors(corsOptions));
 
 // Secure session setup
 app.use(session({
@@ -47,6 +51,13 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use('', userRouter);
 app.use('/blog', blogRouter);
 app.use('/lf', lfRouter);
+
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+// Route for serving the main HTML file
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`Website running at: http://localhost:${PORT}/`);

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'; 
 
 export default function Footer() {
   return (
@@ -24,10 +25,10 @@ export default function Footer() {
                         More on the Blog
                     </h3>
                     <ul>
-                        <li><a href="#">About TPW</a></li>
-                        <li><a href="#">Writers</a></li>
-                        <li><a href="#">Write your experiences</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><Link to="/">About TPW</Link></li>
+                        <li><Link to="/">Writers</Link></li>
+                        <li><Link to="/">Write your experiences</Link></li>
+                        <li><Link to="/">Contact Us</Link></li>
                     </ul>
                 </div>
                 <div className="right-list">
@@ -35,9 +36,9 @@ export default function Footer() {
                         More on TPW
                     </h3>
                     <ul>
-                        <li><a href="#">The Team</a></li>
-                        <li><a href="#">Jobs</a></li>
-                        <li><a href="#">Press</a></li>
+                        <li><Link to="/">The Team</Link></li>
+                        <li><Link to="/">Jobs</Link></li>
+                        <li><Link to="/">Press</Link></li>
                     </ul>
                 </div>
             </div>

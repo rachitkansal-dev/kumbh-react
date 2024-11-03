@@ -9,12 +9,15 @@ import './css/report-form.css';
 import './css/showcase-lf.css';
 import './css/review.css';
 import './css/finder.css';
+import './css/Blog.css';
+import './css/profile.css';
 
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/navbar';
 import Home from './components/Home';
+import Blog from './components/Blog';
 import BlacktoBlue from './components/BlacktoBlue';
 import BluetoBlack from './components/BluetoBlack';
 import Showcase from './components/Showcase';
@@ -27,15 +30,22 @@ import Homelf from './components/Homelf';
 import Showcaselostandfound from './components/Showcaselostandfound';
 import Review from './components/Review';
 import Toblue from './components/Toblue';
+import Profile from './components/Profile';
 // import Toblue from './components/Finder';
 import Finder from './components/Finder';
 import Tofinderblue from './components/FadeToFinderBlue';
 import LfState from './context/LfState';
+import ScrollToTop from './components/ScrollToTop';
+import ResetPasswordForm from './components/ResetPasswordForm';
+import { UserState } from './context/UserState';
+import EditProfile from './components/EditProfile';
 
 function App() {
   return (
     <LfState>
+      <UserState>
     <Router>
+      <ScrollToTop/>
       <Navbar />
 
       <Routes>
@@ -83,6 +93,17 @@ function App() {
           }
         />
         <Route
+          path="/profile"
+          element={
+            <>
+            <div className="nav-body">
+              <Profile/>
+              <Footer />
+            </div>
+            </>
+          }
+        />
+        <Route
           path="/login"
           element={
             <>
@@ -104,6 +125,22 @@ function App() {
             </>
           }
         />
+        <Route path="/reset-password/:token" element={
+            <>
+            <div className="nav-body">
+              <ResetPasswordForm />
+              <Footer />
+            </div>
+            </>
+          } />
+        <Route path="/edit-profile" element={
+            <>
+            <div className="nav-body">
+              <EditProfile />
+              <Footer />
+            </div>
+            </>
+          } />
         <Route
           path="/finder"
           element={
@@ -115,8 +152,22 @@ function App() {
             </>
           }
         />
+        <Route
+            path="/blog/:id"
+            element={
+              <>
+                <Blog/>
+                <BluetoBlack />
+                <Review />
+                <Toblue />
+                <Footer />
+                <GoTop />
+                </>
+            }
+          />
       </Routes>
     </Router>
+    </UserState>
     </LfState>
   );
 }

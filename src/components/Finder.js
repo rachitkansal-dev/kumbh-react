@@ -1,22 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import LfContext from '../context/LfContext';
 
 export default function Finder() {
   const { items, getItems } = useContext(LfContext);
-  const [item,setItem] = useState({
-    "_id": "",
-    "landf": "",
-    "type": "",
-    "description": "",
-    "location": "",
-    "date": "",
-    "photo": "",
-    "contact": "",
-    "__v": 0
-  });
+
   useEffect(() => {
     getItems();   
-  }, []);
+  }, [getItems]);
 
   return (
     <div>
@@ -61,7 +51,7 @@ export default function Finder() {
             <div className="finder-item-grid">
               {items.map((item, index) => (
                 <div key={index} className="finder-item-card">
-                  <img src={item.image || "#"} alt={item.type || "Item"} />
+                  <img src={item.photo || "#"} alt={item.type || "Item"} />
                   <h3>{item.type || "Unknown Type"}</h3>
                   <p>Location: {item.location || "Unknown Location"}</p>
                   <p>Status: {item.landf || "Unknown Status"}</p>

@@ -1,0 +1,60 @@
+import React, { useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+
+export default function ResetPasswordForm() {
+  const [password, setPassword] = useState('');
+  const { token } = useParams(); 
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`/reset-password/${token}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message); // Notify user of success
+        navigate('/login');  // Redirect to login page
+      } else {
+        alert(data.message); // Notify user of any error messages
+      }
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      alert('An error occurred. Please try again.');
+    }
+  };
+
+  return (
+    <div>
+      <section className="login-center">
+        <div className="login-container">
+          <form className="login-form" onSubmit={handleSubmit}>
+            <h2>Reset Password</h2>
+            <div className="form-group">
+              <label htmlFor="password">Enter New Password</label>
+              <input
+                className="input-area"
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="login-btn">Update Password</button>
+            <p><Link to="/login">Back to Login</Link></p>
+          </form>
+        </div>
+      </section>
+    </div>
+  );
+}

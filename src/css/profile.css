@@ -1,0 +1,53 @@
+.profile-center {
+    padding: 230px 0px;
+    margin-left: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.prof-head {
+    display: flex;
+}
+
+
+
+.prof-head h2 a {
+    text-decoration: none;
+    color: #d1bc85;
+}
+
+.prof-head h2 a:hover {
+    text-decoration: underline;
+}
+
+.logout-btn {
+    padding: 15px;
+    background-color: #112e3c;
+    border: 1px solid #171616;
+    border-radius: 25px;
+    color: #d1bc85;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #071218;
+}
+
+.notvisible {
+    opacity: 0;
+}
+.profile-btns a{
+    text-decoration: none;
+}
+.profile-btns{
+    margin: 10px 0px;
+}
+.profile-btns .logout-btn{
+    margin: 0px 4px;
+}
+
+.fa-pen-to-square{
+    color: #d1bc85;
+}
