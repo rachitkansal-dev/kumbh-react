@@ -165,6 +165,17 @@ function App() {
               }
             />
             <Route
+              path="/finder/location/:location"
+              element={
+                <>
+                  <Finder />
+                  <Tofinderblue />
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
               path="/blog/:id"
               element={
                 <>

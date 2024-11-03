@@ -3,13 +3,23 @@ import { useParams } from 'react-router-dom';
 import LfContext from '../context/LfContext';
 
 export default function Finder() {
-  const { items, getItems,getItemsByType} = useContext(LfContext);
+  const { items, getItems,getItemsByType,getItemsByLocation} = useContext(LfContext);
   const type = useParams();
-
+  const location = useParams();
 
   useEffect(() => {
-    getItems();   
-  }, [getItems]);
+    if (type.type) {
+      console.log(type.type)
+      getItemsByType(type.type);
+    }
+    else if(location.location) {
+      console.log(location.location)
+      getItemsByLocation(location.location);
+    } 
+    else {
+      getItems();
+    }
+  }, [type, getItems, getItemsByType,getItemsByLocation]);
 
   return (
     <div>

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 export default function ResetPassword() {
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -19,13 +18,13 @@ export default function ResetPassword() {
       });
       const result = await response.json();
       if (response.ok) {
-        setMessage(result.message);
+        alert(result.message); // Show alert for success message
       } else {
-        setMessage(result.message || 'Failed to send reset link');
+        alert(result.message || 'Failed to send reset link'); // Show alert for error message
       }
     } catch (error) {
       console.error('Error sending reset email:', error);
-      setMessage('An error occurred. Please try again.');
+      alert('An error occurred. Please try again.'); // Show alert for catch error
     }
   };
 
@@ -48,7 +47,6 @@ export default function ResetPassword() {
               />
             </div>
             <button type="submit" className="login-btn">Send Email</button>
-            {message && <p>{message}</p>}
             <p><Link to="/login">Back to Login</Link></p>
           </form>
         </div>

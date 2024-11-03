@@ -50,31 +50,31 @@ router.get('/type/:id', async (req, res) => {
     try {
         const type = req.params.id;
         const itemsOfType = await Item.find({ type: { $regex: new RegExp(type, 'i') } });
-        res.json({ type, items: itemsOfType });
+        res.json(itemsOfType );
     } catch (error) {
         console.error('Error retrieving items by type:', error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 });
 
 // Get items by location and optional filters
-router.get('/location/:location', async (req, res) => {
-    const location = req.params.location;
-    const type = req.query.type;
-    const landf = req.query.landf;
-    const query = { location: { $regex: new RegExp(location, "i") } };
-
-    if (type && type !== "all") query.type = type;
-    if (landf && landf !== "all") query.landf = landf;
-
+router.get('/location/:id', async (req, res) => {
     try {
-        const items = await Item.find(query);
-        res.json({ items, location, type, landf });
+        const location = req.params.id;
+
+        // Basic validation
+        if (!location || typeof location !== 'string') {
+            return res.status(400).json({ message: 'Invalid location parameter' });
+        }
+
+        const itemsByLocation = await Item.find({ location: { $regex: new RegExp(location, 'i') } });
+        res.json(itemsByLocation);
     } catch (error) {
-        console.error('Error fetching items:', error);
+        console.error('Error retrieving items by location:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 // Claim an item
 router.post('/claim-item', async (req, res) => {

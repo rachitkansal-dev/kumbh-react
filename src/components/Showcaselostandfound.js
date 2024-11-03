@@ -15,27 +15,27 @@ export default function Showcaselostandfound() {
             </h2>
             <div className="listing">
               <div className="row-wize">
-                <Link to="/" className="region-item btn-primary1">
+                <Link to="/finder/location/Railway station" className="region-item btn-primary1">
                   <i className="fa-solid fa-train fa-icon"></i> Railway station
                 </Link>
-                <Link to="/" className="region-item btn-primary1">
+                <Link to="/finder/location/Triveni Sangam" className="region-item btn-primary1">
                   <i className="fa-solid fa-bridge-water fa-icon"></i> Triveni Sangam
                 </Link>
               </div>
               <div className="row-wize">
-                <Link to="/" className="region-item btn-primary1">
+                <Link to="/finder/location/Company Museum" className="region-item btn-primary1">
                   <i className="fa-solid fa-building-columns fa-icon"></i> Company Museum
                 </Link>
-                <Link to="/" className="region-item btn-primary1">
-                  <i className="fa-solid fa-place-of-worship fa-icon"></i> Khusro Bagh
+                <Link to="/finder/location/Airport" className="region-item btn-primary1">
+                <i class="fa-solid fa-plane-up fa-icon"></i> Airport
                 </Link>
               </div>
               <div className="row-wize">
-                <Link to="/" className="region-item btn-primary1">
+                <Link to="/finder/location/Civil Lines" className="region-item btn-primary1">
                   <i className="fa-solid fa-city fa-icon"></i> Civil Lines
                 </Link>
-                <Link to="/" className="region-item btn-primary1">
-                  <i className="fa-solid fa-bus fa-icon"></i> Bus Stand
+                <Link to="/finder/location/Other" className="region-item btn-primary1">
+                <i class="fas fa-map-marker-alt fa-icon"></i> Other
                 </Link>
               </div>
             </div>

@@ -161,7 +161,9 @@ export default function Showcaselostandfound() {
                 <option value="Triveni Sangam">Triveni Sangam</option>
                 <option value="Railway Station">Railway Station</option>
                 <option value="Airport">Airport</option>
-                <option value="Chandrashekhar Azad Park">Chandrashekhar Azad Park</option>
+                <option value="Company Museum">Company Museum</option>
+                <option value="Civil Lines">Civil Lines</option>
+                <option value="Other">Other</option>
             </select>
 
             <label className="unique-label" htmlFor="date">Date of Submission (dd-mm-yyyy):</label>

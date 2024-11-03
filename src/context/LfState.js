@@ -18,8 +18,7 @@ const LfState = (props) => {
         throw new Error('Failed to fetch items');
       }
       const json = await response.json();
-  
-      // Map through items and add the base URL to the photo field
+      console.log(json);
       const itemsWithFullPhotoUrl = json.map(item => ({
         ...item,
         photo: `http://localhost:8080${item.photo}`
@@ -32,29 +31,56 @@ const LfState = (props) => {
   }, []);
   const getItemsByType = useCallback(async (type) => {
     try {
-      const url = "http://localhost:8080/lf/items/type";
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch items');
-      }
-      const json = await response.json();
-  
-      // Map through items and add the base URL to the photo field
-      const itemsWithFullPhotoUrl = json.map(item => ({
-        ...item,
-        photo: `http://localhost:8080${item.photo}`
-      }));
-  
-      setItems(itemsWithFullPhotoUrl);
+        const url = `http://localhost:8080/lf/type/${type}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch items');
+        }
+
+        const json = await response.json();
+        console.log(json);
+        const itemsWithFullPhotoUrl = json.map(item => ({
+            ...item,
+            photo: item.photo ? `http://localhost:8080${item.photo}` : "#", // Handle potential undefined photo
+        }));
+
+        setItems(itemsWithFullPhotoUrl);
     } catch (error) {
-      console.error("Error fetching items:", error);
+        console.error("Error fetching items:", error);
     }
-  }, []);
+}, [setItems]);
+  const getItemsByLocation = useCallback(async (location) => {
+    try {
+        const url = `http://localhost:8080/lf/location/${location}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch items');
+        }
+
+        const json = await response.json();
+        console.log(json);
+        const itemsWithFullPhotoUrl = json.map(item => ({
+            ...item,
+            photo: item.photo ? `http://localhost:8080${item.photo}` : "#", 
+        }));
+
+        setItems(itemsWithFullPhotoUrl);
+    } catch (error) {
+        console.error("Error fetching items:", error);
+    }
+}, [setItems]);
   
 
   const addItems = async (landf, type, description, location, date, photo, contact) => {
@@ -88,7 +114,7 @@ const LfState = (props) => {
 };
 
   return (
-    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType }}>
+    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType,getItemsByLocation }}>
       {props.children}
     </LfContext.Provider>
   );
