@@ -1,21 +1,28 @@
-
 .unique-report-form {
+    border: 3px solid #c5ad70;
     color: #d0ad53;
     position: fixed; 
-    width: 500px;
-    top: 50%; 
+    width: 700px;
+    height: 800px;
+    top: -30%; /* Start off-screen above */
     left: 50%; 
-    transform: translate(-50%, -50%); 
+    transform: translate(-50%, 0); /* Center horizontally without vertical movement */
     background: #0b1d26; 
-    padding: 20px;
+    padding: 20px; /* Add padding around the form */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
     border-radius: 8px;
-    z-index: 1000; 
-    display: none; 
+    z-index: 1000;
+    opacity: 0; /* Start invisible */
+    visibility: hidden; /* Hidden when not active */
+    transition: transform 0.5s ease, opacity 0.5s ease, top 0.5s ease; /* Smooth transition for transform and top */
 }
 
+/* Active state */
 .unique-report-form.active {
-    display: block;
+    top: 50%; /* Move to center vertically */
+    transform: translate(-50%, -50%); /* Center it both horizontally and vertically */
+    opacity: 1; /* Make it visible */
+    visibility: visible; /* Shown */
 }
 
 .unique-close-button {
@@ -36,6 +43,8 @@
 .unique-form {
     display: flex;
     flex-direction: column; 
+    justify-content:space-evenly;
+    height: 95%; /* Make form fields take full height */
 }
 
 .unique-label {
@@ -46,6 +55,7 @@
     color: #ffffff;
     background-color: #0b1d26;
     width: 100%; 
+    height: 50px; /* Set a fixed height for uniformity */
     margin-bottom: 15px; 
     padding: 10px; 
     border: 1px solid #ccc; 
@@ -53,11 +63,10 @@
     box-sizing: border-box;
 }
 
-.new-btn{
+.new-btn {
     margin: 0px;
     width: 25%;
 }
-
 
 .unique-date-container {
     display: flex;          

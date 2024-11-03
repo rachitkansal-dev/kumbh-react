@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Review() {
+export default function BlogReview() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState('');
@@ -52,7 +52,7 @@ export default function Review() {
     <div>
       <section className="review">
         <div className="carousel-container">
-          <h2 className="carousel-title">Success Stories</h2>
+          <h2 className="carousel-title">What Others Think</h2>
           <div className="carousel" id="testimonialCarousel">
             {carouselItems.concat(reviews.map(review => ({ quote: review }))).map((item, index) => (
               <div
@@ -81,7 +81,7 @@ export default function Review() {
         </div>
       </section>
       <section className="write-review container">
-        <h2 className="carousel-title">Rate Your Own Experience</h2>
+        <h2 className="carousel-title">Rate Your Experience</h2>
         <form onSubmit={handleSubmit}>
           <div className="review-textarea">
             <label htmlFor="reviewInput" className="sr-only">Share your review</label>

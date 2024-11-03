@@ -29,6 +29,7 @@ import ResetPassword from './components/ResetPassword';
 import Homelf from './components/Homelf';
 import Showcaselostandfound from './components/Showcaselostandfound';
 import Review from './components/Review';
+import BlogReview from './components/BlogReview';
 import Toblue from './components/Toblue';
 import Profile from './components/Profile';
 // import Toblue from './components/Finder';
@@ -158,7 +159,7 @@ function App() {
               <>
                 <Blog/>
                 <BluetoBlack />
-                <Review />
+                <BlogReview />
                 <Toblue />
                 <Footer />
                 <GoTop />

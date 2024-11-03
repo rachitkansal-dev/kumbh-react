@@ -1,26 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const {validate,upload} = require('../middleware');
+const { validate, upload } = require('../middleware');
 require('dotenv').config();
-const {Item, Item2} = require('../models/item');
+const { Item, Item2 } = require('../models/item');
 
-//lost and found
+// Lost and found admin solve page
 router.get('/adminsolve', (req, res) => {
-    res.render('./lf/adminsolve');
-})
+    res.json({ message: 'Admin Solve Page Endpoint' });
+});
 
+// Main lost and found page
 router.get('/main', (req, res) => {
-    res.render('./lf/main');
-})
+    res.json({ message: 'Main Lost and Found Page Endpoint' });
+});
 
+// Lost and found page
 router.get('/landf', (req, res) => {
-    res.render('./lf/lost-found');
-})
+    res.json({ message: 'Lost and Found Page Endpoint' });
+});
 
+// Form page
 router.get('/form', (req, res) => {
-    res.render('./lf/index');
-})
+    res.json({ message: 'Form Page Endpoint' });
+});
 
+// Add new item
 router.post('/items', upload.single('photo'), async (req, res) => {
     try {
         const newItem = new Item({
@@ -41,39 +45,38 @@ router.post('/items', upload.single('photo'), async (req, res) => {
     }
 });
 
+// Get items by type
 router.get('/type/:id', async (req, res) => {
     try {
         const type = req.params.id;
         const itemsOfType = await Item.find({ type: { $regex: new RegExp(type, 'i') } });
-        res.render('./lf/type', { type, items: itemsOfType });
+        res.json({ type, items: itemsOfType });
     } catch (error) {
         console.error('Error retrieving items by type:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
 
+// Get items by location and optional filters
 router.get('/location/:location', async (req, res) => {
     const location = req.params.location;
     const type = req.query.type;
     const landf = req.query.landf;
-    const query = {
-        location: { $regex: new RegExp(location, "i") }
-    };
-    if (type && type !== "all") {
-        query.type = type;
-    }
-    if (landf && landf !== "all") {
-        query.landf = landf;
-    }
+    const query = { location: { $regex: new RegExp(location, "i") } };
+
+    if (type && type !== "all") query.type = type;
+    if (landf && landf !== "all") query.landf = landf;
+
     try {
         const items = await Item.find(query);
-        res.render('./lf/location', { items, location, type, landf });
+        res.json({ items, location, type, landf });
     } catch (error) {
         console.error('Error fetching items:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 });
 
+// Claim an item
 router.post('/claim-item', async (req, res) => {
     try {
         const newClaimedItem = new Item2({
@@ -89,17 +92,18 @@ router.post('/claim-item', async (req, res) => {
     }
 });
 
+// Get all claimed items
 router.get('/claim-item', async (req, res) => {
     try {
         const items = await Item2.find();
-        console.log(items)
         res.json(items);
     } catch (error) {
         console.error('Error retrieving items:', error);
         res.status(500).json({ message: 'Server Error' });
     }
-})
+});
 
+// Get all claim requests with corresponding items
 router.get('/admin-claim-requests', async (req, res) => {
     try {
         const claims = await Item2.find();
@@ -120,6 +124,7 @@ router.get('/admin-claim-requests', async (req, res) => {
     }
 });
 
+// Delete a claimed item
 router.delete('/claim-item/:id', async (req, res) => {
     try {
         const claimId = req.params.id;
@@ -134,6 +139,7 @@ router.delete('/claim-item/:id', async (req, res) => {
     }
 });
 
+// Get all items
 router.get('/items', async (req, res) => {
     try {
         const items = await Item.find();
@@ -144,37 +150,41 @@ router.get('/items', async (req, res) => {
     }
 });
 
+// Get item details by ID
 router.get('/items/:id', async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
         if (!item) return res.status(404).json({ message: 'Item not found' });
-        res.render('./lf/itemDetail', { item });
+        res.json(item);
     } catch (error) {
         console.error('Error retrieving item by ID:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
 
+// Get items by location with optional type filter
 router.get('/location/:id', async (req, res) => {
     try {
         const location = req.params.id.toLowerCase();
         const itemType = req.query.type;
-        let query = { location: { $regex: new RegExp(location, 'i') } };
-        if (itemType) {
-            query.type = itemType;
-            const itemsAtLocation = await Item.find(query);
-        }
-        res.render('./lf/location', { location, items: itemsAtLocation });
+        const query = { location: { $regex: new RegExp(location, 'i') } };
+
+        if (itemType) query.type = itemType;
+
+        const itemsAtLocation = await Item.find(query);
+        res.json({ location, items: itemsAtLocation });
     } catch (error) {
         console.error('Error retrieving items by location:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
 
+// Item list page
 router.get('/itemlist', (req, res) => {
-    res.render('./lf/itemlist');
+    res.json({ message: 'Item List Page Endpoint' });
 });
 
+// Delete a found item and its claims
 router.delete('/found-item/:id', async (req, res) => {
     try {
         const itemId = req.params.id;

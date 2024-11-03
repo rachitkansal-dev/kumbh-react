@@ -109,3 +109,33 @@
 .review{
     background-color: #0e2530;
 }
+
+
+.write-review{
+    background-color: #0e2530;
+}
+
+.write-review {
+    background-color: #0e2530;
+    padding: 50px;         
+}
+
+.review-textarea {
+    display: flex;         
+    justify-content: center; 
+    align-items: center;  
+    margin-top: 20px;      
+}
+
+.review-textarea textarea {
+    width: 100%;           
+    max-width: 800px;     
+    padding: 10px;         
+    border-radius: 5px;    
+    border: 1px solid #ccc; 
+    resize: none;          
+}
+
+.to-center {
+    margin-left: 350px;    
+}
