@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import LfContext from '../context/LfContext';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Showcaselostandfound() {
   const { addItems } = useContext(LfContext);
@@ -10,7 +10,7 @@ export default function Showcaselostandfound() {
     description: "",
     location: "",
     date: "",
-    photo: null,
+    photo: '',
     contact: "",
   };
   const [item, setItem] = useState(initialItemState);
@@ -30,7 +30,7 @@ export default function Showcaselostandfound() {
   const onChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
-      setItem({ ...item, [name]: files[0] }); 
+      setItem({ ...item, [name]: files[0] });
     } else {
       setItem({ ...item, [name]: value });
     }
@@ -43,6 +43,26 @@ export default function Showcaselostandfound() {
   const closeForm = () => {
     setIsActive(false);
     setItem(initialItemState); // Clear form fields when closing
+  };
+
+  const [filters, setFilters] = useState({
+    type: '',
+    location: '',
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleClicks = (e) => {
+    e.preventDefault();
+    // Navigate to the Finder component and pass filters as URL parameters
+    navigate(`/finder?type=${filters.type}&location=${filters.location}`);
   };
 
   return (
@@ -65,7 +85,7 @@ export default function Showcaselostandfound() {
             <div className="form-container">
               <div>
                 <label htmlFor="itemType"> <i className="fa-solid fa-circle-chevron-right"></i> Lost What : </label>
-                <select id="itemType" name="type" value={item.type} onChange={onChange}>
+                <select id="itemType" name="type" value={filters.type} onChange={handleChange}>
                   <option value="">Select Item</option>
                   <option value="Phone">Phone</option>
                   <option value="Person">Person</option>
@@ -74,22 +94,24 @@ export default function Showcaselostandfound() {
                   <option value="Jewellery">Jewellery</option>
                   <option value="others">Others</option>
                 </select>
-                
-                <label htmlFor="location"> <i className="fa-solid fa-circle-chevron-right"></i> Location : </label>
-                <select id="location" name="location" value={item.location} onChange={onChange}>
+
+                <label htmlFor="location">
+                  <i className="fa-solid fa-circle-chevron-right"></i> Location:
+                </label>
+                <select id="location" name="location" value={filters.location} onChange={handleChange}>
                   <option value="">Select Location</option>
-                  <option value="Railway-station">Railway-station</option>
-                  <option value="Sangam">Sangam</option>
-                  <option value="Company-museum">Company-museum</option>
-                  <option value="Civil-lines">Civil-lines</option>
-                  <option value="Bus-Stand">Bus-Stand</option>
-                  <option value="others">Others</option>
+                  <option value="railway">Railway Station</option>
+                  <option value="sangam">Sangam</option>
+                  <option value="Company Museum">Company Museum</option>
+                  <option value="airport">Airport</option>
+                  <option value="Civil Lines">Civil Lines</option>
+                  <option value="Other">Others</option>
                 </select>
-                <br/>
+                <br />
               </div>
 
               <div className="button-container">
-                <button className="btn-primary lost-btn"><Link to="/Finder">Find</Link></button>
+                <button className="btn-primary lost-btn " onClick={handleClicks}>Find</button>
               </div>
               <div className="padding-5">
                 <label htmlFor="reportLostFound"> <i className="fa-solid fa-circle-chevron-right"></i> Want to Report a Lost or Found Item? </label>
@@ -129,22 +151,22 @@ export default function Showcaselostandfound() {
             </select>
 
             <select className="unique-select" name="type" value={item.type} onChange={onChange} required>
-            <option value="" disabled selected>Select Item Type</option>
-                <option value="Phones & Tablets">Phones & Tablets</option>
-                <option value="Bags">Bags</option>
-                <option value="Jewelry">Jewelry</option>
-                <option value="Watches">Watches</option>
-                <option value="People">People</option>
-                <option value="Documents">Documents</option>
-                <option value="Keys">Keys</option>
-                <option value="Toys">Toys</option>
-                <option value="Laptop">Laptop</option>
-                <option value="Fashion Accessories">Fashion Accessories</option>
-                <option value="Clothes & Shoes">Clothes & Shoes</option>
-                <option value="Pets">Pets</option>
-                <option value="Sports Equipment">Sports Equipment</option>
-                <option value="Other">Other</option>
-                <option value="Automobile">Automobile</option>
+              <option value="" disabled>Select Item Type</option>
+              <option value="Phones & Tablets">Phones & Tablets</option>
+              <option value="Bags">Bags</option>
+              <option value="Jewelry">Jewelry</option>
+              <option value="Watches">Watches</option>
+              <option value="People">People</option>
+              <option value="Documents">Documents</option>
+              <option value="Keys">Keys</option>
+              <option value="Toys">Toys</option>
+              <option value="Laptop">Laptop</option>
+              <option value="Fashion Accessories">Fashion Accessories</option>
+              <option value="Clothes & Shoes">Clothes & Shoes</option>
+              <option value="Pets">Pets</option>
+              <option value="Sports Equipment">Sports Equipment</option>
+              <option value="Other">Other</option>
+              <option value="Automobile">Automobile</option>
             </select>
 
             <textarea
@@ -156,14 +178,14 @@ export default function Showcaselostandfound() {
               required
             ></textarea>
 
-            <select className="unique-select" name="location" value={item.location} onChange={onChange} required>
-            <option value="" disabled selected>Select Location</option>
-                <option value="Triveni Sangam">Triveni Sangam</option>
-                <option value="Railway Station">Railway Station</option>
-                <option value="Airport">Airport</option>
-                <option value="Company Museum">Company Museum</option>
-                <option value="Civil Lines">Civil Lines</option>
-                <option value="Other">Other</option>
+            <select className="unique-select" name="location" value={item.location}  onChange={onChange} required>
+              <option value="" disabled>Select Location</option>
+              <option value="Triveni Sangam">Triveni Sangam</option>
+              <option value="Railway Station">Railway Station</option>
+              <option value="Airport">Airport</option>
+              <option value="Company Museum">Company Museum</option>
+              <option value="Civil Lines">Civil Lines</option>
+              <option value="Other">Other</option>
             </select>
 
             <label className="unique-label" htmlFor="date">Date of Submission (dd-mm-yyyy):</label>
@@ -187,7 +209,7 @@ export default function Showcaselostandfound() {
             <input
               className="unique-input"
               type="text"
-              name="contact" 
+              name="contact"
               placeholder="+91 XXXXXXXXXX"
               value={item.contact}
               onChange={onChange}

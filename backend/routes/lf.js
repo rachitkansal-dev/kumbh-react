@@ -75,6 +75,40 @@ router.get('/location/:id', async (req, res) => {
     }
 });
 
+// Get items by type, location, and lost/found status with optional filters
+router.get('/search', async (req, res) => {
+    try {
+        const { type, location, landf } = req.query;
+        
+        // Build a dynamic filter object
+        const filter = {};
+        
+        // Add type to the filter if provided
+        if (type) {
+            filter.type = { $regex: new RegExp(type, 'i') };
+        }
+        
+        // Add location to the filter if provided
+        if (location) {
+            filter.location = { $regex: new RegExp(location, 'i') };
+        }
+        
+        // Add lost/found status to the filter if provided
+        if (landf) {
+            filter.landf = { $regex: new RegExp(landf, 'i') };
+        }
+
+        // Find items matching the filter
+        const items = await Item.find(filter);
+        res.json(items);
+    } catch (error) {
+        console.error('Error retrieving items by filters:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
+
 
 // Claim an item
 router.post('/claim-item', async (req, res) => {
@@ -162,22 +196,6 @@ router.get('/items/:id', async (req, res) => {
     }
 });
 
-// Get items by location with optional type filter
-router.get('/location/:id', async (req, res) => {
-    try {
-        const location = req.params.id.toLowerCase();
-        const itemType = req.query.type;
-        const query = { location: { $regex: new RegExp(location, 'i') } };
-
-        if (itemType) query.type = itemType;
-
-        const itemsAtLocation = await Item.find(query);
-        res.json({ location, items: itemsAtLocation });
-    } catch (error) {
-        console.error('Error retrieving items by location:', error);
-        res.status(500).json({ message: 'Server Error' });
-    }
-});
 
 // Item list page
 router.get('/itemlist', (req, res) => {

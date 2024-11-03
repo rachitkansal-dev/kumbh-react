@@ -4,14 +4,11 @@
     z-index: 1;
     background-color: rgba(2, 8, 10, 0.8); /* Adjusted transparency (0.8 is 80% opacity) */
     transition: background-color 0.5s ease; /* Smooth transition for any future changes */
-  }
-  
-  /* Black overlay */
-  
-  /* Optional hover effect if you want further transparency on hover */
-  .navbar:hover {
+}
+
+.navbar:hover {
     background-color: rgba(2, 8, 10, 0.7); /* More transparency on hover */
-  }
+}
 
 .navbar ul {
     color: white;
@@ -19,6 +16,9 @@
     list-style-type: none;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
 }
 
 .nav-items {
@@ -56,6 +56,47 @@
     border-radius: 50%;
     cursor: pointer;
 }
-.navbar ul .activeg a{
+
+.navbar ul .activeg a {
     color: #d0ad53;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 20px 10px; /* Adjust padding for smaller screens */
+    }
+  
+    .navbar ul {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center align items */
+    }
+
+    .navbar ul li {
+        margin: 10px 0; /* Add margin between items */
+        margin-right: 0; /* Remove right margin */
+    }
+
+    .nav-items {
+        flex-direction: column; /* Stack nav items vertically */
+        align-items: center; /* Center align items */
+    }
+
+    .logo, .sign-up {
+        font-size: 18px; /* Slightly smaller font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 15px 5px; /* Further adjust padding for very small screens */
+    }
+
+    .logo, .sign-up {
+        font-size: 16px; /* Even smaller font size */
+    }
+
+    .navbar ul li a {
+        font-size: 14px; /* Reduce font size for links */
+    }
 }

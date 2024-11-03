@@ -27,7 +27,7 @@ export default function Showcaselostandfound() {
                   <i className="fa-solid fa-building-columns fa-icon"></i> Company Museum
                 </Link>
                 <Link to="/finder/location/Airport" className="region-item btn-primary1">
-                <i class="fa-solid fa-plane-up fa-icon"></i> Airport
+                <i className="fa-solid fa-plane-up fa-icon"></i> Airport
                 </Link>
               </div>
               <div className="row-wize">
@@ -35,7 +35,7 @@ export default function Showcaselostandfound() {
                   <i className="fa-solid fa-city fa-icon"></i> Civil Lines
                 </Link>
                 <Link to="/finder/location/Other" className="region-item btn-primary1">
-                <i class="fas fa-map-marker-alt fa-icon"></i> Other
+                <i className="fas fa-map-marker-alt fa-icon"></i> Other
                 </Link>
               </div>
             </div>

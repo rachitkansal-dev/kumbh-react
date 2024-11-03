@@ -18,7 +18,7 @@ const LfState = (props) => {
         throw new Error('Failed to fetch items');
       }
       const json = await response.json();
-      console.log(json);
+
       const itemsWithFullPhotoUrl = json.map(item => ({
         ...item,
         photo: `http://localhost:8080${item.photo}`
@@ -44,7 +44,6 @@ const LfState = (props) => {
         }
 
         const json = await response.json();
-        console.log(json);
         const itemsWithFullPhotoUrl = json.map(item => ({
             ...item,
             photo: item.photo ? `http://localhost:8080${item.photo}` : "#", // Handle potential undefined photo
@@ -70,7 +69,6 @@ const LfState = (props) => {
         }
 
         const json = await response.json();
-        console.log(json);
         const itemsWithFullPhotoUrl = json.map(item => ({
             ...item,
             photo: item.photo ? `http://localhost:8080${item.photo}` : "#", 
@@ -81,6 +79,23 @@ const LfState = (props) => {
         console.error("Error fetching items:", error);
     }
 }, [setItems]);
+const getItemsBySearch = async (filters) => {
+  try {
+    // Convert filters into query parameters
+    const queryParams = new URLSearchParams(filters).toString();
+    
+    const response = await fetch(`http://localhost:8080/lf/search?${queryParams}`);
+    
+    if (!response.ok) {
+      throw new Error(`Error fetching filtered items: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    setItems(data);
+  } catch (error) {
+    console.error('Error fetching filtered items:', error);
+  }
+};
   
 
   const addItems = async (landf, type, description, location, date, photo, contact) => {
@@ -114,7 +129,7 @@ const LfState = (props) => {
 };
 
   return (
-    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType,getItemsByLocation }}>
+    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType,getItemsByLocation,getItemsBySearch }}>
       {props.children}
     </LfContext.Provider>
   );
