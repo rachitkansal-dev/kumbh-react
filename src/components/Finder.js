@@ -1,8 +1,11 @@
 import React, { useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import LfContext from '../context/LfContext';
 
 export default function Finder() {
-  const { items, getItems } = useContext(LfContext);
+  const { items, getItems,getItemsByType} = useContext(LfContext);
+  const type = useParams();
+
 
   useEffect(() => {
     getItems();   

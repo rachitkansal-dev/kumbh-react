@@ -30,6 +30,31 @@ const LfState = (props) => {
       console.error("Error fetching items:", error);
     }
   }, []);
+  const getItemsByType = useCallback(async (type) => {
+    try {
+      const url = "http://localhost:8080/lf/items/type";
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch items');
+      }
+      const json = await response.json();
+  
+      // Map through items and add the base URL to the photo field
+      const itemsWithFullPhotoUrl = json.map(item => ({
+        ...item,
+        photo: `http://localhost:8080${item.photo}`
+      }));
+  
+      setItems(itemsWithFullPhotoUrl);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  }, []);
   
 
   const addItems = async (landf, type, description, location, date, photo, contact) => {
@@ -63,7 +88,7 @@ const LfState = (props) => {
 };
 
   return (
-    <LfContext.Provider value={{ items, getItems,addItems }}>
+    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType }}>
       {props.children}
     </LfContext.Provider>
   );

@@ -45,130 +45,141 @@ function App() {
   return (
     <LfState>
       <UserState>
-    <Router>
-      <ScrollToTop/>
-      <Navbar />
+        <Router>
+          <ScrollToTop />
+          <Navbar />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <section className='home'>
-                <Home />
-              </section>
-              <BlacktoBlue />
-              <Showcase />
-              <Footer />
-              <GoTop />
-            </>
-          }
-        />
-        <Route
-          path="/lost-found"
-          element={
-            <>
-              <section className='home'>
-                <Homelf/>
-              </section>
-              <BlacktoBlue />
-              <Showcaselostandfound />
-              <BluetoBlack/>
-              <Review/>
-              <Toblue />
-              <Footer />
-              
-              <GoTop />
-            </>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <>
-            <div className="nav-body">
-              <SignUp />
-              <Footer />
-            </div>
-            </>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <>
-            <div className="nav-body">
-              <Profile/>
-              <Footer />
-            </div>
-            </>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <>
-            <div className="nav-body">
-              <Login />
-              <Footer />
-            </div>
-            </>
-          }
-        />
-        <Route
-          path="/forget-password"
-          element={
-            <>
-            <div className="nav-body">
-              <ResetPassword />
-              <Footer />
-            </div>
-            </>
-          }
-        />
-        <Route path="/reset-password/:token" element={
-            <>
-            <div className="nav-body">
-              <ResetPasswordForm />
-              <Footer />
-            </div>
-            </>
-          } />
-        <Route path="/edit-profile" element={
-            <>
-            <div className="nav-body">
-              <EditProfile />
-              <Footer />
-            </div>
-            </>
-          } />
-        <Route
-          path="/finder"
-          element={
-            <>
-            <Finder/>
-            <Tofinderblue />
-            <Footer />
-            <GoTop />
-            </>
-          }
-        />
-        <Route
-            path="/blog/:id"
-            element={
-              <>
-                <Blog/>
-                <BluetoBlack />
-                <BlogReview />
-                <Toblue />
-                <Footer />
-                <GoTop />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <section className='home'>
+                    <Home />
+                  </section>
+                  <BlacktoBlue />
+                  <Showcase />
+                  <Footer />
+                  <GoTop />
                 </>
-            }
-          />
-      </Routes>
-    </Router>
-    </UserState>
+              }
+            />
+            <Route
+              path="/lost-found"
+              element={
+                <>
+                  <section className='home'>
+                    <Homelf />
+                  </section>
+                  <BlacktoBlue />
+                  <Showcaselostandfound />
+                  <BluetoBlack />
+                  <Review />
+                  <Toblue />
+                  <Footer />
+
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <>
+                  <div className="nav-body">
+                    <SignUp />
+                    <Footer />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <>
+                  <div className="nav-body">
+                    <Profile />
+                    <Footer />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <>
+                  <div className="nav-body">
+                    <Login />
+                    <Footer />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/forget-password"
+              element={
+                <>
+                  <div className="nav-body">
+                    <ResetPassword />
+                    <Footer />
+                  </div>
+                </>
+              }
+            />
+            <Route path="/reset-password/:token" element={
+              <>
+                <div className="nav-body">
+                  <ResetPasswordForm />
+                  <Footer />
+                </div>
+              </>
+            } />
+            <Route path="/edit-profile" element={
+              <>
+                <div className="nav-body">
+                  <EditProfile />
+                  <Footer />
+                </div>
+              </>
+            } />
+            <Route
+              path="/finder"
+              element={
+                <>
+                  <Finder />
+                  <Tofinderblue />
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/finder/type/:type"
+              element={
+                <>
+                  <Finder />
+                  <Tofinderblue />
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/blog/:id"
+              element={
+                <>
+                  <Blog />
+                  <BluetoBlack />
+                  <BlogReview />
+                  <Toblue />
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+          </Routes>
+        </Router>
+      </UserState>
     </LfState>
   );
 }

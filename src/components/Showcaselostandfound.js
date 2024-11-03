@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
 export default function Showcaselostandfound() {
+
+
+
+
   return (
     <div>
       <section className="showcase">
@@ -51,13 +55,13 @@ export default function Showcaselostandfound() {
               <tbody>
                 <tr>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder/type/Phones & Tablets" className="category-item">
                       <i className="fas fa-mobile-alt"></i>
                       <p>Phones & Tablets (47)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder/type/Bags" className="category-item">
                       <i className="fas fa-shopping-bag"></i>
                       <p>Bags (155)</p>
                     </Link>
