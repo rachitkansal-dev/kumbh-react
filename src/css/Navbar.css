@@ -1,89 +1,109 @@
+/* Navbar Container */
 .navbar {
-    position: relative;
-    padding: 20px 120px;
-    z-index: 1;
-    background-color: rgba(2, 8, 10, 0.8); /* Adjusted transparency (0.8 is 80% opacity) */
-    transition: background-color 0.5s ease; /* Smooth transition for any future changes */
-}
-
-.navbar:hover {
-    background-color: rgba(2, 8, 10, 0.7); /* More transparency on hover */
-}
-
-.navbar ul {
-    color: white;
-    font-weight: bold;
-    list-style-type: none;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-    padding: 0; /* Removes default padding */
-    margin: 0; /* Removes default margin */
+    padding: 20px 120px;
+    z-index: 10; /* Increased z-index to keep it on top */
+    background-color: rgba(2, 8, 10, 0.8);
+    transition: background-color 0.5s ease;
+    position: relative; /* Ensure positioning context */
 }
 
-.nav-items {
-    display: flex;
+/* Menu Icon */
+.menu-icon {
+    display: none; /* Hidden by default */
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
 }
 
-.logo, .sign-up {
-    font-size: 20px;
-}
-
-.logo a, .sign-up a {
+/* Logo */
+.logo a {
     text-decoration: none;
     color: #fff;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-.navbar ul li {
+/* Navigation Items */
+.nav-items {
+    display: flex;
+    list-style: none;
+}
+
+.nav-items li {
     margin-right: 20px;
 }
 
-.navbar ul li a {
+.nav-items li a {
     color: white;
     font-weight: bold;
     font-size: 16px;
     text-decoration: none;
-    transition: text-decoration 0.3s ease 1s;
+    transition: text-decoration 0.3s ease;
 }
 
-.navbar ul li a:hover {
+.nav-items li a:hover {
     text-decoration: underline;
 }
 
-.sign-up img {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    cursor: pointer;
+/* Sign-Up Section */
+.sign-up {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 20px;
+}
+.sign-up a {
+    text-decoration: none;
+    color: #fff;
 }
 
-.navbar ul .activeg a {
+.sign-up i {
+    margin-right: 8px;
+}
+
+/* Active Link Style */
+.nav-items .activeg a {
     color: #d0ad53;
 }
 
 /* Media Queries for Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 860px) {
     .navbar {
         padding: 20px 10px; /* Adjust padding for smaller screens */
     }
-  
-    .navbar ul {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center align items */
-    }
 
-    .navbar ul li {
-        margin: 10px 0; /* Add margin between items */
-        margin-right: 0; /* Remove right margin */
+    .menu-icon {
+        display: block; /* Show menu icon on smaller screens */
     }
 
     .nav-items {
-        flex-direction: column; /* Stack nav items vertically */
-        align-items: center; /* Center align items */
+        display: none; /* Hide menu by default */
+        flex-direction: column;
+        position: absolute; /* Absolute positioning */
+        top: 60px; /* Adjust this value if needed */
+        left: 0;
+        width: 100%;
+        background-color: rgba(2, 8, 10, 0.9);
+        padding: 20px 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Optional: add shadow for better visibility */
     }
 
-    .logo, .sign-up {
-        font-size: 18px; /* Slightly smaller font size */
+    .nav-items.active {
+        display: flex; /* Show menu when active */
+    }
+
+    .nav-items li {
+        margin: 10px 0; /* Add margin between items */
+        text-align: center; /* Center align items */
+    }
+
+    .sign-up {
+        align-self: flex-end; /* Align sign-up to the bottom */
+        margin-top: 10px; /* Add margin above sign-up */
     }
 }
 
@@ -92,11 +112,15 @@
         padding: 15px 5px; /* Further adjust padding for very small screens */
     }
 
-    .logo, .sign-up {
-        font-size: 16px; /* Even smaller font size */
+    .logo a {
+        font-size: 20px; /* Smaller font size for logo */
     }
 
-    .navbar ul li a {
+    .nav-items li a {
         font-size: 14px; /* Reduce font size for links */
+    }
+
+    .sign-up {
+        font-size: 18px; /* Smaller font size for sign-up */
     }
 }

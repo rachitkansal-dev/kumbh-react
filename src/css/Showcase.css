@@ -1,5 +1,5 @@
 .showcase {
-    padding: 3em 10em;
+    padding: 3em 10em; /* Adjust padding for larger screens */
     background: #0b1d26;
 }
 
@@ -12,6 +12,7 @@
     margin-bottom: 12rem;
 }
 
+/* Set img-box and text-box to stack on small screens */
 .row .img-box, .row .text-box {
     width: 50%;
 }
@@ -26,7 +27,7 @@
 
 .row2 .text-box {
     order: 1;
-    padding-left: 100px;
+    padding-left: 100px; /* Adjust padding for larger screens */
 }
 
 .row .text-box {
@@ -35,6 +36,7 @@
     padding: 3rem;
 }
 
+/* Add a shift for specific layout adjustments */
 .shift {
     padding-top: 60px;
 }
@@ -60,4 +62,37 @@
 .read-btn a {
     text-decoration: none;
     color: #d1bc85;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+    .showcase {
+        padding: 3em 5em; /* Reduce padding on medium screens */
+    }
+
+    .row .img-box, .row .text-box {
+        width: 100%; /* Stack items on smaller screens */
+    }
+
+    .row2 .text-box {
+        padding-left: 0; /* Remove padding for smaller screens */
+    }
+
+    .number-background {
+        font-size: 10rem; /* Decrease font size on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .showcase {
+        padding: 2em 2em; /* Further reduce padding for mobile devices */
+    }
+
+    .number-background {
+        font-size: 6rem; /* Further decrease font size */
+    }
+
+    .row .text-box {
+        padding: 2rem; /* Reduce padding for text box */
+    }
 }

@@ -1,14 +1,29 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { Link } from 'react-router-dom';
 import blogData from '../bolgData/blogData';
 
 
 export default function Showcase() {
+  const [width, setWidth] = useState(window.innerWidth); // Initialize width state
+
+  // Update width state on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   return (
     <section className="showcase" id="explore-places">
       <div className="container">
         {blogData.map((blog, index) => (
-          <div className={`row ${index % 2 === 0 ? 'row1' : 'row2'}`} key={blog.id}>
+          <div className={`row ${width<=1200 ? ('row1') : (index % 2 === 0 ? 'row1' : 'row2')}`} key={blog.id}>
             <div className="img-box">
               <img src={blog.image} alt={blog.place} />
             </div>
