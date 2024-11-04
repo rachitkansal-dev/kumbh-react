@@ -11,6 +11,7 @@ import './css/review.css';
 import './css/finder.css';
 import './css/Blog.css';
 import './css/profile.css';
+import './css/ClaimItem.css';
 
 
 import React from 'react';
@@ -19,6 +20,7 @@ import Navbar from './components/navbar';
 import Home from './components/Home';
 import Blog from './components/Blog';
 import BlacktoBlue from './components/BlacktoBlue';
+import ClaimItem from './components/ClaimItem';
 import BluetoBlack from './components/BluetoBlack';
 import Showcase from './components/Showcase';
 import Footer from './components/Footer';
@@ -158,6 +160,17 @@ function App() {
               element={
                 <>
                   <Finder />
+                  <Tofinderblue />
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/claimItem/:id"
+              element={
+                <>
+                  <ClaimItem/>
                   <Tofinderblue />
                   <Footer />
                   <GoTop />

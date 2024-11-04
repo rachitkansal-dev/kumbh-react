@@ -1,0 +1,163 @@
+.claim-section{
+    background-color: #192229;
+    color: #fff;
+}
+
+.claim-container {
+    /* background-color: #0b1d26; */
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
+}
+
+.claim-main-content {
+    margin-top: 20px;
+    /* padding: 10px; */
+    flex: 2;
+    /* background-color: white; */
+    border-radius: 8px;
+    border: 2px solid #6c757d;
+    padding: 30px;
+}
+
+.claim-sidebar {
+    flex: 1;
+    /* background-color: white; */
+    border-radius: 8px;
+    margin-top: 20px;
+    /* padding: 10px; */
+    border: 2px solid #6c757d;
+    padding: 30px;
+}
+
+.claim-item-title {
+    font-size: 24px;
+    color: #d0ad53;
+    margin-bottom: 10px;
+}
+
+.red-status {
+    display: inline-block;
+    background-color: red;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.green-status {
+    display: inline-block;
+    background-color: green;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.claim-item-meta {
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.claim-item-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.claim-image-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+
+
+.claim-listing-details {
+    margin-top: 20px;
+}
+.claim-listing-details h3 {
+    font-size: 18px;
+    color: #d1bc85;
+    margin-bottom: 10px;
+}
+
+.claim-detail-row {
+    display: flex;
+    justify-content:flex-start;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+
+
+.claim-detail-label {
+    width: 15%;
+    font-weight: bold;
+}
+.claim-detail-text {
+    width: 85%;
+    /* font-weight: bold; */
+}
+
+.claim-user-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.claim-user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.claim-user-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.claim-contact-button,
+.claim-message-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.claim-contact-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.claim-message-button {
+    background-color: #d0ad53;
+    color: #fff;
+    border: 1px solid #d1bc85;
+}
+
+#claim-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #0b1d26;
+    color: #fff;
+}
+
+#claim-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

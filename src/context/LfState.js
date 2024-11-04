@@ -136,6 +136,12 @@ const getItemsBySearch = async (filters) => {
     console.error('Error fetching filtered items:', error);
   }
 };
+const getItemById = async (id) => {
+  const response = await fetch(`http://localhost:8080/lf/items/${id}`);
+  const data = await response.json();
+  return data;
+};
+
   
 
   const addItems = async (landf, type, description, location, date, photo, contact) => {
@@ -169,7 +175,7 @@ const getItemsBySearch = async (filters) => {
 };
 
   return (
-    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType,getItemsByLocation,getItemsBySearch,addComment,comments,getComments }}>
+    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType,getItemsByLocation,getItemsBySearch,addComment,comments,getComments,getItemById }}>
       {props.children}
     </LfContext.Provider>
   );

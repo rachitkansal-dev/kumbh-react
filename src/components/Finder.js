@@ -1,9 +1,12 @@
 import React, { useContext, useEffect,useState } from 'react';
-import { useParams,useLocation  } from 'react-router-dom';
+import { useParams,useLocation,useNavigate} from 'react-router-dom';
+
 import LfContext from '../context/LfContext';
+import UserContext from '../context/UserContext';
 
 export default function Finder() {
   const { items, getItems,getItemsByType,getItemsByLocation,getItemsBySearch } = useContext(LfContext);
+  const { user } = useContext(UserContext);
   const type = useParams();
   const locations = useLocation();
   const location = useParams();
@@ -11,6 +14,7 @@ export default function Finder() {
 
   // Extract specific query parameters
   const types = queryParams.get("type");
+  const navigate = useNavigate();
   const locationParam = queryParams.get("location");
 
   const [filters, setFilters] = useState({
@@ -33,6 +37,17 @@ export default function Finder() {
     getItemsBySearch(filters);
   };
 
+  const viewItemDetails = (itemId) => {
+    if(!user) {
+      alert("To View Details,You need to Login !");
+      navigate('/login');
+    }
+    else{
+      navigate(`/claimItem/${itemId}`);
+    }
+  };
+  
+
   useEffect(() => {
     if (type.type) {
       getItemsByType(type.type);
@@ -48,7 +63,7 @@ export default function Finder() {
         getItems();
       }
     }
-  }, [type, getItems, getItemsByType,getItemsByLocation,filters,getItemsBySearch,location.location,locationParam,types]);
+  },[]);
 
   return (
     <div>
@@ -99,7 +114,7 @@ export default function Finder() {
                   <h3>{item.type || "Unknown Type"}</h3>
                   <p>Location: {item.location || "Unknown Location"}</p>
                   <p>Status: {item.landf || "Unknown Status"}</p>
-                  <button type="button" className="btn-primary-finder lost-btn-finder">
+                  <button type="button" className="btn-primary-finder lost-btn-finder" onClick={() => viewItemDetails(item._id)}>
                     View
                   </button>
                 </div>
