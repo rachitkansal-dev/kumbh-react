@@ -1,39 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
+import {  useNavigate } from 'react-router-dom';
+import UserContext from '../context/UserContext';
+import LfContext from '../context/LfContext';
 
 export default function Review() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState('');
+  const { user } = useContext(UserContext);
+  const { comments,getComments,addComment } = useContext(LfContext);
+  const navigate = useNavigate();
 
-  const carouselItems = [
-    {
-      quote: "Good try! This page is helping people to handle the lost and found things easily.",
-      name: "Nehul Neha",
-      location: "Mumbai",
-    },
-    {
-      quote: "Thank you for helping me to get my mobile back. Such a great help!",
-      name: "Krishnan Kutti",
-      location: "Trivandrum",
-    },
-    {
-      quote: "I am really grateful to have found my lost items through this service.",
-      name: "Sruthi Garu",
-      location: "Hyderabad",
-    },
-  ];
+
 
   useEffect(() => {
     const interval = setInterval(moveNext, 5000); // Change to the next item every 5 seconds
     return () => clearInterval(interval);
+    
   }, [currentIndex]);
 
   const moveNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % comments.length);
   };
 
   const movePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + carouselItems.length) % carouselItems.length);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + comments.length) % comments.length);
   };
 
   const handleReviewChange = (e) => {
@@ -42,11 +33,19 @@ export default function Review() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newReview.trim()) {
-      setReviews([...reviews, newReview]);
-      setNewReview('');
+    if(!user) {
+      alert("Please login to submit a review");
+      navigate('/login');
+    }
+    else{
+      addComment(user.name,newReview);
+      setNewReview("");
+      getComments();
     }
   };
+  useEffect(() => {
+    getComments();
+  }, [])
 
   return (
     <div>
@@ -54,23 +53,26 @@ export default function Review() {
         <div className="carousel-container">
           <h2 className="carousel-title">Success Stories</h2>
           <div className="carousel" id="testimonialCarousel">
-            {carouselItems.concat(reviews.map(review => ({ quote: review }))).map((item, index) => (
-              <div
-                key={index}
-                className={`carousel-item ${currentIndex === index ? 'active' : ''} ${
-                  currentIndex === (index - 1 + carouselItems.length) % carouselItems.length ? 'left' : ''
-                } ${
-                  currentIndex === (index + 1) % carouselItems.length ? 'right' : ''
-                }`}
-              >
-                <div className="testimonial">
-                  <i className="quote-icon fas fa-quote-left"></i>
-                  <p>{item.quote}</p>
-                  {item.name && <h4>{item.name}</h4>}
-                  {item.location && <h5>{item.location}</h5>}
+          {comments.length > 0 ? (
+              comments.map((comment, index) => (
+                <div
+                  key={comment._id || index}
+                  className={`carousel-item ${currentIndex === index ? 'active' : ''} ${
+                    currentIndex === (index - 1 + comments.length) % comments.length ? 'left' : ''
+                  } ${
+                    currentIndex === (index + 1) % comments.length ? 'right' : ''
+                  }`}
+                >
+                  <div className="testimonial">
+                    <i className="quote-icon fas fa-quote-left"></i>
+                    <p>{comment.commentText}</p>
+                    <h4>{comment.username}</h4>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p>No reviews available yet.</p>
+            )}
           </div>
           <button className="prev" onClick={movePrev} aria-label="Previous Review">
             &#10094;

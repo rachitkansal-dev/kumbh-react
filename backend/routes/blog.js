@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 const User = require('../models/user');
-const { Comment, Blog } = require('../models/blog');
+const { Comment, Blog,Commentlf } = require('../models/blog');
 const { validate, upload } = require('../middleware');
 
 // Get all blogs or search by title
@@ -246,5 +246,11 @@ router.post('/comment/:c_id/dislike', validate, async (req, res) => {
         res.status(500).json({ error: "Server error while unliking the comment." });
     }
 });
+
+
+// POST route for submitting comments
+
+
+
 
 module.exports = router;

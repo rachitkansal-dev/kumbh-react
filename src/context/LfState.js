@@ -5,6 +5,46 @@ const LfState = (props) => {
   const itemsInitial = [];
   const [items, setItems] = useState(itemsInitial);
 
+  const commentInitial = [];
+  const [comments, setComments] = useState(commentInitial);
+
+  const addComment = async (username,commentText) => {
+    const url = "http://localhost:8080/lf/addcomment";
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, commentText }), 
+    });
+
+    if (response.ok) {
+        const result = await response.json();
+        alert(result.message);
+    } else {
+        console.error('Error sending data:', response.statusText);
+    }
+};
+
+const getComments = async () => {
+  const url = "http://localhost:8080/lf/lfcomments";
+  const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  });
+
+  if (response.ok) {
+      const json = await response.json();
+      console.log(json);
+      setComments(json);
+  } else {
+      console.error('Error fetching data:', response.statusText);
+  }
+};
+
+
   const getItems = useCallback(async () => {
     try {
       const url = "http://localhost:8080/lf/items";
@@ -129,7 +169,7 @@ const getItemsBySearch = async (filters) => {
 };
 
   return (
-    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType,getItemsByLocation,getItemsBySearch }}>
+    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType,getItemsByLocation,getItemsBySearch,addComment,comments,getComments }}>
       {props.children}
     </LfContext.Provider>
   );

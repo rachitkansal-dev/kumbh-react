@@ -27,6 +27,29 @@ const commentSchema = new mongoose.Schema({
 
 const Comment = mongoose.model('Comment', commentSchema);
 
+const commentSchemalf = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+        trim: true // Trims whitespace from the string
+    },
+    commentText: {
+        type: String,
+        required: true,
+        trim: true // Trims whitespace from the string
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now // Automatically set the creation date to now
+    }
+});
+
+// Create the Comment model
+const Commentlf = mongoose.model('Commentlf', commentSchemalf);
+
+
+
+
 const blogSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -74,6 +97,5 @@ blogSchema.post('findByIdAndDelete', async function (doc) {
 })
 
 const Blog = mongoose.model('Blog', blogSchema);
-
-module.exports = {Comment, Blog};
+module.exports = {Comment, Blog,Commentlf};
 

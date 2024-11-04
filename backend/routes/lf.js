@@ -3,6 +3,7 @@ const router = express.Router();
 const { validate, upload } = require('../middleware');
 require('dotenv').config();
 const { Item, Item2 } = require('../models/item');
+const {Commentlf} = require('../models/blog');
 
 // Lost and found admin solve page
 router.get('/adminsolve', (req, res) => {
@@ -215,6 +216,49 @@ router.delete('/found-item/:id', async (req, res) => {
     } catch (error) {
         console.error('Error deleting item and claims:', error);
         res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
+
+
+
+router.post('/addcomment', async (req, res) => {
+    const { username, commentText } = req.body;
+
+    // Validate input
+    if (!username || !commentText) {
+        return res.status(400).json({ message: 'Username and comment text are required.' });
+    }
+
+    try {
+        // Create a new comment instance using the Commentlf model
+        const newComment = new Commentlf({ username, commentText });
+        
+        // Save the comment to the database
+        await newComment.save();
+        
+        // Respond with the newly created comment
+        res.status(201).json({
+            message: 'Comment posted successfully',
+            comment: newComment
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error saving comment', error });
+    }
+});
+
+// Route to fetch all comments
+// Route to fetch all comments
+router.get('/lfcomments', async (req, res) => {
+    try {
+        // Retrieve all comments from the database
+        const comments = await Commentlf.find(); // Use appropriate query if needed
+        
+        // Respond with the list of comments
+        res.status(200).json(
+            comments
+        );
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving comments', error });
     }
 });
 
