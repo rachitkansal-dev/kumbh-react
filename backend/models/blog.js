@@ -55,6 +55,10 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    place: {
+        type: String,
+        required: true
+    },
     body: {
         type: String,
         required: true
@@ -76,7 +80,7 @@ const blogSchema = new mongoose.Schema({
         }
     ],
     author: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'User',
         required: true
     },

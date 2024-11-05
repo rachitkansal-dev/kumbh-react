@@ -40,9 +40,10 @@ router.post('/create', validate, upload.single('image'), async (req, res) => {
         const data = req.body;
         const post = new Blog({
             title: data.title,
+            place: data.place,
             body: data.body,
             image: req.file ? `/uploads/${req.file.filename}` : `/uploads/default.png`,
-            author: req.session.user_id,
+            author: data.author, // Ensure you're using 'author' here
         });
         await post.save();
 
@@ -56,6 +57,7 @@ router.post('/create', validate, upload.single('image'), async (req, res) => {
         res.status(500).json({ error: "Server error while creating the blog post." });
     }
 });
+
 
 // Edit a blog post
 router.post('/edit/:id', upload.single('image'), async (req, res) => {

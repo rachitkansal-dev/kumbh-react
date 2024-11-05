@@ -40,6 +40,7 @@ import Profile from './components/Profile';
 import Finder from './components/Finder';
 import Tofinderblue from './components/FadeToFinderBlue';
 import LfState from './context/LfState';
+import BlogState from './context/BlogState';
 import ScrollToTop from './components/ScrollToTop';
 import ResetPasswordForm from './components/ResetPasswordForm';
 import { UserState } from './context/UserState';
@@ -50,6 +51,7 @@ import AboutUs from './components/About';
 function App() {
   return (
     <LfState>
+    <BlogState>
       <UserState>
         <Router>
           <ScrollToTop />
@@ -232,6 +234,7 @@ function App() {
           </Routes>
         </Router>
       </UserState>
+      </BlogState>
     </LfState>
   );
 }
