@@ -11,9 +11,9 @@ router.get('/', async (req, res) => {
         const q = req.query.q;
         let posts;
         if (q) {
-            posts = await Blog.find({ title: { $regex: q, $options: 'i' } }).populate('author', 'name');
+            posts = await Blog.find({ title: { $regex: q, $options: 'i' } })
         } else {
-            posts = await Blog.find({}).populate('author', 'name');
+            posts = await Blog.find({})
         }
         res.json(posts); // Send data in JSON format for React to process
     } catch (error) {
