@@ -12,6 +12,8 @@ import './css/finder.css';
 import './css/Blog.css';
 import './css/profile.css';
 import './css/ClaimItem.css';
+import './css/UserBlog.css';
+import './css/About.css';
 
 
 import React from 'react';
@@ -42,6 +44,8 @@ import ScrollToTop from './components/ScrollToTop';
 import ResetPasswordForm from './components/ResetPasswordForm';
 import { UserState } from './context/UserState';
 import EditProfile from './components/EditProfile';
+import UserBlog from './components/UserBlog';
+import AboutUs from './components/About';
 
 function App() {
   return (
@@ -61,6 +65,30 @@ function App() {
                   </section>
                   <BlacktoBlue />
                   <Showcase />
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <>
+                  <AboutUs/>
+                  {/* <BlacktoBlue />
+                  <Showcase /> */}
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/blogs"
+              element={
+                <>
+                  <UserBlog/>
+                  {/* <BlacktoBlue /> */}
+                  {/* <Showcase /> */}
                   <Footer />
                   <GoTop />
                 </>

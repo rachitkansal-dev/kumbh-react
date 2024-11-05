@@ -38,7 +38,7 @@ export default function Showcase() {
                 <p className="text-gray">{blog.description}</p>
                 <div className="read-btn">
                 <Link to={`/blog/${blog.id}`} className="btn btn-secondary">
-                    Read More
+                    {"Read More "}
                   </Link>
                   <Link to={`/blog/${blog.id}`}>
                     <i className="fa-solid fa-arrow-right"></i>

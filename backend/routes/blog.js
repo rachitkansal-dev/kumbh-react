@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 const User = require('../models/user');
-const { Comment, Blog,Commentlf } = require('../models/blog');
+const { Comment, Blog } = require('../models/blog');
 const { validate, upload } = require('../middleware');
 
 // Get all blogs or search by title
@@ -15,15 +15,10 @@ router.get('/', async (req, res) => {
         } else {
             posts = await Blog.find({}).populate('author', 'name');
         }
-        res.json(posts);
+        res.json(posts); // Send data in JSON format for React to process
     } catch (error) {
         res.status(500).json({ error: "Server error while fetching blog posts." });
     }
-});
-
-// Blog creation page (only used by frontend as a form render, not needed for API)
-router.get('/create', validate, (req, res) => {
-    res.status(200).json({ message: 'Blog creation endpoint accessed' });
 });
 
 // View single blog post with comments
@@ -32,22 +27,6 @@ router.get('/:id', async (req, res) => {
         const post = await Blog.findById(req.params.id).populate('comments').populate('author', 'name');
         if (!post) {
             return res.status(404).json({ error: "Blog post not found." });
-        }
-        res.json(post);
-    } catch (error) {
-        res.status(500).json({ error: "Server error while fetching the blog post." });
-    }
-});
-
-// Edit a blog post
-router.get('/edit/:id', validate, async (req, res) => {
-    try {
-        const post = await Blog.findById(req.params.id);
-        if (!post) {
-            return res.status(404).json({ error: "Blog post not found." });
-        }
-        if (post.author.toString() !== req.session.user_id) {
-            return res.status(403).json({ error: "You are not authorized to edit this post." });
         }
         res.json(post);
     } catch (error) {
@@ -246,11 +225,5 @@ router.post('/comment/:c_id/dislike', validate, async (req, res) => {
         res.status(500).json({ error: "Server error while unliking the comment." });
     }
 });
-
-
-// POST route for submitting comments
-
-
-
 
 module.exports = router;
