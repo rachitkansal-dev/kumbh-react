@@ -6,6 +6,25 @@ const crypto = require('crypto');
 const { promisify } = require("util");
 require('dotenv').config();
 const User = require('../models/user');
+const { Item, Item2 } = require('../models/item');
+
+router.post('/claim-item', async (req, res) => {
+    try {
+        const newClaimedItem = new Item2({
+            id: req.body.id,                  // Ensure this matches your request body
+            description: req.body.description, // Ensure this matches your request body
+            phone: req.body.phone              // Ensure this matches your request body
+        });
+
+        await newClaimedItem.save();
+        res.status(201).json(newClaimedItem);
+    } catch (error) {
+        console.error('Error saving claimed item:', error);
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
+
+
 
 router.get('/profile', validate, (req, res) => {
     if (!req.session.isLogin) {

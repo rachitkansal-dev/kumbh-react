@@ -25,6 +25,23 @@ const LfState = (props) => {
         console.error('Error sending data:', response.statusText);
     }
 };
+  const addClaim = async (id,description,phone) => {
+    const url = "http://localhost:8080/lf/claim-item";
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id,description,phone }), 
+    });
+
+    if (response.ok) {
+        const result = await response.json();
+        alert("Claim Submitted , we will contact you soon ! ");
+    } else {
+        console.error('Error sending data:', response.statusText);
+    }
+};
 
 const getComments = async () => {
   const url = "http://localhost:8080/lf/lfcomments";
@@ -173,9 +190,8 @@ const getItemById = async (id) => {
         console.error("Error adding item:", error);
     }
 };
-
   return (
-    <LfContext.Provider value={{ items, getItems,addItems,getItemsByType,getItemsByLocation,getItemsBySearch,addComment,comments,getComments,getItemById }}>
+    <LfContext.Provider value={{ items,addClaim, getItems,addItems,getItemsByType,getItemsByLocation,getItemsBySearch,addComment,comments,getComments,getItemById }}>
       {props.children}
     </LfContext.Provider>
   );

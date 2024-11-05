@@ -14,9 +14,9 @@ const itemSchema = new mongoose.Schema({
 const Item = mongoose.model('Item', itemSchema);
 
 const itemSchema2 = new mongoose.Schema({
-    id: { type: String, required: true },
-    description: { type: String, required: true },
-    phone: { type: String, required: true }
+    id: String,
+    description: String,
+    phone: String
 });
 const Item2 = mongoose.model('Item2', itemSchema2);
 

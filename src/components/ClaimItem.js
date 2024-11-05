@@ -8,7 +8,7 @@ function ClaimItem() {
     const [phone, setPhone] = useState('');
 
     const { id } = useParams();
-    const { getItemById } = useContext(LfContext);
+    const { getItemById,addClaim } = useContext(LfContext);
     const { user } = useContext(UserContext);
     const [item, setItem] = useState(null);
     useEffect(() => {
@@ -16,11 +16,8 @@ function ClaimItem() {
     }, [id, getItemById]);
 
     if (!item) return <div>Loading...</div>;
-    else {
-        console.log(item);
-    }
     const handleSubmit = () => {
-
+        addClaim(user._id,description,phone);
     }
     const formattedDate = item.date ? new Date(item.date).toLocaleDateString('en-US', {
         year: 'numeric',

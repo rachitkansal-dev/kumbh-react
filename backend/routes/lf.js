@@ -115,10 +115,11 @@ router.get('/search', async (req, res) => {
 router.post('/claim-item', async (req, res) => {
     try {
         const newClaimedItem = new Item2({
-            id: req.body.userid,
-            description: req.body.description,
-            contact: req.body.contact
+            id: req.body.id,                  // Ensure this matches your request body
+            description: req.body.description, // Ensure this matches your request body
+            phone: req.body.phone              // Ensure this matches your request body
         });
+
         await newClaimedItem.save();
         res.status(201).json(newClaimedItem);
     } catch (error) {
