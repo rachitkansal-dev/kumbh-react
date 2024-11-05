@@ -1,23 +1,27 @@
-import React, { useState, useEffect,useContext } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import LfContext from '../context/LfContext';
 
 export default function Review() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState('');
+  const [selectedComment, setSelectedComment] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(UserContext);
-  const { comments,getComments,addComment } = useContext(LfContext);
+  const { comments, getComments, addComment } = useContext(LfContext);
   const navigate = useNavigate();
 
-
+  useEffect(() => {
+    getComments(); // Fetch comments on component mount
+  }, []);
 
   useEffect(() => {
+    if (comments.length === 0) return; // Don't set interval if there are no comments
+
     const interval = setInterval(moveNext, 5000); // Change to the next item every 5 seconds
-    return () => clearInterval(interval);
-    
-  }, [currentIndex]);
+    return () => clearInterval(interval); // Clear interval on unmount or comments change
+  }, [comments]); // Add comments to dependency array
 
   const moveNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % comments.length);
@@ -33,19 +37,29 @@ export default function Review() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(!user) {
+    if (!user) {
       alert("Please login to submit a review");
       navigate('/login');
-    }
-    else{
-      addComment(user.name,newReview);
+    } else {
+      addComment(user.name, newReview);
       setNewReview("");
-      getComments();
+      getComments(); // Refresh comments after adding a new one
     }
   };
-  useEffect(() => {
-    getComments();
-  }, [])
+
+  const truncateText = (text, length = 100) => {
+    return text.length > length ? text.slice(0, length) + '...' : text;
+  };
+
+  const openModal = (comment) => {
+    setSelectedComment(comment);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedComment(null);
+  };
 
   return (
     <div>
@@ -53,7 +67,7 @@ export default function Review() {
         <div className="carousel-container">
           <h2 className="carousel-title">Success Stories</h2>
           <div className="carousel" id="testimonialCarousel">
-          {comments.length > 0 ? (
+            {comments.length > 0 ? (
               comments.map((comment, index) => (
                 <div
                   key={comment._id || index}
@@ -62,10 +76,11 @@ export default function Review() {
                   } ${
                     currentIndex === (index + 1) % comments.length ? 'right' : ''
                   }`}
+                  onClick={() => openModal(comment)} // Open modal on click
                 >
                   <div className="testimonial">
                     <i className="quote-icon fas fa-quote-left"></i>
-                    <p>{comment.commentText}</p>
+                    <p>{truncateText(comment.commentText)}</p>
                     <h4>{comment.username}</h4>
                   </div>
                 </div>
@@ -103,6 +118,19 @@ export default function Review() {
           </div>
         </form>
       </section>
+
+      {/* Modal for displaying full comment */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+          <div className="modal-heading-div">
+            <h3 className='review-modal-heading'>By {user.name}</h3>
+            <button className="modal-close-button" onClick={closeModal}>&times;</button>
+          </div>
+            <p className='modal-text'>{selectedComment?.commentText}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -178,7 +178,7 @@ export default function Showcaselostandfound() {
               required
             ></textarea>
 
-            <select className="unique-select" name="location" value={item.location}  onChange={onChange} required>
+            <select className="unique-select" name="location" value={item.location} onChange={onChange} required>
               <option value="" disabled>Select Location</option>
               <option value="Triveni Sangam">Triveni Sangam</option>
               <option value="Railway Station">Railway Station</option>
@@ -196,8 +196,10 @@ export default function Showcaselostandfound() {
               name="date"
               value={item.date}
               onChange={onChange}
+              max={new Date().toISOString().split("T")[0]} 
               required
             />
+
 
             <input
               className="unique-input"
