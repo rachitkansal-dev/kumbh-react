@@ -47,6 +47,7 @@ import { UserState } from './context/UserState';
 import EditProfile from './components/EditProfile';
 import UserBlog from './components/UserBlog';
 import AboutUs from './components/About';
+import Contact from './components/Contact';
 
 function App() {
   return (
@@ -77,6 +78,18 @@ function App() {
               element={
                 <>
                   <AboutUs/>
+                  {/* <BlacktoBlue />
+                  <Showcase /> */}
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <>
+                  <Contact/>
                   {/* <BlacktoBlue />
                   <Showcase /> */}
                   <Footer />
