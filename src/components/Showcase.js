@@ -1,17 +1,18 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import blogData from '../bolgData/blogData';
 
 
 export default function Showcase() {
   const [width, setWidth] = useState(window.innerWidth); // Initialize width state
-
+  const truncateText = (text, length = 750) => {
+    return text.length > length ? text.slice(0, length) + '...' : text;
+  };
   // Update width state on window resize
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
     };
-
     window.addEventListener('resize', handleResize);
 
     // Cleanup listener on unmount
@@ -23,7 +24,7 @@ export default function Showcase() {
     <section className="showcase" id="explore-places">
       <div className="container">
         {blogData.map((blog, index) => (
-          <div className={`row ${width<=1200 ? ('row1') : (index % 2 === 0 ? 'row1' : 'row2')}`} key={blog.id}>
+          <div className={`row ${width <= 1200 ? ('row1') : (index % 2 === 0 ? 'row1' : 'row2')}`} key={blog.id}>
             <div className="img-box">
               <img src={blog.image} alt={blog.place} />
             </div>
@@ -35,9 +36,9 @@ export default function Showcase() {
                   <span className="guide-title">{blog.place}</span>
                 </div>
                 <h2 className="lg-heading">{blog.title}</h2>
-                <p className="text-gray">{blog.description}</p>
+                <p className="text-gray blog-body" dangerouslySetInnerHTML={{ __html: truncateText(blog.body) }} />
                 <div className="read-btn">
-                <Link to={`/blog/${blog.id}`} className="btn btn-secondary">
+                  <Link to={`/blog/${blog.id}`} className="btn btn-secondary">
                     {"Read More "}
                   </Link>
                   <Link to={`/blog/${blog.id}`}>

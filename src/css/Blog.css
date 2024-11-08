@@ -64,7 +64,7 @@
 
 .blog-header-text {
     margin-top: 20px;
-    font-size: 18px;
+    color: #d4af37;
     line-height: 1.5;
 }
 
@@ -118,6 +118,11 @@
     font-size: 20px;
     letter-spacing: 2px;
     margin-bottom: 20px;
+    word-break: break-all;
+}
+.blog-author{
+    color: #d1bc85;
+    padding-left: 200px;
 }
 .blog-fav-icons i {
     margin: 0px 0px 10px 30px;

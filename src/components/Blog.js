@@ -43,7 +43,8 @@ export default function Blog() {
             <span className="blog-rating-value">(3.8 out of 5)</span>
             <div className="blog-global-ratings">164 global ratings</div>
           </div>
-          <p className="blog-header-text">{blog.title}</p>
+          <h1 className="blog-header-text">{blog.title}</h1>
+          <h1 className="blog-author">--- By {blog.author}</h1>
         </div>
         <div className="blog-image-container">
           <img src={blog.image} alt={blog.title} />
