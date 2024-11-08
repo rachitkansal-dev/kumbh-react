@@ -112,9 +112,10 @@ export default function Review() {
               onChange={handleReviewChange}
               required
             ></textarea>
+            <button type="submit" className="btn-primary lost-btn toCenter">Submit Review</button>
           </div>
           <div className="to-center">
-            <button type="submit" className="btn-primary lost-btn toCenter">Submit Review</button>
+            
           </div>
         </form>
       </section>

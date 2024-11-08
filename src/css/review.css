@@ -125,8 +125,9 @@
 
 .review-textarea {
     display: flex;         
+    flex-direction: column;
     justify-content: center; 
-    align-items: center;  
+    align-items:center;  
     margin-top: 20px;      
 }
 
@@ -139,9 +140,6 @@
     resize: none;          
 }
 
-.to-center {
-    margin-left: 350px;    
-}
 
 
 

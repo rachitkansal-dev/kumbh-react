@@ -52,6 +52,24 @@ body {
   background-color: #555;
 }
 
+
+::-webkit-scrollbar {
+  width: 5px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #0b1d26; /* Color of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d1bc85; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #b5912b; /* Color of the scrollbar thumb on hover */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .fade-to-black,

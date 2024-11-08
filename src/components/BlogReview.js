@@ -95,8 +95,6 @@ export default function BlogReview() {
               onChange={handleReviewChange}
               required
             ></textarea>
-          </div>
-          <div className="to-center">
             <button type="submit" className="btn-primary lost-btn toCenter">Submit Review</button>
           </div>
         </form>

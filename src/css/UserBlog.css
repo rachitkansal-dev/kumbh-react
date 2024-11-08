@@ -92,6 +92,11 @@
     font-size: 40px;
     margin-bottom: 40px;
 }
+/* Try this updated CSS */
+.unique-input .ql-editor::before {
+    color: white !important;
+    opacity: 0.5; 
+}
 
 .user-blog-header{
     display: flex;
@@ -112,5 +117,22 @@
     margin-right: 30px;
 }
 .blog-input-desc{
-    height: 500px;
+    height: 300px;
+    border: none!important;
+}
+.unique-input .ql-editor::-webkit-scrollbar {
+    width: 5px; /* Width of the scrollbar */
+}
+
+.unique-input .ql-editor::-webkit-scrollbar-track {
+    background: #0b1d26; /* Color of the scrollbar track */
+}
+
+.unique-input .ql-editor::-webkit-scrollbar-thumb {
+    background-color: #d1bc85; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+}
+
+.unique-input .ql-editor::-webkit-scrollbar-thumb:hover {
+    background-color: #b5912b; /* Color of the scrollbar thumb on hover */
 }
