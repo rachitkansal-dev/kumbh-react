@@ -24,9 +24,9 @@ router.get('/', async (req, res) => {
 // View single blog post with comments
 router.get('/:id', async (req, res) => {
     try {
-        const post = await Blog.findById(req.params.id).populate('comments').populate('author', 'name');
+        const post = await Blog.findById(req.params.id).populate('comments');
         if (!post) {
-            return res.status(404).json({ error: "Blog post not found." });
+            return res.json(null);
         }
         res.json(post);
     } catch (error) {

@@ -32,9 +32,9 @@ export default function Showcase() {
               <div className="shift">
                 <div className="line-text line-blog">
                   <span className="line"></span>
-                  <span className="guide-title">{blog.title}</span>
+                  <span className="guide-title">{blog.place}</span>
                 </div>
-                <h2 className="lg-heading">{blog.heading}</h2>
+                <h2 className="lg-heading">{blog.title}</h2>
                 <p className="text-gray">{blog.description}</p>
                 <div className="read-btn">
                 <Link to={`/blog/${blog.id}`} className="btn btn-secondary">

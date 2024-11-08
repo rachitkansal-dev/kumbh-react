@@ -84,7 +84,9 @@
     background-color: #0b1d26;
 }
 
-
+.blog-body{
+    word-break: break-word;
+}
 .heading-blog{
     color: #d0ad53;
     font-size: 40px;

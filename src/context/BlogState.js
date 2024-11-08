@@ -52,9 +52,15 @@ const BlogState = (props) => {
             alert("An error occurred while submitting your blog. Please try again.");
         }
     };
+
+    const getBlogById = async (id) => {
+        const response = await fetch(`http://localhost:8080/blog/${id}`);
+        const data = await response.json();
+        return data;
+      };
     
     return (
-        <BlogContext.Provider value={{blogs,getBlogs,createBlogs}}>
+        <BlogContext.Provider value={{blogs,getBlogs,createBlogs,getBlogById}}>
             {props.children}
         </BlogContext.Provider>
     );

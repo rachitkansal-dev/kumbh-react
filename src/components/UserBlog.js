@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function UserBlog() {
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -14,30 +16,58 @@ function UserBlog() {
     });
     const { blogs, getBlogs, createBlogs } = useContext(BlogContext);
     const { user } = useContext(UserContext);
+    const [isSubmitDisabled, setSubmitDisabled] = useState(true);
 
     const openForm = () => setIsFormOpen(true);
     const closeForm = () => setIsFormOpen(false);
 
+    const truncateText = (text, length = 750) => {
+        return text.length > length ? text.slice(0, length) + '...' : text;
+    };
+
     useEffect(() => {
-        getBlogs();  // Fetch the blogs when the component mounts
+        getBlogs(); // Fetch the blogs when the component mounts
     }, []);
 
     const handleFormChange = (e) => {
-        const { name, value, files } = e.target;
-        setFormData(prevData => ({
+        const { name, value, files } = e.target || {}; // Destructure `e.target` safely for the cases where e is undefined
+        if (files) {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: files[0]
+            }));
+        } else if (name === 'description') {
+            // Description handling moved to a separate function
+            updateDescription(value);
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value
+            }));
+        }
+    };
+
+    const updateDescription = (text) => {
+        const wordCount = text.trim().split(/\s+/).length;
+        setSubmitDisabled(wordCount < 800);
+        setFormData((prevData) => ({
             ...prevData,
-            [name]: files ? files[0] : value
+            description: text
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { title, place, description, photo } = formData;
-        const userName = "Author Name"; // Replace with actual user name from context or props
+        if (!isSubmitDisabled) {
+            const { title, place, description, photo } = formData;
+            const userName = user?.name || "Author Name"; // Replace with actual user name from context
 
-        await createBlogs(title, place, description, photo, user.name); // Pass parameters correctly
-        setFormData({ title: '', place: '', photo: null, description: '' }); // Clear the form
-        closeForm();
+            await createBlogs(title, place, description, photo, userName); // Pass parameters correctly
+            setFormData({ title: '', place: '', photo: null, description: '' }); // Clear the form
+            closeForm();
+        } else {
+            alert("Blog Length must be at least 800 words.");
+        }
     };
 
     return (
@@ -79,7 +109,7 @@ function UserBlog() {
                             className="unique-input"
                             type="text"
                             name="place"
-                            placeholder="About which Place You are Writing ?"
+                            placeholder="About which Place You are Writing?"
                             required
                             value={formData.place}
                             onChange={handleFormChange}
@@ -92,15 +122,19 @@ function UserBlog() {
                             required
                             onChange={handleFormChange}
                         />
-                        <textarea
+                        <ReactQuill
                             className="unique-input blog-input-desc"
-                            name="description"
-                            placeholder="Your Blog here"
-                            required
+                            theme="snow"
+                            placeholder="Enter your blog here in a minimum of 800 words..."
                             value={formData.description}
-                            onChange={handleFormChange}
-                        ></textarea>
-                        <button className="btn-primary lost-btn new-btn" type="submit">
+                            onChange={updateDescription} // Pass the text to updateDescription directly
+                            required
+                        />
+                        <button
+                            className="btn-primary lost-btn new-btn"
+                            type="submit"
+                            disabled={isSubmitDisabled}
+                        >
                             Submit
                         </button>
                     </form>
@@ -126,14 +160,13 @@ function UserBlog() {
                                     <div className="author guide-title">
                                         --- By {blog.author || "Unknown"}
                                     </div>
-                                    <p className="text-gray">
-                                        {blog.body}
-                                    </p>
+                                    <p className="text-gray blog-body" dangerouslySetInnerHTML={{ __html: truncateText(blog.body) }} />
+
                                     <div className="read-btn">
-                                        <Link to='/' className="btn btn-secondary">
-                                            Read More 
+                                        <Link to={`/blog/${blog._id}`} className="btn btn-secondary">
+                                            Read More
                                         </Link>
-                                        <Link to='/' aria-label="Arrow right">
+                                        <Link to={`/blog/${blog._id}`}>
                                             <i className="fa-solid fa-arrow-right"></i>
                                         </Link>
                                     </div>

@@ -1,13 +1,36 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
 import blogData from '../bolgData/blogData';
+import BlogContext from '../context/BlogContext';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function Blog() {
   const { id } = useParams();
-  const blog = blogData.find(blog => blog.id === parseInt(id));
+  const navigate = useNavigate();
+  const { getBlogById } = useContext(BlogContext);
+
+  const [blog, setBlog] = useState(null);
+
+  useEffect(() => {
+    // Attempt to fetch blog from context (e.g., server or global state)
+    getBlogById(id).then(fetchedBlog => {
+      if (fetchedBlog && !fetchedBlog.error) {
+        setBlog(fetchedBlog);
+        console.log(fetchedBlog);
+      } else {
+        // If not found in context, look in local blogData as a fallback
+        const localBlog = blogData.find(blog => blog.id === parseInt(id));
+        if (localBlog) {
+          setBlog(localBlog); // Use fallback local data
+        } else {
+          alert("Blog Not Found !!");
+          navigate('/blog');
+        }
+      }
+    });
+  }, [id, getBlogById, navigate]);
 
   if (!blog) {
-    return <h2>Blog not found!</h2>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -20,26 +43,23 @@ export default function Blog() {
             <span className="blog-rating-value">(3.8 out of 5)</span>
             <div className="blog-global-ratings">164 global ratings</div>
           </div>
-          <p className="blog-header-text">{blog.heading}</p>
+          <p className="blog-header-text">{blog.title}</p>
         </div>
         <div className="blog-image-container">
-          <img src={blog.image} alt="" />
+          <img src={blog.image} alt={blog.title} />
           <div className="blog-background-layer"></div>
           <div className="blog-background-layer1"></div>
         </div>
       </div>
       <div className="blog-container1">
-        <p className="blog-text">{blog.bodyData}</p>
+        <p className="blog-text" dangerouslySetInnerHTML={{ __html: blog.body }} />
+
         <p className="blog-fav-icons">
           <i className="fa-regular fa-thumbs-up"></i>
-          <spam className="blog-likeCount">54</spam>
+          <span className="blog-likeCount">54</span>
           <i className="fa-solid fa-thumbs-down"></i>
         </p>
       </div>
     </div>
   );
 }
-
-
-
-

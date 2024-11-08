@@ -1,34 +1,38 @@
+/* Container for overall layout */
 .finder-container {
     display: flex;
     min-height: 55vh;
+    flex-direction: column;
 }
 
 /* Main layout */
 .finder-main-content {
     display: flex;
     flex: 1;
-    background-color: #192229; /* Darker background */
-    padding-left: 250px; /* Add padding to the left for the sidebar */
+    background-color: #192229;
+    padding-left: 250px;
+    flex-wrap: wrap;
 }
 
 /* Sidebar styling */
 .finder-sidebar {
-    position: absolute; 
-    top: 20; 
-    left: 0; 
-    height: 80%; 
-    background-color: #394048; 
-    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
     width: 250px;
-    color: #ECE5C7; /* Light text */
-    border-right: 2px solid #D6C594; /* Add a subtle border */
-    overflow-y: auto; /* Allow vertical scrolling if the content overflows */
+    background-color: #394048;
+    padding: 20px;
+    color: #ECE5C7;
+    border-right: 2px solid #D6C594;
+    overflow-y: auto;
+    z-index: 10;
 }
 
 .finder-sidebar h2 {
     margin-bottom: 20px;
     font-size: 1.5rem;
-    font-weight: bold; /* Bold title for emphasis */
+    font-weight: bold;
 }
 
 .finder-filter-group {
@@ -38,22 +42,22 @@
 .finder-filter-group label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold; /* Bold labels for better readability */
+    font-weight: bold;
 }
 
 .finder-filter-group select {
     width: 100%;
     padding: 10px;
-    background-color: #ECE5C7; /* Light input background */
+    background-color: #ECE5C7;
     color: #000;
-    border: 1px solid #D6C594; /* Subtle border */
+    border: 1px solid #D6C594;
     border-radius: 5px;
-    transition: border 0.3s; /* Smooth border transition */
+    transition: border 0.3s;
 }
 
 .finder-filter-group select:focus {
-    outline: none; /* Remove default outline */
-    border-color: #A89C7D; /* Change border color on focus */
+    outline: none;
+    border-color: #A89C7D;
 }
 
 /* Button styling */
@@ -66,25 +70,26 @@
     cursor: pointer;
     width: 100%;
     margin-top: 10px;
-    font-weight: bold; /* Bold text for buttons */
-    transition: background-color 0.3s; /* Smooth background transition */
+    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
 .finder-search-btn:hover {
-    background-color: #C2B67C; /* Darker shade on hover */
+    background-color: #C2B67C;
 }
 
 /* Content styling */
 .finder-content {
     flex: 1;
     padding: 20px;
-    color: #0b1d26; 
+    color: #0b1d26;
+    overflow-y: auto;
 }
 
 .finder-content h2 {
     font-size: 1.5rem;
     margin-bottom: 20px;
-    font-weight: bold; 
+    font-weight: bold;
     color: #D6C594;
 }
 
@@ -96,14 +101,15 @@
 }
 
 .finder-item-card {
-    background-color: #D6C594; 
+    background-color: #D6C594;
     border-radius: 10px;
     padding: 15px;
     text-align: center;
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
     height: 400px;
-    transition: transform 0.3s; 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+    transition: transform 0.3s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .finder-item-card:hover {
@@ -118,16 +124,16 @@
 }
 
 .finder-item-card h3 {
-    font-size: 1.2em; 
-    margin: 5px 0; 
+    font-size: 1.2em;
+    margin: 5px 0;
 }
 
 .finder-item-card p {
-    font-size: 1.2rem; 
-    color: #0b1d26; 
+    font-size: 1.2rem;
+    color: #0b1d26;
 }
 
-
+/* Button styling */
 .lost-btn-finder {
     width: 50%;
     font-size: 20px;
@@ -173,14 +179,71 @@
     left: 0;
 }
 
-.btn-primary-finder  a {
+.btn-primary-finder a {
     text-decoration: none;
-    color: inherit; /* Set to inherit color for consistent styling */
+    color: inherit;
 }
 
 .btn-primary-finder a:hover {
     color: #d0ad53;
 }
-.searching-btn{
+
+.searching-btn {
     width: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .finder-sidebar {
+        width: 200px;
+        padding: 15px;
+    }
+    
+    .finder-main-content {
+        padding-left: 200px;
+        flex-direction: column;
+    }
+    
+    .finder-item-card {
+        width: 45%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .finder-sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 10px;
+        border-right: none;
+    }
+
+    .finder-main-content {
+        padding-left: 0;
+        flex-direction: column;
+    }
+
+    .finder-item-card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .finder-sidebar h2 {
+        font-size: 1.2rem;
+    }
+    
+    .finder-content h2 {
+        font-size: 1.2rem;
+    }
+    
+    .finder-item-card {
+        height: auto;
+        padding: 10px;
+    }
+    
+    .btn-primary-finder {
+        font-size: 16px;
+    }
 }
