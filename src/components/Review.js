@@ -125,7 +125,7 @@ export default function Review() {
         <div className="modal-overlay">
           <div className="modal-content">
           <div className="modal-heading-div">
-            <h3 className='review-modal-heading'>By {user.name}</h3>
+            <h3 className='review-modal-heading'>By {selectedComment?.username}</h3>
             <button className="modal-close-button" onClick={closeModal}>&times;</button>
           </div>
             <p className='modal-text'>{selectedComment?.commentText}</p>

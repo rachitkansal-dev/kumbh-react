@@ -1,11 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,Navigate, useNavigate } from 'react-router-dom';
 import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 function UserBlog() {
+    const navigate = useNavigate();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [formData, setFormData] = useState({
@@ -18,7 +19,13 @@ function UserBlog() {
     const { user } = useContext(UserContext);
     const [isSubmitDisabled, setSubmitDisabled] = useState(true);
 
-    const openForm = () => setIsFormOpen(true);
+    const openForm = () => {
+        if(!user) {
+            alert("Login to Create a Blog");
+            navigate('/login');
+        }
+        setIsFormOpen(true);
+    }
     const closeForm = () => setIsFormOpen(false);
 
     const truncateText = (text, length = 750) => {
@@ -56,19 +63,34 @@ function UserBlog() {
         }));
     };
 
+    const onClick = ()=>{
+        if (isSubmitDisabled) {
+            alert("Blog length must be at least 800 words.");
+            return;
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!isSubmitDisabled) {
-            const { title, place, description, photo } = formData;
-            const userName = user?.name || "Author Name"; // Replace with actual user name from context
-
-            await createBlogs(title, place, description, photo, userName); // Pass parameters correctly
-            setFormData({ title: '', place: '', photo: null, description: '' }); // Clear the form
-            closeForm();
-        } else {
-            alert("Blog Length must be at least 800 words.");
+        if(!isSubmitDisabled) {
+            try {
+                const { title, place, description, photo } = formData;
+                const userName = user?.name || "Author Name"; // Replace with actual user name from context
+        
+                console.log("Submitting blog:", { title, place, description, photo, userName });
+                
+                await createBlogs(title, place, description, photo, userName); // Pass parameters correctly
+        
+                // Clear the form and close it
+                setFormData({ title: '', place: '', photo: null, description: '' });
+                closeForm();
+            } catch (error) {
+                console.error("Error creating blog:", error);
+                alert("Failed to create blog. Please try again.");
+            }
         }
     };
+    
 
     return (
         <div>
@@ -133,7 +155,8 @@ function UserBlog() {
                         <button
                             className="btn-primary lost-btn new-btn"
                             type="submit"
-                            disabled={isSubmitDisabled}
+
+                            onClick={onClick}
                         >
                             Submit
                         </button>

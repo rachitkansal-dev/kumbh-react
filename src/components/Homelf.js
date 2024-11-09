@@ -1,8 +1,39 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import LfContext from '../context/LfContext';
 import { useNavigate } from 'react-router-dom';
+import image1 from '../images/image1.jpeg';
+import image4 from '../images/image4.jpeg';
+import image5 from '../images/image5.jpeg';
+import image3 from '../images/image3.jpeg';
 
 export default function Showcaselostandfound() {
+  const [bgIndex, setBgIndex] = useState(0);
+  const backgrounds = [
+    image1,
+    image5,
+    image4,
+    image3
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
+    }, 10000); 
+
+    // Clean up interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
+  // Function to go to the next background image
+  const nextBackground = () => {
+    console.log("next");
+    setBgIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
+  };
+
+  // Function to go to the previous background image
+  const prevBackground = () => {
+    setBgIndex((prevIndex) => (prevIndex - 1 + backgrounds.length) % backgrounds.length);
+  };
   const { addItems } = useContext(LfContext);
   const initialItemState = {
     landf: "",
@@ -67,7 +98,9 @@ export default function Showcaselostandfound() {
 
   return (
     <>
-      <div>
+      <div className="home" style={{
+        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%), url(${backgrounds[bgIndex]})`,
+      }}>
         <div className="content">
           <div className="rotate">
             Follow us
@@ -223,6 +256,21 @@ export default function Showcaselostandfound() {
             </button>
           </form>
         </div>
+        <button 
+          className="carousel-button-home left"
+          onClick={prevBackground}
+          style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', backgroundColor: 'transparent', border: 'none', color: '#fff', fontSize: '30px', cursor: 'pointer' }}
+        >
+          &#10094; {/* Left Arrow */}
+        </button>
+        
+        <button 
+          className="carousel-button-home right"
+          onClick={nextBackground}
+          style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', backgroundColor: 'transparent', border: 'none', color: '#fff', fontSize: '30px', cursor: 'pointer' }}
+        >
+          &#10095; {/* Right Arrow */}
+        </button>
       </div>
     </>
   );

@@ -1,15 +1,16 @@
 /* Main Home Section */
 .home {
-    background-image: 
-        linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%),
-        url('../images/ganga-arti.jpeg');
-    background-size: cover;
-    background-position: center;
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
     height: 95vh;
     display: flex;
     flex-direction: column;
     position: relative;
-}
+    transition: background-image 1s ease-in-out; /* Smooth transition */
+  }
+  
+
 
 .home::before {
     content: '';
@@ -42,7 +43,26 @@
 .yellow {
     color: #d1bc85;
 }
-
+.carousel-button-home {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 2; /* Ensure buttons are above other content */
+  }
+  
+  .carousel-button-home.left {
+    left: 20px;
+  }
+  
+  .carousel-button-home.right {
+    right: 20px;
+  }
+  
 .line-text,
 .line-blog {
     display: flex;

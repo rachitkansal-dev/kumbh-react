@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
         const q = req.query.q;
         let posts;
         if (q) {
-            posts = await Blog.find({ title: { $regex: q, $options: 'i' } })
+            posts = await Blog.find({ place: { $regex: q, $options: 'i' } })
         } else {
             posts = await Blog.find({})
         }
