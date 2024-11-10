@@ -1,15 +1,13 @@
-import React, { useContext, useEffect,useState } from 'react';
-import { useParams,useLocation,useNavigate} from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import LfContext from '../context/LfContext';
 import UserContext from '../context/UserContext';
 
 export default function Finder() {
-  const { items, getItems,getItemsByType,getItemsByLocation,getItemsBySearch } = useContext(LfContext);
+  const { items, getItems, getItemsBySearch } = useContext(LfContext);
   const { user } = useContext(UserContext);
-  const type = useParams();
   const locations = useLocation();
-  const location = useParams();
   const queryParams = new URLSearchParams(locations.search);
 
   // Extract specific query parameters
@@ -17,12 +15,16 @@ export default function Finder() {
   const navigate = useNavigate();
   const locationParam = queryParams.get("location");
 
+  // Set initial filters based on URL query parameters
   const [filters, setFilters] = useState({
     landf: '',
-    location: locationParam,
-    type: types
+    location: locationParam || '',
+    type: types || ''
   });
-  // filters, getItemsBySearch
+
+  // State to hold the filters only after submit is pressed
+  const [submittedFilters, setSubmittedFilters] = useState(filters);
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFilters({
@@ -31,39 +33,28 @@ export default function Finder() {
     });
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    getItemsBySearch(filters);
+    setSubmittedFilters(filters);  // Update submittedFilters with current filter values
   };
 
   const viewItemDetails = (itemId) => {
-    if(!user) {
-      alert("To View Details,You need to Login !");
+    if (!user) {
+      alert("To View Details, You need to Login!");
       navigate('/login');
-    }
-    else{
+    } else {
       navigate(`/claimItem/${itemId}`);
     }
   };
-  
 
   useEffect(() => {
-    if (type.type) {
-      getItemsByType(type.type);
+    // Fetch items based on submittedFilters only when they change
+    if (submittedFilters.location || submittedFilters.type || submittedFilters.landf) {
+      getItemsBySearch(submittedFilters);
+    } else {
+      getItems();
     }
-    else if(location.location) {
-      getItemsByLocation(location.location);
-    } 
-    else {
-      if(locationParam || types) {
-        getItemsBySearch(filters);
-      }
-      else{
-        getItems();
-      }
-    }
-  },[]);
+  }, [submittedFilters, getItems, getItemsBySearch]);
 
   return (
     <div>

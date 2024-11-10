@@ -55,7 +55,7 @@ export default function Showcaselostandfound() {
               <tbody>
                 <tr>
                   <td>
-                    <Link to="/finder/type/Phones & Tablets" className="category-item">
+                    <Link to="/finder?type=Phones%20&%20tablets&location=" className="category-item">
                       <i className="fas fa-mobile-alt"></i>
                       <p>Phones & Tablets (47)</p>
                     </Link>

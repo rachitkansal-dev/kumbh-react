@@ -92,7 +92,6 @@ export default function Showcaselostandfound() {
 
   const handleClicks = (e) => {
     e.preventDefault();
-    // Navigate to the Finder component and pass filters as URL parameters
     navigate(`/finder?type=${filters.type}&location=${filters.location}`);
   };
 
