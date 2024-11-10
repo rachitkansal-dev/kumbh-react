@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import logo from '../images/logo192.png';
 
 export default function Navbar() {
   const { user } = useContext(UserContext);
@@ -25,6 +26,7 @@ export default function Navbar() {
 
       {/* Logo */}
       <div className="logo">
+      <Link to="/"> <img src={logo} alt="" /></Link>
         <Link to="/">TPW</Link>
       </div>
 

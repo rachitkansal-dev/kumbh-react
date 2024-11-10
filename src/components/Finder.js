@@ -74,21 +74,34 @@ export default function Finder() {
               <div className="finder-filter-group">
                 <label htmlFor="location">Location</label>
                 <select id="location" value={filters.location} onChange={handleChange}>
-                  <option value="">Select Location</option>
+                <option value="">Select Location</option>
                   <option value="railway">Railway Station</option>
+                  <option value="sangam">Sangam</option>
+                  <option value="Company Museum">Company Museum</option>
                   <option value="airport">Airport</option>
-                  <option value="sangam">Triveni Sangam</option>
-                  <option value="park">Chandarshekhar Park</option>
+                  <option value="Civil Lines">Civil Lines</option>
                   <option value="Other">Others</option>
                 </select>
               </div>
               <div className="finder-filter-group">
                 <label htmlFor="type">Item Type</label>
                 <select id="type" value={filters.type} onChange={handleChange}>
-                  <option value="">Select Item Type</option>
-                  <option value="bags">Bags</option>
-                  <option value="watch">Watches</option>
-                  <option value="jewelry">Jewelry</option>
+                <option value="">Select Item</option>
+                  <option value="Phones & tablets">Phones & tablets</option>
+                  <option value="Person">Person</option>                  
+                  <option value="laptops">Laptops</option>
+                  <option value="Jewellery">Jewellery</option>
+                  <option value="bags">bags</option>
+                  <option value="documents">Documents</option>
+                  <option value="keys">Keys</option>
+                  <option value="watches">Watches</option>
+                  <option value="toys">Toys</option>
+                  <option value="Automobile">Automobile</option>
+                  <option value="Pets">Pets</option>
+                  <option value="sports equipment">sports equipment</option>
+                  <option value="clothes and shoes">clothes & shoes</option>
+                  <option value="Fashion accesssories">Fashion accesssories</option>
+                  <option value="others">Others</option>
                 </select>
               </div>
               <button type="submit" className="searching-btn btn-primary-finder lost-btn-finder">

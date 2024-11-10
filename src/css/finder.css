@@ -224,10 +224,6 @@
         padding-left: 0;
         flex-direction: column;
     }
-
-    .finder-item-card {
-        width: 100%;
-    }
 }
 
 @media (max-width: 480px) {

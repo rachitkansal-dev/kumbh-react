@@ -15,7 +15,7 @@ export default function Showcaselostandfound() {
             </h2>
             <div className="listing">
               <div className="row-wize">
-                <Link to="/finder/location/Railway station" className="region-item btn-primary1">
+                <Link to="/finder?type=&location=railway" className="region-item btn-primary1">
                   <i className="fa-solid fa-train fa-icon"></i> Railway station
                 </Link>
                 <Link to="/finder/location/Triveni Sangam" className="region-item btn-primary1">
@@ -61,7 +61,7 @@ export default function Showcaselostandfound() {
                     </Link>
                   </td>
                   <td>
-                    <Link to="/finder/type/Bags" className="category-item">
+                    <Link to="/finder?type=Bags&location=" className="category-item">
                       <i className="fas fa-shopping-bag"></i>
                       <p>Bags (155)</p>
                     </Link>
