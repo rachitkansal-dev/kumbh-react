@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link,Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
 import ReactQuill from 'react-quill';
@@ -18,6 +18,7 @@ function UserBlog() {
     const { blogs, getBlogs, createBlogs } = useContext(BlogContext);
     const { user } = useContext(UserContext);
     const [isSubmitDisabled, setSubmitDisabled] = useState(true);
+    const [filteredBlogs, setFilteredBlogs] = useState(blogs);
 
     const openForm = () => {
         if(!user) {
@@ -26,6 +27,7 @@ function UserBlog() {
         }
         setIsFormOpen(true);
     }
+
     const closeForm = () => setIsFormOpen(false);
 
     const truncateText = (text, length = 750) => {
@@ -90,7 +92,19 @@ function UserBlog() {
             }
         }
     };
-    
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        // Filter blogs based on search term
+        const filteredBlogs = blogs.filter(blog =>
+            blog.place.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredBlogs(filteredBlogs); // Update the state with filtered blogs
+    };
 
     return (
         <div>
@@ -98,14 +112,14 @@ function UserBlog() {
                 <button className="btn-primary lost-btn" onClick={openForm}>
                     Create Blog
                 </button>
-                <form onSubmit={(e) => e.preventDefault()}>
+                <form onSubmit={handleSearchSubmit}>
                     <input
                         type="text"
                         name="search"
                         className="input-search"
                         placeholder="Search by Place"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={handleSearchChange}
                     />
                     <button className="mg-5 btn-primary lost-btn">
                         Search
@@ -155,7 +169,6 @@ function UserBlog() {
                         <button
                             className="btn-primary lost-btn new-btn"
                             type="submit"
-
                             onClick={onClick}
                         >
                             Submit
@@ -167,36 +180,39 @@ function UserBlog() {
             <section className="showcase" id="explore-places">
                 <h1 className="heading-blog">User's experiences ---</h1>
                 <div className="container">
-                    {blogs.map((blog, index) => (
-                        <div className={index % 2 === 0 ? "row row2" : "row row1"} key={blog._id}>
-                            <div className="img-box">
-                                <img src={blog.image} alt="pic" />
-                            </div>
-                            <div className="text-box">
-                                <div className="number-background">0{index + 1}</div>
-                                <div className="shift">
-                                    <div className="line-text line-blog">
-                                        <span className="line"></span>
-                                        <span className="guide-title">{blog.place}</span>
-                                    </div>
-                                    <h2 className="lg-heading">{blog.title}</h2>
-                                    <div className="author guide-title">
-                                        --- By {blog.author || "Unknown"}
-                                    </div>
-                                    <p className="text-gray blog-body" dangerouslySetInnerHTML={{ __html: truncateText(blog.body) }} />
-
-                                    <div className="read-btn">
-                                        <Link to={`/blog/${blog._id}`} className="btn btn-secondary">
-                                            {"Read More "}
-                                        </Link> 
-                                        <Link to={`/blog/${blog._id}`}>
-                                            <i className="fa-solid fa-arrow-right"></i>
-                                        </Link>
+                    {filteredBlogs.length === 0 ? (
+                        <p>No blogs found for the selected place.</p>
+                    ) : (
+                        filteredBlogs.map((blog, index) => (
+                            <div className={index % 2 === 0 ? "row row2" : "row row1"} key={blog._id}>
+                                <div className="img-box">
+                                    <img src={blog.image} alt="pic" />
+                                </div>
+                                <div className="text-box">
+                                    <div className="number-background">0{index + 1}</div>
+                                    <div className="shift">
+                                        <div className="line-text line-blog">
+                                            <span className="line"></span>
+                                            <span className="guide-title">{blog.place}</span>
+                                        </div>
+                                        <h2 className="lg-heading">{blog.title}</h2>
+                                        <div className="author guide-title">
+                                            --- By {blog.author || "Unknown"}
+                                        </div>
+                                        <p className="text-gray blog-body" dangerouslySetInnerHTML={{ __html: truncateText(blog.body) }} />
+                                        <div className="read-btn">
+                                            <Link to={`/blog/${blog._id}`} className="btn btn-secondary">
+                                                {"Read More "}
+                                            </Link> 
+                                            <Link to={`/blog/${blog._id}`}>
+                                                <i className="fa-solid fa-arrow-right"></i>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </section>
         </div>
