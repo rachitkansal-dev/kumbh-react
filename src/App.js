@@ -14,6 +14,7 @@ import './css/profile.css';
 import './css/ClaimItem.css';
 import './css/UserBlog.css';
 import './css/About.css';
+import './css/faq.css';
 
 
 import React from 'react';
@@ -48,6 +49,7 @@ import EditProfile from './components/EditProfile';
 import UserBlog from './components/UserBlog';
 import AboutUs from './components/About';
 import Contact from './components/Contact';
+import Faq from './components/Faq';
 
 function App() {
   return (
@@ -90,6 +92,18 @@ function App() {
               element={
                 <>
                   <Contact/>
+                  {/* <BlacktoBlue />
+                  <Showcase /> */}
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/faq"
+              element={
+                <>
+                  <Faq/>
                   {/* <BlacktoBlue />
                   <Showcase /> */}
                   <Footer />
