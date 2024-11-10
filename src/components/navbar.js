@@ -35,6 +35,9 @@ export default function Navbar() {
         <li className={`${location.pathname === '/' ? 'activeg' : ''}`}>
           <Link to="/">Home</Link>
         </li>
+        <li className={`${location.pathname === '/major-attractions' ? 'activeg' : ''}`}>
+          <Link to="/major-attractions">Major Attractions</Link>
+        </li>
         <li className={`${location.pathname === '/blogs' ? 'activeg' : ''}`}>
           <Link to="/blogs">Blogs</Link>
         </li>
@@ -44,12 +47,8 @@ export default function Navbar() {
         <li className={`${location.pathname === '/lost-found' ? 'activeg' : ''}`}>
           <Link to="/lost-found">Lost And Found</Link>
         </li>
-        
-        <li className={`${location.pathname === '/contact' ? 'activeg' : ''}`}>
-          <Link to="/contact">Contact</Link>
-        </li>
-        <li className={`${location.pathname === '/about' ? 'activeg' : ''}`}>
-          <Link to="/about">About</Link>
+        <li className={`${location.pathname === '/prayag' ? 'activeg' : ''}`}>
+          <Link to="/prayag">About Prayagraj</Link>
         </li>
         
       </ul>

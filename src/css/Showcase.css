@@ -2,6 +2,11 @@
     padding: 3em 10em; /* Adjust padding for larger screens */
     background: #0b1d26;
 }
+.showcase-heading{
+    color: #d0ad53;
+    font-size: 50px;
+    padding: 30px;
+}
 
 .row {
     color: #e8dddd;

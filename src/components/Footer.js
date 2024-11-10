@@ -21,18 +21,18 @@ export default function Footer() {
           <div className="left-list">
             <h3 className="text-yellow">More on the Blog</h3>
             <ul>
-              <li><Link to="/">About TPW</Link></li>
-              <li><Link to="/">Writers</Link></li>
-              <li><Link to="/">Write your experiences</Link></li>
-              <li><Link to="/">Contact Us</Link></li>
+              <li><Link to="/about">About TPW</Link></li>
+              <li><Link to="/Faq">Faqs</Link></li>
+              <li><Link to="/blogs">Write your experiences</Link></li>
+              <li><Link to="/contact">Contact Us</Link></li>
             </ul>
           </div>
           <div className="right-list">
             <h3 className="text-yellow">More on TPW</h3>
             <ul>
-              <li><Link to="/">The Team</Link></li>
-              <li><Link to="/">Jobs</Link></li>
-              <li><Link to="/">Press</Link></li>
+              <li><Link to="/lost-found">Lost and Found</Link></li>
+              <li><Link to="/prayag">About Praygraj</Link></li>
+              <li><Link to="/major-attractions">Kumbh Special</Link></li>
             </ul>
           </div>
         </div>

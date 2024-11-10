@@ -1,0 +1,55 @@
+.prayagraj-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    color: #b4b1ab;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #0b1d26;
+  }
+  .guide-p{
+    font-size: 20px;
+  }
+  .guide-header{
+    display: flex;
+  }
+  .prayagraj-title {
+    font-size: 2.5em;
+    color: #d0ad53;
+    font-weight: bold;
+    text-align: left;
+  }
+  .guide-section-title{
+    color: #d0ad53;
+  }
+  
+  .prayagraj-quote {
+    padding: 20px;
+    font-style: italic;
+    font-size: 1.2em;
+    margin: 20px 0;
+    color: #d1bc85;
+    max-width: 800px;
+  }
+  
+  .prayagraj-image-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .prayagraj-image {
+    width: 100%;
+    width: 400px;
+    max-height: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .prayagraj-content p {
+    max-width: 1200px;
+    margin: 10px 0;
+    text-align: left;
+  }
+  

@@ -23,6 +23,7 @@ export default function Showcase() {
   return (
     <section className="showcase" id="explore-places">
       <div className="container">
+        <h1 className="showcase-heading"><i class="fa-solid fa-arrow-right"></i> Places to Visit</h1>
         {blogData.map((blog, index) => (
           <div className={`row ${width <= 1200 ? ('row1') : (index % 2 === 0 ? 'row1' : 'row2')}`} key={blog.id}>
             <div className="img-box">

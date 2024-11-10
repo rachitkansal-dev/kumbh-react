@@ -187,8 +187,8 @@ function UserBlog() {
 
                                     <div className="read-btn">
                                         <Link to={`/blog/${blog._id}`} className="btn btn-secondary">
-                                            Read More
-                                        </Link>
+                                            {"Read More "}
+                                        </Link> 
                                         <Link to={`/blog/${blog._id}`}>
                                             <i className="fa-solid fa-arrow-right"></i>
                                         </Link>

@@ -14,7 +14,9 @@ import './css/profile.css';
 import './css/ClaimItem.css';
 import './css/UserBlog.css';
 import './css/About.css';
+import './css/Attraction.css';
 import './css/faq.css';
+import './css/Guide.css';
 
 
 import React from 'react';
@@ -50,6 +52,9 @@ import UserBlog from './components/UserBlog';
 import AboutUs from './components/About';
 import Contact from './components/Contact';
 import Faq from './components/Faq';
+import Attractions from './components/Attractions';
+import Guide from './components/Guide';
+import Prayag from './components/Praygraj';
 
 function App() {
   return (
@@ -80,8 +85,32 @@ function App() {
               element={
                 <>
                   <AboutUs/>
-                  {/* <BlacktoBlue />
-                  <Showcase /> */}
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/major-attractions"
+              element={
+                <>
+                  <Guide/>
+                  <BluetoBlack />
+                  <Attractions/>
+                  <Toblue />
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/prayag"
+              element={
+                <>
+                  <Prayag/>
+                  <BluetoBlack />
+                  <Attractions/>
+                  <Toblue />
                   <Footer />
                   <GoTop />
                 </>
@@ -92,8 +121,6 @@ function App() {
               element={
                 <>
                   <Contact/>
-                  {/* <BlacktoBlue />
-                  <Showcase /> */}
                   <Footer />
                   <GoTop />
                 </>
@@ -104,8 +131,6 @@ function App() {
               element={
                 <>
                   <Faq/>
-                  {/* <BlacktoBlue />
-                  <Showcase /> */}
                   <Footer />
                   <GoTop />
                 </>
@@ -116,8 +141,6 @@ function App() {
               element={
                 <>
                   <UserBlog/>
-                  {/* <BlacktoBlue /> */}
-                  {/* <Showcase /> */}
                   <Footer />
                   <GoTop />
                 </>
