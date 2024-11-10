@@ -120,12 +120,22 @@ export default function Showcaselostandfound() {
                 <label htmlFor="itemType"> <i className="fa-solid fa-circle-chevron-right"></i> Lost What : </label>
                 <select id="itemType" name="type" value={filters.type} onChange={handleChange}>
                   <option value="">Select Item</option>
-                  <option value="Phone">Phone</option>
-                  <option value="Person">Person</option>
-                  <option value="Wallet">Wallet</option>
-                  <option value="Electronic">Electronic</option>
+                  <option value="Phones & tablets">Phones & tablets</option>
+                  <option value="Person">Person</option>                  
+                  <option value="laptops">Laptops</option>
                   <option value="Jewellery">Jewellery</option>
+                  <option value="bags">bags</option>
+                  <option value="documents">Documents</option>
+                  <option value="keys">Keys</option>
+                  <option value="watches">Watches</option>
+                  <option value="toys">Toys</option>
+                  <option value="Automobile">Automobile</option>
+                  <option value="Pets">Pets</option>
+                  <option value="sports equipment">sports equipment</option>
+                  <option value="clothes and shoes">clothes & shoes</option>
+                  <option value="Fashion accesssories">Fashion accesssories</option>
                   <option value="others">Others</option>
+
                 </select>
 
                 <label htmlFor="location">
@@ -198,8 +208,9 @@ export default function Showcaselostandfound() {
               <option value="Clothes & Shoes">Clothes & Shoes</option>
               <option value="Pets">Pets</option>
               <option value="Sports Equipment">Sports Equipment</option>
-              <option value="Other">Other</option>
               <option value="Automobile">Automobile</option>
+              <option value="Other">Other</option>
+              
             </select>
 
             <textarea

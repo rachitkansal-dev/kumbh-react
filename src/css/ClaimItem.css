@@ -1,21 +1,19 @@
-.claim-section{
+.claim-section {
     background-color: #192229;
     color: #fff;
 }
 
 .claim-container {
-    /* background-color: #0b1d26; */
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     gap: 20px;
 }
 
+/* Main Content and Sidebar Styles */
 .claim-main-content {
     margin-top: 20px;
-    /* padding: 10px; */
     flex: 2;
-    /* background-color: white; */
     border-radius: 8px;
     border: 2px solid #6c757d;
     padding: 30px;
@@ -23,17 +21,17 @@
 
 .claim-sidebar {
     flex: 1;
-    /* background-color: white; */
     border-radius: 8px;
     margin-top: 20px;
-    /* padding: 10px; */
     border: 2px solid #6c757d;
     padding: 30px;
 }
-.claim-sidebar a{
+
+.claim-sidebar a {
     text-decoration: none;
 }
 
+/* Item Styles */
 .claim-item-title {
     font-size: 24px;
     color: #d0ad53;
@@ -48,6 +46,7 @@
     border-radius: 4px;
     font-size: 14px;
 }
+
 .green-status {
     display: inline-block;
     background-color: green;
@@ -77,11 +76,11 @@
     margin-bottom: 20px;
 }
 
-
-
+/* Listing Details */
 .claim-listing-details {
     margin-top: 20px;
 }
+
 .claim-listing-details h3 {
     font-size: 18px;
     color: #d1bc85;
@@ -90,22 +89,21 @@
 
 .claim-detail-row {
     display: flex;
-    justify-content:flex-start;
+    justify-content: flex-start;
     border-bottom: 1px solid #eee;
     padding: 10px 0;
 }
-
-
 
 .claim-detail-label {
     width: 15%;
     font-weight: bold;
 }
+
 .claim-detail-text {
     width: 85%;
-    /* font-weight: bold; */
 }
 
+/* User Info */
 .claim-user-info {
     text-align: center;
     margin-bottom: 20px;
@@ -123,6 +121,7 @@
     margin-bottom: 5px;
 }
 
+/* Buttons */
 .claim-contact-button,
 .claim-message-button {
     display: block;
@@ -132,7 +131,6 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    
 }
 
 .claim-contact-button {
@@ -146,6 +144,7 @@
     border: 1px solid #d1bc85;
 }
 
+/* Form Styles */
 #claim-form input[type="text"] {
     width: 100%;
     padding: 10px;
@@ -164,4 +163,63 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .claim-container {
+        flex-direction: column; /* Stack content vertically on smaller screens */
+        gap: 10px;
+    }
+
+    .claim-main-content,
+    .claim-sidebar {
+        flex: 1; /* Make both sections equal width on mobile */
+        padding: 20px; /* Adjust padding */
+    }
+
+    .claim-item-title {
+        font-size: 20px; /* Reduce font size for smaller screens */
+    }
+
+    .claim-item-meta,
+    .claim-detail-label,
+    .claim-detail-text {
+        font-size: 12px; /* Adjust font size for better readability */
+    }
+
+    .claim-user-avatar {
+        width: 60px; /* Reduce avatar size */
+        height: 60px;
+    }
+
+    .claim-contact-button,
+    .claim-message-button {
+        padding: 8px; /* Adjust button padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .claim-main-content,
+    .claim-sidebar {
+        padding: 15px; /* Further reduce padding on very small screens */
+    }
+
+    .claim-item-title {
+        font-size: 18px; /* Further reduce font size */
+    }
+
+    .claim-user-avatar {
+        width: 50px;
+        height: 50px; /* Further reduce avatar size */
+    }
+
+    .claim-contact-button,
+    .claim-message-button {
+        font-size: 14px; /* Adjust button text size */
+    }
+
+    .claim-item-meta {
+        font-size: 10px; /* Smaller meta text */
+    }
 }

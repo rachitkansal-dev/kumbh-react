@@ -1,6 +1,6 @@
 import React from 'react';
 import '../css/Contact.css';
-import companyImage from '../images/16be610a-aa12-4f61-b55d-bccd6ca30f83.webp';
+import companyImage from '../images/company-image.jpeg';
 
 const ContactForm = () => {
   return (

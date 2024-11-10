@@ -3,12 +3,14 @@ import image1 from '../images/image1.jpeg';
 import image4 from '../images/image4.jpeg';
 import image5 from '../images/image5.jpeg';
 import image3 from '../images/image3.jpeg';
+import image6 from '../images/image6.jpeg';
 export default function Home() {
   const [bgIndex, setBgIndex] = useState(0);
   const backgrounds = [
     image1,
     image5,
     image4,
+    image6,
     image3
   ];
 

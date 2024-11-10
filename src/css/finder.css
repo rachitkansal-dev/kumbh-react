@@ -17,9 +17,9 @@
 /* Sidebar styling */
 .finder-sidebar {
     position: absolute;
-    top: 0;
+    top: 20;
     left: 0;
-    height: 100%;
+    height: 90%;
     width: 250px;
     background-color: #394048;
     padding: 20px;
@@ -197,6 +197,7 @@
     .finder-sidebar {
         width: 200px;
         padding: 15px;
+        z-index: 1;
     }
     
     .finder-main-content {

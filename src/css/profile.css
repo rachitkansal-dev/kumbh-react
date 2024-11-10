@@ -1,16 +1,16 @@
+/* Base styles */
 .profile-center {
     padding: 230px 0px;
-    margin-left: 700px;
+    /* margin-left: 700px; */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
+/* Profile Header */
 .prof-head {
     display: flex;
 }
-
-
 
 .prof-head h2 a {
     text-decoration: none;
@@ -21,6 +21,7 @@
     text-decoration: underline;
 }
 
+/* Logout Button */
 .logout-btn {
     padding: 15px;
     background-color: #112e3c;
@@ -35,19 +36,64 @@
     background-color: #071218;
 }
 
+/* Visibility Control */
 .notvisible {
     opacity: 0;
 }
-.profile-btns a{
-    text-decoration: none;
-}
-.profile-btns{
+
+/* Profile Buttons */
+.profile-btns {
     margin: 10px 0px;
 }
-.profile-btns .logout-btn{
+
+.profile-btns a {
+    text-decoration: none;
+}
+
+.profile-btns .logout-btn {
     margin: 0px 4px;
 }
 
-.fa-pen-to-square{
+/* Font Awesome Icon */
+.fa-pen-to-square {
     color: #d1bc85;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .profile-center {
+        margin-left: 400px; /* Adjusting the left margin for medium screens */
+    }
+}
+
+@media (max-width: 992px) {
+    .profile-center {
+        margin-left: 200px; /* Further adjusting the left margin */
+        padding: 150px 0px;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-center {
+        margin-left: 50px;
+        padding: 100px 20px;
+        align-items: center; /* Center the content for smaller screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-center {
+        margin-left: 0px;
+        padding: 80px 10px;
+        align-items: center; /* Ensure proper alignment on extra small screens */
+    }
+    
+    .logout-btn {
+        font-size: 14px;
+        padding: 10px 15px; /* Adjust button size */
+    }
+
+    .prof-head h2 {
+        font-size: 20px; /* Adjust heading size */
+    }
 }

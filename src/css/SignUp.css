@@ -1,13 +1,13 @@
+/* Base Styles */
 .login-container {
     font-size: 24px;
     margin: 40px;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px #0b1d26;
-    width: 300px;
-    border: 1px solid white;
     width: 500px;
     color: #FFF;
+    border: 1px solid white;
 }
 
 .login-form h2 {
@@ -106,16 +106,82 @@ p a:hover {
     opacity: 0;
 }
 
-
-
-.nav-body{
+.nav-body {
     background: #0b1d26;
     height: 100vh;
     color: #fff;
 }
 
-.input-area{
+.input-area {
     background-color: #0b1d26;
     color: #fff;
     font-size: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .login-container {
+        width: 400px;
+        margin: 20px;
+        font-size: 20px;
+    }
+
+    .profile-center {
+        margin-left: 200px;
+        align-items: center;
+    }
+
+    .logout-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        width: 350px;
+        font-size: 18px;
+        padding: 15px;
+    }
+
+    .profile-center {
+        margin-left: 100px;
+        align-items: center;
+    }
+
+    .logout-btn {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        font-size: 16px;
+        margin: 10px;
+    }
+
+    .profile-center {
+        margin-left: 0;
+        align-items: center;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group input {
+        padding: 8px;
+    }
+
+    .login-btn {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .logout-btn {
+        font-size: 12px;
+        padding: 6px;
+    }
 }
