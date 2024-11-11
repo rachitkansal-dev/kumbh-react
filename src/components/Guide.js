@@ -1,5 +1,5 @@
 import React from 'react';
-import pryag from '../images/attraction.jpeg'
+import pryag from '../images/praygraj1.jpg'
 
 
 const Guide = () => {

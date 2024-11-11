@@ -12,7 +12,7 @@
     font-weight: bold;
 }
 
-
+/* General carousel styling */
 .carousel {
     position: relative;
     width: 100%;
@@ -23,7 +23,6 @@
     overflow: hidden;
     word-break: break-word;
     cursor: pointer;
-    
 }
 
 .carousel-item {
@@ -38,7 +37,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     opacity: 0;
     z-index: 1;
-    transform: scale(0.9); 
+    transform: scale(0.9);
 }
 
 .carousel-item.active {
@@ -59,6 +58,7 @@
     z-index: 5;
 }
 
+/* Testimonial section */
 .testimonial {
     padding: 10px;
 }
@@ -83,6 +83,7 @@
     color: #7B3EFB;
 }
 
+/* Navigation buttons */
 .prev, .next {
     background-color: rgba(0, 0, 0, 0.1);
     border: none;
@@ -109,42 +110,30 @@
     color: white;
 }
 
-.review{
+/* Review section */
+.review, .write-review {
     background-color: #0e2530;
-}
-
-
-.write-review{
-    background-color: #0e2530;
-}
-
-.write-review {
-    background-color: #0e2530;
-    padding: 50px;         
+    padding: 50px;
 }
 
 .review-textarea {
-    display: flex;         
+    display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items:center;  
-    margin-top: 20px;      
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .review-textarea textarea {
-    width: 100%;           
-    max-width: 800px;     
-    padding: 10px;         
-    border-radius: 5px;    
-    border: 1px solid #ccc; 
-    resize: none;          
+    width: 100%;
+    max-width: 800px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: none;
 }
 
-
-
-
-
-
+/* Modal styling */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -165,50 +154,125 @@
     padding: 30px;
     border-radius: 8px;
     max-width: 600px;
-    max-height: 500px; /* Maximum height for the modal */
+    max-height: 500px;
     width: 90%;
-    /* text-align: center; */
-    word-break: break-word;
-    overflow-y: auto; /* Allow vertical scrolling if content exceeds max height */
+    overflow-y: auto;
 }
 
 .modal-close-button {
-    /* position: absolute; 
-    top: 10px; 
-    right: 15px; */
-    background: transparent; 
+    background: transparent;
     border: none;
     font-size: 24px;
-    cursor: pointer; 
-    color: #d0ad53; 
+    cursor: pointer;
+    color: #d0ad53;
 }
 
 .unique-close-button:hover {
-    color: red; 
+    color: red;
 }
 
-.modal-heading-div{
+.modal-heading-div {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #777;
 }
-.review-modal-heading{
+
+.review-modal-heading {
     color: #d0ad53;
 }
+
 .modal-content::-webkit-scrollbar {
-    width: 5px; /* Width of the scrollbar */
+    width: 5px;
 }
 
 .modal-content::-webkit-scrollbar-track {
-    background: #0b1d26; /* Color of the scrollbar track */
+    background: #0b1d26;
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-    background-color: #d1bc85; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+    background-color: #d1bc85;
+    border-radius: 10px;
 }
 
 .modal-content::-webkit-scrollbar-thumb:hover {
-    background-color: #b5912b; /* Color of the scrollbar thumb on hover */
+    background-color: #b5912b;
 }
 
+/* Responsive design */
+@media (max-width: 768px) {
+    .carousel-item {
+        width: 70%;
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .prev, .next {
+        font-size: 1.2rem;
+        padding: 8px;
+    }
+
+    .carousel {
+        height: 250px;
+    }
+
+    .carousel-title {
+        font-size: 1.5rem;
+    }
+
+    .testimonial p {
+        font-size: 0.9rem;
+    }
+
+    .testimonial h4 {
+        font-size: 1rem;
+    }
+
+    .testimonial h5 {
+        font-size: 0.8rem;
+    }
+
+    .modal-content {
+        padding: 20px;
+        font-size: 0.9rem;
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-item {
+        width: 90%;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+
+    .carousel {
+        height: 200px;
+    }
+
+    .carousel-title {
+        font-size: 1.2rem;
+    }
+
+    .prev, .next {
+        font-size: 1rem;
+        padding: 6px;
+    }
+
+    .testimonial p {
+        font-size: 0.8rem;
+    }
+
+    .testimonial h4 {
+        font-size: 0.9rem;
+    }
+
+    .testimonial h5 {
+        font-size: 0.7rem;
+    }
+
+    .modal-content {
+        padding: 15px;
+        font-size: 0.8rem;
+        max-height: 300px;
+    }
+}

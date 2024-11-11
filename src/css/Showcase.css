@@ -91,6 +91,7 @@
     }
 
     .number-background {
+        margin-top: 110px;
         font-size: 10rem; /* Decrease font size on smaller screens */
     }
 }

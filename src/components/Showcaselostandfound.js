@@ -46,7 +46,7 @@ export default function Showcaselostandfound() {
                 Browse by <span>Category</span>
               </h2>
               <div className="head-item">
-                <Link to="/">
+                <Link to="/finder">
                   <i className="fa-solid fa-bars"></i> View more
                 </Link>
               </div>

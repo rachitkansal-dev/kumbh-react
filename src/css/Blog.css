@@ -37,6 +37,7 @@
     white-space: nowrap;
     position: relative;
     z-index: 2;
+    margin-bottom: 200px;
     margin-right: -150px;
 }
 
@@ -153,7 +154,8 @@
 @media (max-width: 768px) {
     .blog-container {
         padding: 20px;
-        flex-direction: column; /* Stack content vertically */
+        flex-direction: column-reverse; /* Stack content vertically */
+
         align-items: center;
     }
 
@@ -168,6 +170,7 @@
         letter-spacing: 5px;
         margin-right: 0; /* Remove negative margin for better alignment */
         white-space: normal; /* Allow text wrapping */
+        margin-bottom: 0;
     }
 
     .blog-header-text {
