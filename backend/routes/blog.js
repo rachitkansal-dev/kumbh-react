@@ -11,9 +11,9 @@ router.get('/', async (req, res) => {
         const q = req.query.q;
         let posts;
         if (q) {
-            posts = await Blog.find({ place: { $regex: q, $options: 'i' } })
+            posts = await Blog.find({ place: { $regex: q, $options: 'i' } }).sort({ likes: -1 })
         } else {
-            posts = await Blog.find({})
+            posts = await Blog.find({}).sort({ likes: -1 })
         }
         res.json(posts); // Send data in JSON format for React to process
     } catch (error) {
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// View single blog post with comments
+// View single blog post with commentsdb.collectionName.find().sort({ likes: -1 })
 router.get('/:id', async (req, res) => {
     try {
         const post = await Blog.findById(req.params.id).populate('comments');

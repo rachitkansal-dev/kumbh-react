@@ -28,25 +28,31 @@ function Profile() {
     };
 
     const handleDelete = async () => {
-        try {
-            const response = await fetch(`http://localhost:8080/profile/${user._id}`, {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const data = await response.json();
+        const confirmation = window.prompt("Enter 'CONFIRM' to delete your profile:");
+        
+        if (confirmation === 'CONFIRM') {
+            try {
+                const response = await fetch(`http://localhost:8080/profile/${user._id}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const data = await response.json();
 
-            if (response.ok) {
-                alert(data.message); // Log success message\
-                logoutUser();
-                navigate('/signup');
-            } else {
-                console.error(data.message); // Log error message if any
+                if (response.ok) {
+                    alert(data.message);
+                    logoutUser();
+                    navigate('/signup');
+                } else {
+                    console.error(data.message);
+                }
+            } catch (e) {
+                console.log('Error in delete:', e);
             }
-        } catch (e) {
-            console.log('Error in delete:', e);
+        } else {
+            alert("Profile deletion canceled. You must enter 'CONFIRM' to delete.");
         }
     };
 
@@ -60,6 +66,14 @@ function Profile() {
                 <div className="prof-head">
                     <h2 className="text-yellow">Email : </h2>
                     <h2>{user ? (<>{user.email}</>) : ""}</h2>
+                </div>
+                <div className="prof-head">
+                    <h2 className="text-yellow">Contact : </h2>
+                    <h2>{user ? (<>{user.phoneNumber}</>) : ""}</h2>
+                </div>
+                <div className="prof-head">
+                    <h2 className="text-yellow">Address : </h2>
+                    <h2>{user ? (<>{user.address}</>) : ""}</h2>
                 </div>
                 <div className="profile-btns">
                     <Link to='/edit-profile' role='button' className="logout-btn">Edit Profile</Link>

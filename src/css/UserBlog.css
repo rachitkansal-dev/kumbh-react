@@ -83,6 +83,7 @@
     background-color: #0b1d26;
     display: flex;
     justify-content: space-between;
+    padding:0 100px
 }
 
 .blog-body {
@@ -138,6 +139,9 @@
 
 /* Responsive Styles */
 @media (max-width: 1024px) {
+    .user-blog-header {
+        padding: 0;
+    }
     .blog-image-container {
         width: 350px;
         height: 350px;

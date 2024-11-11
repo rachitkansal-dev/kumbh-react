@@ -14,7 +14,20 @@ export default function Showcaselostandfound() {
     image4,
     image3
   ];
-
+  function isValidPhoneNumber(phoneNumber) {
+    const cleanedPhoneNumber = phoneNumber.replace(/(?!^\+)[^\d]/g, '');
+    const phoneRegex = /^(?:\+(\d{1,3}))?(\d{7,15})$/;
+    const match = cleanedPhoneNumber.match(phoneRegex);
+  
+    if (match) {
+      const countryCode = match[1];
+      const mainNumber = match[2];
+      if (mainNumber.length >= 7 && mainNumber.length <= 15) {
+        return true;
+      }
+    }
+    return false;
+  }
   useEffect(() => {
     const interval = setInterval(() => {
       setBgIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
@@ -51,6 +64,10 @@ export default function Showcaselostandfound() {
     e.preventDefault();
     if (!item.landf || !item.type || !item.description || !item.location || !item.date || !item.contact) {
       alert("Please fill all required fields.");
+      return;
+    }
+    if(!isValidPhoneNumber(item.contact)) {
+      alert("Phone number invalid !");
       return;
     }
     addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact);

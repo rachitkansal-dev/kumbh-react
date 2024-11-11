@@ -2,7 +2,7 @@ import React, { useContext,useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 export default function BlogReview() {
-  const { postId } = useParams(); 
+  const { id } = useParams(); 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState('');
@@ -44,10 +44,11 @@ export default function BlogReview() {
   };
 
   const handleSubmit = async (e) => {
+    console.log(id);
     e.preventDefault();
     if (newReview.trim()) {
       try {
-        const response = await fetch(`http://localhost:8080/blog/${postId}/comment`, {
+        const response = await fetch(`http://localhost:8080/blog/${id}/comment`, {
           method: 'POST',
           credentials: 'include',
           headers: {

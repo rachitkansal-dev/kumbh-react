@@ -55,6 +55,8 @@ import Faq from './components/Faq';
 import Attractions from './components/Attractions';
 import Guide from './components/Guide';
 import Prayag from './components/Praygraj';
+import Otp from './components/OtpCheck';
+import OtpCheck from './components/OtpCheck';
 
 function App() {
   return (
@@ -203,6 +205,17 @@ function App() {
                 <>
                   <div className="nav-body">
                     <ResetPassword />
+                    <Footer />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/otp-check"
+              element={
+                <>
+                  <div className="nav-body">
+                    <OtpCheck />
                     <Footer />
                   </div>
                 </>

@@ -34,6 +34,8 @@ router.get('/profile', validate, (req, res) => {
         user_id: req.session.user_id,
         name: req.session.name,
         email: req.session.email,
+        phoneNumber: req.session.phoneNumber,
+        address: req.session.address,
     });
 });
 
@@ -47,6 +49,8 @@ router.get('/profile/:id', validate, async (req, res) => {
             user_id: req.params.id,
             name: user.name,
             email: user.email,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
         });
     } catch (e) {
         console.log("Error in getting profile:", e);
@@ -63,8 +67,10 @@ router.post('/login', async (req, res) => {
         req.session.name = user.name;
         req.session.email = user.email;
         req.session.user_id = user._id;
+        req.session.phoneNumber= user.phoneNumber;
+        req.session.address= user.address;
         req.session.isLogin = true;
-        res.json({ message: 'Login successful', user: { _id:user._id,name: user.name, email: user.email } });
+        res.json({ message: 'Login successful', user: { _id:user._id,name: user.name, email: user.email , phoneNumber: user.phoneNumber, address : user.address} });
     } catch (e) {
         console.log('Error in login:', e);
         res.status(500).json({ message: 'Error logging in.' });
@@ -82,8 +88,10 @@ router.post('/signup', async (req, res) => {
         req.session.name = user.name;
         req.session.email = user.email;
         req.session.user_id = user._id;
+        req.session.phoneNumber= user.phoneNumber;
+        req.session.address= user.address;
         req.session.isLogin = true;
-        res.json({ message: 'Signup successful', user: {_id:user._id, name: user.name, email: user.email } });
+        res.json({ message: 'Signup successful', user: {_id:user._id, name: user.name, email: user.email , phoneNumber: user.phoneNumber, address : user.address} });
     } catch (e) {
         console.log('Error in signup:', e);
         res.status(500).json({ message: 'Error signing up.' });
@@ -102,8 +110,12 @@ router.post('/profile/:id', validate, async (req, res) => {
         await User.findByIdAndUpdate(req.params.id, {
             name: req.body.name || user.name,
             password: req.body.password,
+            phoneNumber: req.body.phoneNumber || user.phoneNumber,
+            address : req.body.address || user.address,
         }, { new: true });
         req.session.name = req.body.name || user.name;
+        req.session.phoneNumber= user.phoneNumber || user.phoneNumber;
+        req.session.address= user.address || user.address;
         res.json({ message: 'Profile Updated successfully' });
     } catch (e) {
         console.log('Error in update:', e);
