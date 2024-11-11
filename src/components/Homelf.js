@@ -18,7 +18,7 @@ export default function Showcaselostandfound() {
   useEffect(() => {
     const interval = setInterval(() => {
       setBgIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
-    }, 10000); 
+    }, 10000);
 
     // Clean up interval on component unmount
     return () => clearInterval(interval);
@@ -118,22 +118,22 @@ export default function Showcaselostandfound() {
               <div>
                 <label htmlFor="itemType"> <i className="fa-solid fa-circle-chevron-right"></i> Lost What : </label>
                 <select id="itemType" name="type" value={filters.type} onChange={handleChange}>
-                  <option value="">Select Item</option>
-                  <option value="Phones & tablets">Phones & tablets</option>
-                  <option value="Person">Person</option>                  
-                  <option value="laptops">Laptops</option>
+                  <option value="" disabled>Select Item Type</option>
+                  <option value="Phones & Tablets">Phones & Tablets</option>
+                  <option value="Bags">Bags</option>
                   <option value="Jewellery">Jewellery</option>
-                  <option value="bags">bags</option>
-                  <option value="documents">Documents</option>
-                  <option value="keys">Keys</option>
-                  <option value="watches">Watches</option>
-                  <option value="toys">Toys</option>
-                  <option value="Automobile">Automobile</option>
+                  <option value="Watches">Watches</option>
+                  <option value="People">People</option>
+                  <option value="Documents">Documents</option>
+                  <option value="Keys">Keys</option>
+                  <option value="Toys">Toys</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Fashion Accessories">Fashion Accessories</option>
+                  <option value="Clothes & Shoes">Clothes & Shoes</option>
                   <option value="Pets">Pets</option>
-                  <option value="sports equipment">sports equipment</option>
-                  <option value="clothes and shoes">clothes & shoes</option>
-                  <option value="Fashion accesssories">Fashion accesssories</option>
-                  <option value="others">Others</option>
+                  <option value="Sports Equipment">Sports Equipment</option>
+                  <option value="Automobile">Automobile</option>
+                  <option value="Other">Other</option>
 
                 </select>
 
@@ -141,13 +141,13 @@ export default function Showcaselostandfound() {
                   <i className="fa-solid fa-circle-chevron-right"></i> Location:
                 </label>
                 <select id="location" name="location" value={filters.location} onChange={handleChange}>
-                  <option value="">Select Location</option>
-                  <option value="railway">Railway Station</option>
-                  <option value="sangam">Sangam</option>
-                  <option value="Company Museum">Company Museum</option>
-                  <option value="airport">Airport</option>
-                  <option value="Civil Lines">Civil Lines</option>
-                  <option value="Other">Others</option>
+                <option value="" disabled>Select Location</option>
+              <option value="Triveni Sangam">Triveni Sangam</option>
+              <option value="Railway Station">Railway Station</option>
+              <option value="Airport">Airport</option>
+              <option value="Company Museum">Company Museum</option>
+              <option value="Civil Lines">Civil Lines</option>
+              <option value="Other">Other</option>
                 </select>
                 <br />
               </div>
@@ -196,7 +196,7 @@ export default function Showcaselostandfound() {
               <option value="" disabled>Select Item Type</option>
               <option value="Phones & Tablets">Phones & Tablets</option>
               <option value="Bags">Bags</option>
-              <option value="Jewelry">Jewelry</option>
+              <option value="Jewellery">Jewellery</option>
               <option value="Watches">Watches</option>
               <option value="People">People</option>
               <option value="Documents">Documents</option>
@@ -209,7 +209,7 @@ export default function Showcaselostandfound() {
               <option value="Sports Equipment">Sports Equipment</option>
               <option value="Automobile">Automobile</option>
               <option value="Other">Other</option>
-              
+
             </select>
 
             <textarea
@@ -239,7 +239,7 @@ export default function Showcaselostandfound() {
               name="date"
               value={item.date}
               onChange={onChange}
-              max={new Date().toISOString().split("T")[0]} 
+              max={new Date().toISOString().split("T")[0]}
               required
             />
 
@@ -266,15 +266,15 @@ export default function Showcaselostandfound() {
             </button>
           </form>
         </div>
-        <button 
+        <button
           className="carousel-button-home left"
           onClick={prevBackground}
           style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', backgroundColor: 'transparent', border: 'none', color: '#fff', fontSize: '30px', cursor: 'pointer' }}
         >
           &#10094; {/* Left Arrow */}
         </button>
-        
-        <button 
+
+        <button
           className="carousel-button-home right"
           onClick={nextBackground}
           style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', backgroundColor: 'transparent', border: 'none', color: '#fff', fontSize: '30px', cursor: 'pointer' }}

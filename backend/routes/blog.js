@@ -159,14 +159,14 @@ router.post('/:id/like', validate, async (req, res) => {
     try {
         const blog = await Blog.findById(req.params.id);
         if (blog.likedBy.includes(req.session.user_id)) {
-            return res.status(400).json({ error: "You have already liked this blog post." });
+            return res.status(400).json({ error: "You have already upvoted this blog post." });
         }
         blog.likes += 1;
         blog.likedBy.push(req.session.user_id);
         await blog.save();
-        res.json({ message: 'Blog post liked successfully', likes: blog.likes });
+        res.json({ message: 'Blog post upvoted successfully', likes: blog.likes });
     } catch (e) {
-        res.status(500).json({ error: "Server error while liking the blog." });
+        res.status(500).json({ error: "Server error while upvoting the blog." });
     }
 });
 
@@ -177,14 +177,14 @@ router.post('/:id/dislike', validate, async (req, res) => {
         const userId = req.session.user_id;
         const userIndex = blog.likedBy.indexOf(userId);
         if (userIndex === -1) {
-            return res.status(400).json({ error: "You have not liked this blog post." });
+            return res.status(400).json({ error: "You have not upvoted this blog post." });
         }
         blog.likes -= 1;
         blog.likedBy.splice(userIndex, 1);
         await blog.save();
-        res.json({ message: 'Blog post unliked successfully', likes: blog.likes });
+        res.json({ message: 'Blog post downvoted successfully', likes: blog.likes });
     } catch (e) {
-        res.status(500).json({ error: "Server error while unliking the blog." });
+        res.status(500).json({ error: "Server error while downvoting the blog." });
     }
 });
 

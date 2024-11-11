@@ -14,7 +14,6 @@ const BlogState = (props) => {
         });
         if (response.ok) {
             const json = await response.json();
-            console.log(json);
             setBlogs(json);
         } else {
             console.error('Error fetching data:', response.statusText);

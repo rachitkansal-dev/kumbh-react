@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useContext,useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import UserContext from '../context/UserContext';
 export default function BlogReview() {
+  const { postId } = useParams(); 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState('');
+  const { user } = useContext(UserContext);
 
   const carouselItems = [
     {
@@ -40,11 +43,31 @@ export default function BlogReview() {
     setNewReview(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (newReview.trim()) {
-      setReviews([...reviews, newReview]);
-      setNewReview('');
+      try {
+        const response = await fetch(`http://localhost:8080/blog/${postId}/comment`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ comment: newReview ,
+          }),
+          
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          setReviews([...reviews, result.comment.body]); 
+          setNewReview('');
+        } else {
+          console.error("Failed to post comment");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
   };
 

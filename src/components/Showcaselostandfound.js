@@ -18,23 +18,23 @@ export default function Showcaselostandfound() {
                 <Link to="/finder?type=&location=railway" className="region-item btn-primary1">
                   <i className="fa-solid fa-train fa-icon"></i> Railway station
                 </Link>
-                <Link to="/finder/location/Triveni Sangam" className="region-item btn-primary1">
+                <Link to="/finder?type=&location=sangam" className="region-item btn-primary1">
                   <i className="fa-solid fa-bridge-water fa-icon"></i> Triveni Sangam
                 </Link>
               </div>
               <div className="row-wize">
-                <Link to="/finder/location/Company Museum" className="region-item btn-primary1">
+                <Link to="/finder?type=&location=company" className="region-item btn-primary1">
                   <i className="fa-solid fa-building-columns fa-icon"></i> Company Museum
                 </Link>
-                <Link to="/finder/location/Airport" className="region-item btn-primary1">
+                <Link to="/finder?type=&location=airport" className="region-item btn-primary1">
                 <i className="fa-solid fa-plane-up fa-icon"></i> Airport
                 </Link>
               </div>
               <div className="row-wize">
-                <Link to="/finder/location/Civil Lines" className="region-item btn-primary1">
+                <Link to="/finder?type=&location=civil" className="region-item btn-primary1">
                   <i className="fa-solid fa-city fa-icon"></i> Civil Lines
                 </Link>
-                <Link to="/finder/location/Other" className="region-item btn-primary1">
+                <Link to="/finder?type=&location=other" className="region-item btn-primary1">
                 <i className="fas fa-map-marker-alt fa-icon"></i> Other
                 </Link>
               </div>
@@ -67,13 +67,13 @@ export default function Showcaselostandfound() {
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Jewelry&location=" className="category-item">
                       <i className="fas fa-gem"></i>
                       <p>Jewelry (13)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Watches&location=" className="category-item">
                       <i className="fas fa-stopwatch"></i>
                       <p>Watches (2)</p>
                     </Link>
@@ -81,25 +81,25 @@ export default function Showcaselostandfound() {
                 </tr>
                 <tr>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=People&location=" className="category-item">
                       <i className="fas fa-user"></i>
                       <p>People (191)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Documents&location=" className="category-item">
                       <i className="fas fa-file-alt"></i>
                       <p>Documents (213)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Keys&location=" className="category-item">
                       <i className="fas fa-key"></i>
                       <p>Keys (24)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Toys&location=" className="category-item">
                       <i className="fas fa-horse"></i>
                       <p>Toys (3)</p>
                     </Link>
@@ -107,25 +107,25 @@ export default function Showcaselostandfound() {
                 </tr>
                 <tr>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Laptop&location=" className="category-item">
                       <i className="fas fa-laptop"></i>
                       <p>Laptop (1)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Fashion&location=" className="category-item">
                       <i className="fas fa-glasses"></i>
                       <p>Fashion Accessories (1)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Clothes&location=" className="category-item">
                       <i className="fas fa-tshirt"></i>
                       <p>Clothes & Shoes (1)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Pets&location=" className="category-item">
                       <i className="fas fa-dog"></i>
                       <p>Pets (335)</p>
                     </Link>
@@ -133,25 +133,25 @@ export default function Showcaselostandfound() {
                 </tr>
                 <tr>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Sports&location=" className="category-item">
                       <i className="fas fa-football-ball"></i>
                       <p>Sports Equipment (1)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Automobile&location=" className="category-item">
                       <i className="fas fa-car"></i>
                       <p>Automobile (16)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder?type=Other&location=" className="category-item">
                       <i className="fas fa-folder"></i>
                       <p>Other (18)</p>
                     </Link>
                   </td>
                   <td>
-                    <Link to="/" className="category-item">
+                    <Link to="/finder" className="category-item">
                       <i className="fas fa-ellipsis-h"></i>
                       <p>View More</p>
                     </Link>

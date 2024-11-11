@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
@@ -19,6 +19,7 @@ function UserBlog() {
     const { user } = useContext(UserContext);
     const [isSubmitDisabled, setSubmitDisabled] = useState(true);
     const [filteredBlogs, setFilteredBlogs] = useState(blogs);
+    const [loading, setLoading] = useState(true);
 
     const openForm = () => {
         if(!user) {
@@ -26,7 +27,7 @@ function UserBlog() {
             navigate('/login');
         }
         setIsFormOpen(true);
-    }
+    };
 
     const closeForm = () => setIsFormOpen(false);
 
@@ -34,19 +35,27 @@ function UserBlog() {
         return text.length > length ? text.slice(0, length) + '...' : text;
     };
 
+    const fetchBlogs = useCallback(async () => {
+        await getBlogs();
+        setLoading(false);
+    }, [getBlogs]);
+
     useEffect(() => {
-        getBlogs(); // Fetch the blogs when the component mounts
-    }, []);
+        fetchBlogs();
+    }, [fetchBlogs]);
+
+    useEffect(() => {
+        setFilteredBlogs(blogs);
+    }, [blogs]);
 
     const handleFormChange = (e) => {
-        const { name, value, files } = e.target || {}; // Destructure `e.target` safely for the cases where e is undefined
+        const { name, value, files } = e.target || {};
         if (files) {
             setFormData((prevData) => ({
                 ...prevData,
                 [name]: files[0]
             }));
         } else if (name === 'description') {
-            // Description handling moved to a separate function
             updateDescription(value);
         } else {
             setFormData((prevData) => ({
@@ -65,25 +74,22 @@ function UserBlog() {
         }));
     };
 
-    const onClick = ()=>{
+    const onClick = () => {
         if (isSubmitDisabled) {
             alert("Blog length must be at least 800 words.");
             return;
         }
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(!isSubmitDisabled) {
             try {
                 const { title, place, description, photo } = formData;
-                const userName = user?.name || "Author Name"; // Replace with actual user name from context
-        
-                console.log("Submitting blog:", { title, place, description, photo, userName });
+                const userName = user?.name || "Author Name";
                 
-                await createBlogs(title, place, description, photo, userName); // Pass parameters correctly
-        
-                // Clear the form and close it
+                await createBlogs(title, place, description, photo, userName);
+
                 setFormData({ title: '', place: '', photo: null, description: '' });
                 closeForm();
             } catch (error) {
@@ -99,12 +105,26 @@ function UserBlog() {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        // Filter blogs based on search term
-        const filteredBlogs = blogs.filter(blog =>
+        const filtered = blogs.filter(blog =>
             blog.place.toLowerCase().includes(searchTerm.toLowerCase())
         );
-        setFilteredBlogs(filteredBlogs); // Update the state with filtered blogs
+        setFilteredBlogs(filtered);
     };
+
+    useEffect(() => {
+        if (searchTerm === "") {
+            setFilteredBlogs(blogs);
+        } else {
+            const filtered = blogs.filter(blog =>
+                blog.place.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredBlogs(filtered);
+        }
+    }, [searchTerm, blogs]);
+
+    if (loading) {
+        return <div>Loading blogs...</div>;
+    }
 
     return (
         <div>
@@ -163,7 +183,7 @@ function UserBlog() {
                             theme="snow"
                             placeholder="Enter your blog here in a minimum of 800 words..."
                             value={formData.description}
-                            onChange={updateDescription} // Pass the text to updateDescription directly
+                            onChange={updateDescription}
                             required
                         />
                         <button
@@ -189,7 +209,7 @@ function UserBlog() {
                                     <img src={blog.image} alt="pic" />
                                 </div>
                                 <div className="text-box">
-                                    <div className="number-background">0{index + 1}</div>
+                                    <div className="number-background">{Math.log10(index+1)<1?("0"+(index + 1)):(index+1)}</div>
                                     <div className="shift">
                                         <div className="line-text line-blog">
                                             <span className="line"></span>
