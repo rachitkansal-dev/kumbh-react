@@ -7,8 +7,12 @@ export default function BlogReview() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedReview, setSelectedReview] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Loading state
   const { user } = useContext(UserContext);
 
+  // Fetch reviews on component load
   const fetchReviews = async () => {
     try {
       const response = await fetch(`http://localhost:8080/blog/${id}`, {
@@ -22,18 +26,21 @@ export default function BlogReview() {
       }
     } catch (error) {
       console.error('Error fetching reviews:', error);
+    } finally {
+      setIsLoading(false);  // Set loading state to false after the fetch is done
     }
   };
 
   useEffect(() => {
-    fetchReviews(); 
+    fetchReviews();
   }, [id]);
 
   useEffect(() => {
-    const interval = setInterval(moveNext, 5000); 
-    return () => clearInterval(interval);
+    const interval = setInterval(moveNext, 5000);
+    return () => clearInterval(interval); // Clean up on unmount
   }, [currentIndex]);
 
+  // Carousel logic for moving to the next item
   const moveNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
   };
@@ -42,10 +49,28 @@ export default function BlogReview() {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length);
   };
 
+  // Handle review input change
   const handleReviewChange = (e) => {
     setNewReview(e.target.value);
   };
 
+  // Truncate text for display
+  const truncateText = (text, length = 100) => {
+    return text.length > length ? text.slice(0, length) + '...' : text;
+  };
+
+  // Modal open and close handlers
+  const openModal = (comment) => {
+    setSelectedReview(comment);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedReview(null);
+  };
+
+  // Submit a new review
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newReview.trim()) {
@@ -64,7 +89,6 @@ export default function BlogReview() {
           setReviews([...reviews, result.comment]); // Add the new comment to the list
           setNewReview('');
           alert('Comment submitted successfully');
-          fetchReviews(); 
         } else {
           alert('Failed to post comment');
         }
@@ -76,54 +100,76 @@ export default function BlogReview() {
 
   return (
     <div>
-      <section className="review">
-        <div className="carousel-container">
-          <h2 className="carousel-title">What Others Think</h2>
-          <div className="carousel" id="testimonialCarousel">
-            {reviews.map((review, index) => (
-              <div
-                key={index}
-                className={`carousel-item ${currentIndex === index ? 'active' : ''} ${
-                  currentIndex === (index - 1 + reviews.length) % reviews.length ? 'left' : ''
-                } ${
-                  currentIndex === (index + 1) % reviews.length ? 'right' : ''
-                }`}
-              >
-                <div className="testimonial">
-                  <i className="quote-icon fas fa-quote-left"></i>
-                  <p>{review.body}</p>
-                  {review.username && <h4>{review.username}</h4>}
+      {isLoading ? (
+        <p>Loading...</p> // Display loading message until reviews are fetched
+      ) : (
+        <>
+          <section className="review">
+            <div className="carousel-container">
+              <h2 className="carousel-title">What Others Think</h2>
+              {reviews.length === 0 ? (
+                <p>No reviews yet. Be the first to share your experience!</p>
+              ) : (
+                <div className="carousel" id="testimonialCarousel">
+                  {reviews.map((review, index) => (
+                    <div
+                      key={index}
+                      className={`carousel-item ${currentIndex === index ? 'active' : ''} ${
+                        currentIndex === (index - 1 + reviews.length) % reviews.length ? 'left' : ''
+                      } ${currentIndex === (index + 1) % reviews.length ? 'right' : ''}`}
+                      onClick={() => openModal(review)}
+                    >
+                      <div className="testimonial">
+                        <i className="quote-icon fas fa-quote-left"></i>
+                        <p>{truncateText(review.body)}</p>
+                        {review.username && <h4>{review.username}</h4>}
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              )}
+              <button className="prev" onClick={movePrev} aria-label="Previous Review">
+                &#10094;
+              </button>
+              <button className="next" onClick={moveNext} aria-label="Next Review">
+                &#10095;
+              </button>
+            </div>
+          </section>
+          <section className="write-review container">
+            <h2 className="carousel-title">Rate Your Experience</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="review-textarea">
+                <label htmlFor="reviewInput" className="sr-only">Share your review</label>
+                <textarea
+                  className="input-area"
+                  id="reviewInput"
+                  name="review"
+                  placeholder="Share your reviews"
+                  rows="5"
+                  value={newReview}
+                  onChange={handleReviewChange}
+                  required
+                ></textarea>
+                <button type="submit" className="btn-primary lost-btn toCenter">Submit Review</button>
               </div>
-            ))}
-          </div>
-          <button className="prev" onClick={movePrev} aria-label="Previous Review">
-            &#10094;
-          </button>
-          <button className="next" onClick={moveNext} aria-label="Next Review">
-            &#10095;
-          </button>
-        </div>
-      </section>
-      <section className="write-review container">
-        <h2 className="carousel-title">Rate Your Experience</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="review-textarea">
-            <label htmlFor="reviewInput" className="sr-only">Share your review</label>
-            <textarea
-              className="input-area"
-              id="reviewInput"
-              name="review"
-              placeholder="Share your reviews"
-              rows="5"
-              value={newReview}
-              onChange={handleReviewChange}
-              required
-            ></textarea>
-            <button type="submit" className="btn-primary lost-btn toCenter">Submit Review</button>
-          </div>
-        </form>
-      </section>
+            </form>
+          </section>
+          {isModalOpen && selectedReview && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <div className="modal-heading-div">
+                  <h3 className="review-modal-heading">By {selectedReview?.username}</h3>
+                  <button className="modal-close-button" onClick={closeModal}>
+                    &times;
+                  </button>
+                </div>
+                <p className="modal-text">{selectedReview?.body}</p>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
