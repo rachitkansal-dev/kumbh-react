@@ -1,42 +1,45 @@
-import React, { useContext,useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+
 export default function BlogReview() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState('');
   const { user } = useContext(UserContext);
 
-  const carouselItems = [
-    {
-      quote: "Good try! This page is helping people to handle the lost and found things easily.",
-      name: "Nehul Neha",
-      location: "Mumbai",
-    },
-    {
-      quote: "Thank you for helping me to get my mobile back. Such a great help!",
-      name: "Krishnan Kutti",
-      location: "Trivandrum",
-    },
-    {
-      quote: "I am really grateful to have found my lost items through this service.",
-      name: "Sruthi Garu",
-      location: "Hyderabad",
-    },
-  ];
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/blog/${id}`, {
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setReviews(data.comments); // Assuming `data.comments` contains an array of review objects
+      } else {
+        console.error('Failed to fetch reviews');
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
 
   useEffect(() => {
-    const interval = setInterval(moveNext, 5000); // Change to the next item every 5 seconds
+    fetchReviews(); 
+  }, [id]);
+
+  useEffect(() => {
+    const interval = setInterval(moveNext, 5000); 
     return () => clearInterval(interval);
   }, [currentIndex]);
 
   const moveNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
   };
 
   const movePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + carouselItems.length) % carouselItems.length);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length);
   };
 
   const handleReviewChange = (e) => {
@@ -44,7 +47,6 @@ export default function BlogReview() {
   };
 
   const handleSubmit = async (e) => {
-    console.log(id);
     e.preventDefault();
     if (newReview.trim()) {
       try {
@@ -54,20 +56,20 @@ export default function BlogReview() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ comment: newReview ,
-          }),
-          
+          body: JSON.stringify({ comment: newReview }),
         });
 
         if (response.ok) {
           const result = await response.json();
-          setReviews([...reviews, result.comment.body]); 
+          setReviews([...reviews, result.comment]); // Add the new comment to the list
           setNewReview('');
+          alert('Comment submitted successfully');
+          fetchReviews(); 
         } else {
-          console.error("Failed to post comment");
+          alert('Failed to post comment');
         }
       } catch (error) {
-        console.error("Error:", error);
+        alert('Error:', error);
       }
     }
   };
@@ -78,20 +80,19 @@ export default function BlogReview() {
         <div className="carousel-container">
           <h2 className="carousel-title">What Others Think</h2>
           <div className="carousel" id="testimonialCarousel">
-            {carouselItems.concat(reviews.map(review => ({ quote: review }))).map((item, index) => (
+            {reviews.map((review, index) => (
               <div
                 key={index}
                 className={`carousel-item ${currentIndex === index ? 'active' : ''} ${
-                  currentIndex === (index - 1 + carouselItems.length) % carouselItems.length ? 'left' : ''
+                  currentIndex === (index - 1 + reviews.length) % reviews.length ? 'left' : ''
                 } ${
-                  currentIndex === (index + 1) % carouselItems.length ? 'right' : ''
+                  currentIndex === (index + 1) % reviews.length ? 'right' : ''
                 }`}
               >
                 <div className="testimonial">
                   <i className="quote-icon fas fa-quote-left"></i>
-                  <p>{item.quote}</p>
-                  {item.name && <h4>{item.name}</h4>}
-                  {item.location && <h5>{item.location}</h5>}
+                  <p>{review.body}</p>
+                  {review.username && <h4>{review.username}</h4>}
                 </div>
               </div>
             ))}
