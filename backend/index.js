@@ -10,6 +10,9 @@ const crypto = require('crypto');
 const multer = require('multer');
 const { promisify } = require("util");
 const cors = require('cors');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const {checkCloudinaryConnection} = require('./middleware')
 require('dotenv').config();
 
 const User = require('./models/user');
@@ -36,6 +39,14 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
+})
+
+checkCloudinaryConnection();
+
 // Secure session setup
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -55,7 +66,7 @@ app.use('/blog', blogRouter);
 app.use('/lf', lfRouter);
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.status(500).json({ error: "Api not available" });
 });
 
 app.listen(PORT, () => {

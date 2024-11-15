@@ -36,7 +36,7 @@ router.post('/items', upload.single('photo'), async (req, res) => {
             location: req.body.location,
             date: req.body.date,
             contact: req.body.contact,
-            photo: req.file ? `/uploads/${req.file.filename}` : null
+            photo: req.file ? req.file.path : `/default.png`
         });
         await newItem.save();
         res.status(201).json(newItem);

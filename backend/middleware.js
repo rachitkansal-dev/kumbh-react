@@ -1,6 +1,8 @@
 const path = require('path');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 require('dotenv').config();
 
 // Middleware to check if the user is logged in
@@ -19,9 +21,9 @@ function validate(req, res, next) {
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: `${process.env.TRANSPORTER_EMAIL}`,
-        pass: `${process.env.TRANSPORTER_KEY}`
-    }
+        user: process.env.TRANSPORTER_EMAIL,
+        pass: process.env.TRANSPORTER_KEY,
+    },
 });
 
 transporter.verify((error, success) => {
@@ -32,20 +34,19 @@ transporter.verify((error, success) => {
     }
 });
 
-// Set up storage engine for multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/uploads'); 
+// Set up Cloudinary Storage for Multer
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'uploads',
+        allowed_formats: ['png', 'jpeg', 'gif'], 
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
 });
 
-// Initialize multer with the storage settings
+// Initialize multer with Cloudinary storage
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 10000000 },
+    limits: { fileSize: 10000000 }, // 10MB limit
     fileFilter: (req, file, cb) => {
         const filetypes = /jpeg|jpg|png|gif/;
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -54,9 +55,20 @@ const upload = multer({
         if (extname && mimetype) {
             return cb(null, true);
         } else {
-            cb('Error: Images Only!');
+            cb(new Error('Error: Images Only!')); 
         }
-    }
+    },
 });
 
-module.exports = { validate,upload,transporter };
+function checkCloudinaryConnection() {
+    cloudinary.api.ping((error, result) => {
+        if (error) {
+            console.error('Cloudinary connection failed:', error.message);
+        } else {
+            console.log('Cloudinary connected successfully:');
+        }
+    });
+}
+
+// Export middleware
+module.exports = { validate, upload, transporter, checkCloudinaryConnection };
