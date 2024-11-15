@@ -4,8 +4,10 @@ import UserContext from '../context/UserContext';
 
 export default function EditProfile() {
   const [password, setPassword] = useState('');
+  const [cpassword, setcPassword] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [showPassword, setShowPassword] = useState(false); 
   const [address, setAddress] = useState('');
   const { user,setUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -13,6 +15,11 @@ export default function EditProfile() {
   useEffect(() => {
     if (!user) {
       navigate('/login'); // Redirect to login if no user is found
+    } else {
+      // Prefill the input fields with user's current data
+      setName(user.name || '');
+      setPhoneNumber(user.phoneNumber || '');
+      setAddress(user.address || '');
     }
   }, [user, navigate]);
 
@@ -24,6 +31,10 @@ export default function EditProfile() {
     }
     if (name.length < 3) {
       alert("Name too short");
+      return;
+    }
+    if(password!=cpassword) {
+      alert('Passwords do not match !');
       return;
     }
     try {
@@ -92,13 +103,30 @@ export default function EditProfile() {
                 required
               />
               <label htmlFor="password">Password</label>
+              <div className="password-container">
               <input
                 className="input-area"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <i
+                  className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-hidden="true"
+                ></i>
+                </div>
+              <label htmlFor="password">Confirm Password</label>
+              <input
+                className="input-area"
+                type="password"
+                id="cpassword"
+                name="cpassword"
+                value={cpassword}
+                onChange={(e) => setcPassword(e.target.value)}
                 required
               />
             </div>

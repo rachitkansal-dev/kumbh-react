@@ -1,4 +1,3 @@
-// src/Login.js
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
@@ -6,7 +5,8 @@ import UserContext from '../context/UserContext';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); 
+   const navigate = useNavigate();
   const { user, loginUser } = useContext(UserContext); // Access user from context
 
   useEffect(() => {
@@ -23,9 +23,9 @@ export default function Login() {
         method: 'POST',
         credentials: 'include',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -62,17 +62,26 @@ export default function Login() {
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input
-                className="input-area"
-                type="password"
-                id="password"
-                name="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="password-container">
+                <input
+                  className="input-area"
+                  type={showPassword ? 'text' : 'password'} 
+                  id="password"
+                  name="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <i
+                  className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-hidden="true"
+                ></i>
+              </div>
             </div>
-            <p><Link to="/forget-password">Forget password?</Link></p>
+            <p>
+              <Link to="/forget-password">Forget password?</Link>
+            </p>
             <button type="submit" className="login-btn">Login</button>
             <p className="text-smaller">
               Don't have an account? <Link to="/signup">Create new</Link>

@@ -6,8 +6,10 @@ export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [cpassword, setcPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(''); 
   const [address, setAddress] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { loginUser } = useContext(UserContext);
   const navigate = useNavigate();
   function isValidPhoneNumber(phoneNumber) {
@@ -39,6 +41,10 @@ export default function SignUp() {
       alert("Invalid Phone Number");
       return;
     }
+    if(password!=cpassword) {
+      alert("Passwords do not match");
+      return;
+    } 
 
     try {
       const response = await fetch('http://localhost:8080/signup', {
@@ -94,18 +100,7 @@ export default function SignUp() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                className="input-area"
-                type="password"
-                id="password"
-                name="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            
             <div className="form-group">
               <label htmlFor="phoneNumber">Phone Number</label>
               <input
@@ -127,6 +122,37 @@ export default function SignUp() {
                 required
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <div className="password-container">
+              <input
+                className="input-area"
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <i
+                  className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-hidden="true"
+                ></i>
+                </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Confirm Password</label>
+              <input
+                className="input-area"
+                type="password"
+                id="cpassword"
+                name="cpassword"
+                required
+                value={cpassword}
+                onChange={(e) => setcPassword(e.target.value)}
               />
             </div>
             <button type="submit" className="login-btn">Sign Up</button>
