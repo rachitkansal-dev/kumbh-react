@@ -20,6 +20,24 @@ const BlogState = (props) => {
         }
     };
 
+    const contactform = async (name,email,phoneNumber,message) => {
+        const url = "http://localhost:8080/submit-contactus";
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({name,email,phoneNumber,message}), 
+        });
+    
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message);
+        } else {
+            console.error('Error sending data:', response.statusText);
+        }
+    };
+
 
     const createBlogs = async (title, place, body, image, author) => {
         const url = "http://localhost:8080/blog/create"; // Make sure this matches your backend
@@ -59,7 +77,7 @@ const BlogState = (props) => {
       };
     
     return (
-        <BlogContext.Provider value={{blogs,getBlogs,createBlogs,getBlogById}}>
+        <BlogContext.Provider value={{blogs,getBlogs,createBlogs,getBlogById,contactform}}>
             {props.children}
         </BlogContext.Provider>
     );
