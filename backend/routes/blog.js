@@ -15,13 +15,13 @@ router.get('/', async (req, res) => {
         } else {
             posts = await Blog.find({}).sort({ likes: -1 })
         }
-        res.json(posts); // Send data in JSON format for React to process
+        res.json(posts);
     } catch (error) {
         res.status(500).json({ error: "Server error while fetching blog posts." });
     }
 });
 
-// View single blog post with commentsdb.collectionName.find().sort({ likes: -1 })
+// View single blog post
 router.get('/:id', async (req, res) => {
     try {
         const post = await Blog.findById(req.params.id).populate('comments');
@@ -42,8 +42,8 @@ router.post('/create', validate, upload.single('image'), async (req, res) => {
             title: data.title,
             place: data.place,
             body: data.body,
-            image: req.file ? `/uploads/${req.file.filename}` : `/uploads/default.png`,
-            author: data.author, // Ensure you're using 'author' here
+            image: req.file ? `/uploads/${req.file.filename}` : `/default.png`,
+            author: data.author, 
         });
         await post.save();
 

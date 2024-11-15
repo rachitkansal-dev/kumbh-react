@@ -15,7 +15,6 @@ function validate(req, res, next) {
     next();
 }
 
-
 // Set up email transporter for nodemailer
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -46,7 +45,7 @@ const storage = multer.diskStorage({
 // Initialize multer with the storage settings
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 10000000 }, //10mb 
+    limits: { fileSize: 10000000 },
     fileFilter: (req, file, cb) => {
         const filetypes = /jpeg|jpg|png|gif/;
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());

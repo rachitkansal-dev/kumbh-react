@@ -8,56 +8,6 @@ require('dotenv').config();
 const User = require('../models/user');
 const { Item, Item2 } = require('../models/item');
 
-router.post('/claim-item', async (req, res) => {
-    try {
-        const newClaimedItem = new Item2({
-            id: req.body.id,                  // Ensure this matches your request body
-            description: req.body.description, // Ensure this matches your request body
-            phone: req.body.phone              // Ensure this matches your request body
-        });
-
-        await newClaimedItem.save();
-        res.status(201).json(newClaimedItem);
-    } catch (error) {
-        console.error('Error saving claimed item:', error);
-        res.status(500).json({ message: 'Server Error', error: error.message });
-    }
-});
-
-
-
-router.get('/profile', validate, (req, res) => {
-    if (!req.session.isLogin) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-    res.json({
-        user_id: req.session.user_id,
-        name: req.session.name,
-        email: req.session.email,
-        phoneNumber: req.session.phoneNumber,
-        address: req.session.address,
-    });
-});
-
-router.get('/profile/:id', validate, async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        res.json({
-            user_id: req.params.id,
-            name: user.name,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            address: user.address,
-        });
-    } catch (e) {
-        console.log("Error in getting profile:", e);
-        res.status(500).json({ message: 'Error in getting profile.' });
-    }
-});
-
 router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
@@ -95,6 +45,38 @@ router.post('/signup', async (req, res) => {
     } catch (e) {
         console.log('Error in signup:', e);
         res.status(500).json({ message: 'Error signing up.' });
+    }
+});
+
+router.get('/profile', validate, (req, res) => {
+    if (!req.session.isLogin) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    res.json({
+        user_id: req.session.user_id,
+        name: req.session.name,
+        email: req.session.email,
+        phoneNumber: req.session.phoneNumber,
+        address: req.session.address,
+    });
+});
+
+router.get('/profile/:id', validate, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({
+            user_id: req.params.id,
+            name: user.name,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
+        });
+    } catch (e) {
+        console.log("Error in getting profile:", e);
+        res.status(500).json({ message: 'Error in getting profile.' });
     }
 });
 
