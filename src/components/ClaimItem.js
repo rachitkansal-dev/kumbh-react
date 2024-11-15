@@ -85,7 +85,7 @@ function ClaimItem() {
                     </a>
 
                     <form id="claim-form" onSubmit={handleSubmit}>
-                        <input
+                        <textarea
                             type="text"
                             name="description"
                             placeholder={"Give a description of the item you " + (item.landf === "lost" ? "Found" : "Claim")}

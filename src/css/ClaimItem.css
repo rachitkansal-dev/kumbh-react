@@ -154,6 +154,19 @@
     background-color: #0b1d26;
     color: #fff;
 }
+#claim-form textarea[type="text"] {
+    width: 100%;
+    max-width: 350px;
+    min-width: 350px;
+    max-height: 200px;
+    min-height: 150px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #0b1d26;
+    color: #fff;
+}
 
 #claim-form button {
     width: 100%;
