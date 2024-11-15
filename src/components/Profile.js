@@ -21,7 +21,7 @@ function Profile() {
 
             // Clear user state after successful logout
 
-            navigate('/signup'); // Redirect to signup or login page after successful logout
+            navigate('/login'); // Redirect to signup or login page after successful logout
         } catch (error) {
             console.error('Logout error:', error);
         }

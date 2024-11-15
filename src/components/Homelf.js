@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import LfContext from '../context/LfContext';
+import UserContext from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import image1 from '../images/image1.jpeg';
 import image4 from '../images/image4.jpeg';
@@ -48,6 +49,7 @@ export default function Showcaselostandfound() {
     setBgIndex((prevIndex) => (prevIndex - 1 + backgrounds.length) % backgrounds.length);
   };
   const { addItems } = useContext(LfContext);
+  const { user } = useContext(UserContext);
   const initialItemState = {
     landf: "",
     type: "",
@@ -85,6 +87,10 @@ export default function Showcaselostandfound() {
   };
 
   const openForm = () => {
+    if(!user) {
+      alert('login to report a lost or found item');
+      navigate('/login');
+    }
     setIsActive(true);
   };
 

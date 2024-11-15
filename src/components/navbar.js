@@ -56,7 +56,7 @@ export default function Navbar() {
         {user ? (
           <Link to="/profile">{user.name}</Link>
         ) : (
-          <Link to="/signup">Sign-up</Link>
+          <Link to="/login">Log In</Link>
         )}
       </div>
     </nav>
