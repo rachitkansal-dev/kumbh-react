@@ -42,9 +42,10 @@ router.post('/create', validate, upload.single('image'), async (req, res) => {
             title: data.title,
             place: data.place,
             body: data.body,
-            image: req.file ? `/uploads/${req.file.filename}` : `/default.png`,
+            image: req.file ? req.file.path : `/default.png`,
             author: data.author, 
         });
+        
         await post.save();
 
         const user = await User.findById(req.session.user_id);
@@ -74,7 +75,7 @@ router.post('/edit/:id', upload.single('image'), async (req, res) => {
         post.title = updatedData.title || post.title;
         post.body = updatedData.body || post.body;
         if (req.file) {
-            post.image = `/uploads/${req.file.filename}`;
+            post.image = req.file.path;
         }
         await post.save();
         res.json({ message: 'Blog post updated successfully', post });
