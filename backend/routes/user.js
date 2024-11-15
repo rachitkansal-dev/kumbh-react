@@ -7,6 +7,8 @@ const { promisify } = require("util");
 require('dotenv').config();
 const User = require('../models/user');
 const { Item, Item2 } = require('../models/item');
+const ContactUs = require('../models/contactus'); 
+
 
 router.post('/login', async (req, res) => {
     try {
@@ -177,5 +179,38 @@ router.post('/reset-password/:token', async (req, res) => {
         res.status(500).json({ message: 'An error occurred while resetting the password' });
     }
 });
+
+
+router.post('/submit-contactus', async (req, res) => {
+    try {
+      const { name, email, phoneNumber, message } = req.body;
+  
+      if (!name || !email || !phoneNumber || !message) {
+        return res.status(400).send('All fields are required');
+      }
+  
+      
+      const newContact = new ContactUs({ name, email, phoneNumber, message });
+      await newContact.save();
+  
+      console.log( newContact);
+      res.status(200).send('Form submitted successfully');
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      res.status(500).send('Error saving form submission');
+    }
+  });
+
+
+router.get('/contactus',async(req,res)=>{
+    try{
+        const items = await ContactUs.find();
+        res.json(items);
+    }
+    catch(error){
+        console.log(error);
+    }
+})
+
 
 module.exports = router;
