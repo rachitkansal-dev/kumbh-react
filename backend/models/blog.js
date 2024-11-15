@@ -73,8 +73,11 @@ const blogSchema = new mongoose.Schema({
     ],
     author: {
         type: String,
-        ref: 'User',
         required: true
+    },
+    author_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', 
     },
     image: {
         type: String,
@@ -94,4 +97,3 @@ blogSchema.post('findByIdAndDelete', async function (doc) {
 
 const Blog = mongoose.model('Blog', blogSchema);
 module.exports = {Comment, Blog,Commentlf};
-

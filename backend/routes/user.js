@@ -205,12 +205,34 @@ router.post('/submit-contactus', async (req, res) => {
 router.get('/contactus',async(req,res)=>{
     try{
         const items = await ContactUs.find();
-        res.json(items);
+        res.status(200).json(items);
     }
     catch(error){
         console.log(error);
+        res.status(500).json({ message: 'An error occurred with contact us' });
     }
 })
 
+router.get('/profile/:id/blogs',async(req,res) => {
+    try{
+        const user = await User.findById(req.params.id).populate('blogs');
+        res.status(200).json(user.blogs);
+    }
+    catch(e){
+        console.log(e);
+        res.status(500).json({ message: 'An error occurred with contact us' });
+    }
+})
+
+router.get('/profile/:id/comments',async(req,res) => {
+    try{
+        const user = await User.findById(req.params.id).populate('comments');
+        res.status(200).json(user.comments);
+    }
+    catch(e){
+        console.log(e);
+        res.status(500).json({ message: 'An error occurred with contact us' });
+    }
+})
 
 module.exports = router;

@@ -44,6 +44,7 @@ router.post('/create', validate, upload.single('image'), async (req, res) => {
             body: data.body,
             image: req.file ? req.file.path : `/default.png`,
             author: data.author, 
+            author_id: req.session.user_id,
         });
         
         await post.save();
@@ -88,7 +89,7 @@ router.post('/edit/:id', upload.single('image'), async (req, res) => {
 router.delete('/:id', validate, async (req, res) => {
     try {
         const post = await Blog.findById(req.params.id);
-        const user = await User.findById(req.session.user_id);
+        const user = await User.findById(post.author_id);
         if (!post) {
             return res.status(404).json({ error: "Blog post not found." });
         }
