@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { validate, upload } = require('../middleware');
+const { validate, upload, validateAdmin } = require('../middleware');
 require('dotenv').config();
 const { Item, Item2 } = require('../models/item');
 const {Commentlf} = require('../models/blog');
@@ -114,10 +114,11 @@ router.get('/search', async (req, res) => {
 
 
 
-// Claim an item
+
 router.post('/claim-item', async (req, res) => {
     try {
         const newClaimedItem = new Item2({
+            email: req.body.email,
             id: req.body.id,                  // Ensure this matches your request body
             description: req.body.description, // Ensure this matches your request body
             phone: req.body.phone              // Ensure this matches your request body
@@ -131,7 +132,7 @@ router.post('/claim-item', async (req, res) => {
     }
 });
 
-// Get all claimed items
+
 router.get('/claim-item', async (req, res) => {
     try {
         const items = await Item2.find();
@@ -141,6 +142,68 @@ router.get('/claim-item', async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 });
+
+
+
+router.get('/lostitems', validate , async (req, res) => {
+    try {
+        const usermail = req.session.email ;
+        
+        const items = await Item.find({ email: usermail, landf :"lost" }); 
+        
+        res.json(items); 
+    } catch (error) {
+        console.error('Error retrieving items:', error);
+        res.status(500).json({ message: 'Server Error' }); 
+    }
+});
+
+
+router.get('/userclaims',validate , async(req,res)=>{
+    try{
+        const usermail = req.session.email ;
+
+        const items = await Item2.find({ email: usermail }); 
+        res.json(items); 
+    }
+    catch(error){
+        console.error('Error fetching claims of user ', error);
+        res.status(500).json({ message: 'Server Error', error: error.message });
+
+    }
+})
+
+
+// isme tu mereko json mein _id bhej item ka ye us se uske sare claim aur item delete ho jayega
+router.delete('/deleteitem', validateAdmin, async (req, res) => {
+    try {
+        const itemId = req.body;
+        const deletedItem = await Item.findByIdAndDelete(itemId);
+        if (!deletedItem) {
+            return res.status(404).json({ message: 'Item not found' });
+        }
+        await Item2.deleteMany({ id: itemId });
+        res.status(200).json({ message: 'Item and associated claims deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting item and claims:', error);
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
+
+
+router.get('/founditems', async (req, res) => {
+    try {
+        const usermail = req.session.email ;
+        
+        const items = await Item.find({ email: usermail, landf :"found" }); 
+        res.json(items); 
+    } catch (error) {
+        console.error('Error retrieving items:', error);
+        res.status(500).json({ message: 'Server Error' }); 
+    }
+});
+
+
 
 // Get all claim requests with corresponding items
 router.get('/admin-claim-requests', async (req, res) => {
@@ -222,6 +285,8 @@ router.delete('/found-item/:id', async (req, res) => {
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 });
+
+
 
 
 

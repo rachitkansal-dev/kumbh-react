@@ -25,14 +25,17 @@ const LfState = (props) => {
         console.error('Error sending data:', response.statusText);
     }
 };
-  const addClaim = async (id,description,phone) => {
+  const addClaim = async (id,description,phone,email) => {
     const url = "http://localhost:8080/lf/claim-item";
+   
     const response = await fetch(url, {
+      
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id,description,phone }), 
+        body: JSON.stringify({ id,description,phone,email}), 
+       
     });
 
     if (response.ok) {

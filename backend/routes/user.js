@@ -22,6 +22,7 @@ router.post('/login', async (req, res) => {
         req.session.phoneNumber= user.phoneNumber;
         req.session.address= user.address;
         req.session.isLogin = true;
+        req.session.isAdmin = user.isAdmin;
         res.json({ message: 'Login successful', user: { _id:user._id,name: user.name, email: user.email , phoneNumber: user.phoneNumber, address : user.address} });
     } catch (e) {
         console.log('Error in login:', e);
