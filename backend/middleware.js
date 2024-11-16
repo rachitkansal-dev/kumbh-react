@@ -8,11 +8,14 @@ require('dotenv').config();
 // Middleware to check if the user is logged in
 function validate(req, res, next) {
     if (!req.session.isLogin) {
-        if (req.method === 'GET') {
-            return res.redirect('/login');
-        } else {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    next();
+}
+
+function validateAdmin(req, res, next) {
+    if (!req.session.isAdmin) {
+        return res.status(401).json({ message: 'not admin' });
     }
     next();
 }
@@ -71,4 +74,4 @@ function checkCloudinaryConnection() {
 }
 
 // Export middleware
-module.exports = { validate, upload, transporter, checkCloudinaryConnection };
+module.exports = { validate, upload, transporter, checkCloudinaryConnection, validateAdmin };

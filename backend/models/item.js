@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { emit } = require("nodemon");
 
 const itemSchema = new mongoose.Schema({
     landf: String,
@@ -16,6 +17,7 @@ const itemSchema = new mongoose.Schema({
 const Item = mongoose.model('Item', itemSchema);
 
 const itemSchema2 = new mongoose.Schema({
+    email : String,
     id: String,
     description: String,
     phone: String
