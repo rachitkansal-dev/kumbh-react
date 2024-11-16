@@ -1,24 +1,48 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState,useContext } from 'react';
+import { Link ,useParams,useNavigate} from 'react-router-dom';
+import UserContext from '../context/UserContext';
 
 function OtpCheck() {
-    const [otp, setOtp] = useState('');
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add logic to verify OTP here
-        console.log("OTP submitted:", otp);
-    };
+    const { token } = useParams(); 
+    const navigate = useNavigate();
+    const [OTP, setOTP] = useState('');
+    const { user, loginUser } = useContext(UserContext);
+    const verifyOtp = async (e) => {
+        e.preventDefault(); 
+        try {
+          const response = await fetch(`http://localhost:8080/otp-check/${token}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({OTP}),  // Include phoneNumber and address
+          });
+    
+          const data = await response.json();
+          if (response.ok) {
+            alert(data.message);
+            loginUser(data.user);
+            navigate('/');
+          } else {
+            alert(data.message);
+            
+          }
+        } catch (error) {
+          console.error('Error signing up:', error);
+          alert('Signup failed');
+        }
+      };
 
     const handleOtpChange = (e) => {
-        setOtp(e.target.value);
+        setOTP(e.target.value);
     };
 
     return (
         <div>
             <section className="login-center">
                 <div className="login-container">
-                    <form className="login-form" onSubmit={handleSubmit}>
+                    <form className="login-form" onSubmit={verifyOtp}>
                         <h2>Enter Your OTP</h2>
                         <div className="form-group">
                             <label htmlFor="otp">Enter OTP</label>
@@ -28,7 +52,7 @@ function OtpCheck() {
                                 id="otp"
                                 name="otp"
                                 placeholder="Enter OTP"
-                                value={otp}
+                                value={OTP}
                                 onChange={handleOtpChange}
                                 required
                             />

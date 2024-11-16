@@ -211,7 +211,7 @@ function App() {
               }
             />
             <Route
-              path="/otp-check"
+              path="/OtpCheck/:token"
               element={
                 <>
                   <div className="nav-body">

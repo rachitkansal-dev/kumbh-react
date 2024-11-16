@@ -66,7 +66,6 @@ router.post('/otp-check/:token', async (req,res) => {
             OTPToken: req.params.token,
             OTPExpires: { $gt: Date.now() },
         });
-        console.log(otp);
         if(req.body.OTP == otp.OTP){
             const user = new User(JSON.parse(otp.data));
             await user.save();
@@ -76,10 +75,11 @@ router.post('/otp-check/:token', async (req,res) => {
             req.session.phoneNumber= user.phoneNumber;
             req.session.address= user.address;
             req.session.isLogin = true;
+            await OTP.findByIdAndDelete(otp._id);
             res.json({ message: 'Signup successful', user: {_id:user._id, name: user.name, email: user.email , phoneNumber: user.phoneNumber, address : user.address} });
         }
         else{
-            res.json({message: "wrong otp"});
+            res.status(500).json({message: "wrong otp"});
         }
     }
     catch (e) {

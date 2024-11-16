@@ -26,7 +26,9 @@ export default function Navbar() {
 
       {/* Logo */}
       <div className="logo">
-      <Link to="/"> <img src={logo} alt="" /></Link>
+        <Link to="/">
+          <img src={logo} alt="Logo" />
+        </Link>
         <Link to="/">TPW</Link>
       </div>
 
@@ -47,18 +49,24 @@ export default function Navbar() {
         <li className={`${location.pathname === '/prayag' ? 'activeg' : ''}`}>
           <Link to="/prayag">About Prayagraj</Link>
         </li>
-        
       </ul>
 
       {/* Sign-up/Profile Section */}
       <div className="sign-up">
-        <i className="fa-solid fa-user"></i>
+        {user?.isAdmin && (
+          <div>
+            <i className="fa-solid fa-user-tie"></i>
+            <Link to="/admin">{"Admin page  "}</Link>
+          </div>
+        )}
+        <i className="fa-solid fa-user" style={{ marginLeft: '20px' }}></i>
         {user ? (
           <Link to="/profile">{user.name}</Link>
         ) : (
           <Link to="/login">Log In</Link>
         )}
       </div>
+
     </nav>
   );
 }

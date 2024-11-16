@@ -59,8 +59,8 @@ export default function SignUp() {
       const data = await response.json();
       if (response.ok) {
         alert(data.message);
-        loginUser(data.user);
-        navigate('/'); // Redirect to home page after successful signup
+
+        navigate(`/OtpCheck/${data.token}`);
       } else {
         alert(data.message);
       }
