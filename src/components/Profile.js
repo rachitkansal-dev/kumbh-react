@@ -1,86 +1,126 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import avatar from '../images/user-avatar-reloaded.png';
 
 function Profile() {
-    const { user,logoutUser } = useContext(UserContext); // Include setUser to clear user state
-    const navigate = useNavigate(); // Initialize useNavigate
-
+    const { user, logoutUser } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const onClick = async () => {
         logoutUser();
+        navigate('/login');
         try {
             const response = await fetch('http://localhost:8080/logout', {
                 method: 'POST',
-                credentials: 'include', // Include cookies if your session is managed by cookies
+                credentials: 'include',
             });
 
             if (!response.ok) {
                 throw new Error('Logout failed');
             }
-
-            // Clear user state after successful logout
-
-            navigate('/login'); // Redirect to signup or login page after successful logout
         } catch (error) {
             console.error('Logout error:', error);
+            alert('No User Logged In');
         }
+    };
+
+    const editProfile = () => {
+        navigate('/edit-profile');
     };
 
     const handleDelete = async () => {
         const confirmation = window.prompt("Enter 'CONFIRM' to delete your profile:");
-        
+
         if (confirmation === 'CONFIRM') {
             try {
-                const response = await fetch(`http://localhost:8080/profile/${user._id}`, {
+                const response = await fetch(`http://localhost:8080/profile/${user?._id}`, {
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
+
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert(data.message);
+                    alert(data.message || 'Profile deleted successfully.');
                     logoutUser();
                     navigate('/signup');
                 } else {
                     console.error(data.message);
+                    alert(data.message || 'Failed to delete profile.');
                 }
             } catch (e) {
-                console.log('Error in delete:', e);
+                console.error('Error deleting profile:', e);
+                alert('An error occurred while deleting the profile.');
             }
         } else {
             alert("Profile deletion canceled. You must enter 'CONFIRM' to delete.");
         }
     };
 
+    if (!user) {
+        return <div>Loading...</div>; // Render a loading state or a redirect.
+    }
+
     return (
-        <div>
-            <section className="profile-center">
-                <div className="prof-head">
-                    <h2 className="text-yellow">Name : </h2>
-                    <h2>{user ? (<>{user.name}</>) : ""}</h2>
+        <div className='profile-body'>
+            <div className="profile-container">
+                <div className="profile-card">
+                    <div className="profile-side">
+                        <img src={avatar} alt="Profile Avatar" className="profile-picture" />
+                        <h2 className="username">{user.name}</h2>
+                        <button className="btn-profile edit-profile" onClick={editProfile}>
+                            Edit Profile
+                        </button>
+                    </div>
+
+                    <div className="profile-info">
+                        <h3>Information</h3>
+                        <div className="info-row">
+                            <p>
+                                <strong>Email: </strong>
+                                {user.email}
+                            </p>
+                            <p>
+                                <strong>Phone: </strong>
+                                {user.phoneNumber || 'Not provided'}
+                            </p>
+                            <p>
+                                <strong>Address: </strong>
+                                {user.address || 'Not provided'}
+                            </p>
+                        </div>
+
+                        <h3>Actions</h3>
+                        <nav className="content-navigation">
+                            <button className="nav-btn" aria-label="View Blog Entries">
+                                Blog Entries
+                            </button>
+                            <button className="nav-btn" aria-label="View Comments">
+                                Comments
+                            </button>
+                            <button className="nav-btn" aria-label="View Items Reported">
+                                Items Reported
+                            </button>
+                            <button className="nav-btn" aria-label="View Lost Items Claimed">
+                                Lost Items Claimed
+                            </button>
+                        </nav>
+
+                        <div className="profile-actions">
+                            <button className="btn-profile delete-profile" onClick={handleDelete}>
+                                Delete Profile
+                            </button>
+                            <button className="btn-profile logout" onClick={onClick}>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div className="prof-head">
-                    <h2 className="text-yellow">Email : </h2>
-                    <h2>{user ? (<>{user.email}</>) : ""}</h2>
-                </div>
-                <div className="prof-head">
-                    <h2 className="text-yellow">Contact : </h2>
-                    <h2>{user ? (<>{user.phoneNumber}</>) : ""}</h2>
-                </div>
-                <div className="prof-head">
-                    <h2 className="text-yellow">Address : </h2>
-                    <h2>{user ? (<>{user.address}</>) : ""}</h2>
-                </div>
-                <div className="profile-btns">
-                    <Link to='/edit-profile' role='button' className="logout-btn">Edit Profile</Link>
-                    <button onClick={onClick} className="logout-btn">Log-Out</button>
-                    <button onClick={handleDelete} className="logout-btn">Delete</button>
-                </div>
-            </section>
+            </div>
         </div>
     );
 }
