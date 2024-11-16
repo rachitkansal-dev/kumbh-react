@@ -72,7 +72,7 @@ export default function Showcaselostandfound() {
       alert("Phone number invalid !");
       return;
     }
-    addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact);
+    addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact , user.name,user.email);
     setItem(initialItemState); // Clear form fields
     setIsActive(false); // Close form
   };

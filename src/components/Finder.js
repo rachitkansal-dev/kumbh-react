@@ -34,6 +34,8 @@ export default function Finder() {
   };
 
   const handleSubmit = (e) => {
+    console.log("Items:", items); // Log all items to check their structure
+    items.forEach((item) => console.log("Photo URL:", item.photo));
     e.preventDefault();
     setSubmittedFilters(filters);  // Update submittedFilters with current filter values
   };
@@ -116,7 +118,7 @@ export default function Finder() {
             <div className="finder-item-grid">
               {items.map((item, index) => (
                 <div key={index} className="finder-item-card">
-                  <img src={item.photo || "#"} alt={item.type || "Item"} />
+                  <img src={item.photo} alt={item.type || "Item"} />
                   <h3>{item.type || "Unknown Type"}</h3>
                   <p>Location: {item.location || "Unknown Location"}</p>
                   <p>Status: {item.landf || "Unknown Status"}</p>

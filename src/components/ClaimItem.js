@@ -44,9 +44,7 @@ function ClaimItem() {
                     </h1>
                     <div className="claim-item-meta">
                         <span>{formattedDate}</span> •
-                        <span>{item.location}</span> •
-                        <span>105 Views</span> •
-                        <span>Reference: EX12345</span>
+                        <span>{item.location}</span> 
                     </div>
 
                     <img src={item.photo} alt="Placeholder" className="claim-item-image" />
@@ -68,8 +66,8 @@ function ClaimItem() {
 
                 <div className="claim-sidebar">
                     <div className="claim-user-info">
-                        <div className="claim-user-name">{user.name}</div>
-                        <div>{user.email}</div>
+                        <div className="claim-user-name">{item.name}</div>
+                        <div>{item.email}</div>
                     </div>
 
                     <button className="claim-contact-button" onClick={() => navigate('/contact')}>Contact us</button>

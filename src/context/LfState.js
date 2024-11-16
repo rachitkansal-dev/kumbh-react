@@ -78,7 +78,7 @@ const getComments = async () => {
 
       const itemsWithFullPhotoUrl = json.map(item => ({
         ...item,
-        photo: `http://localhost:8080${item.photo}`
+        photo: `${item.photo}`
       }));
   
       setItems(itemsWithFullPhotoUrl);
@@ -161,7 +161,7 @@ const getItemById = async (id) => {
 
   
 
-  const addItems = async (landf, type, description, location, date, photo, contact) => {
+  const addItems = async (landf, type, description, location, date, photo, contact,name,email) => {
     const url = "http://localhost:8080/lf/items";
     
     // Create a FormData object
@@ -173,6 +173,8 @@ const getItemById = async (id) => {
     formData.append('date', date);
     formData.append('photo', photo); // Append the photo file
     formData.append('contact', contact);
+    formData.append('name', name);
+    formData.append('email', email);
 
     try {
         const response = await fetch(url, {

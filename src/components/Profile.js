@@ -78,7 +78,7 @@ function Profile() {
                     </div>
 
                     <div className="profile-info">
-                        <h3>Information</h3>
+                        <h3 className='profile-h3'>Information</h3>
                         <div className="info-row">
                             <p>
                                 <strong>Email: </strong>
@@ -94,7 +94,7 @@ function Profile() {
                             </p>
                         </div>
 
-                        <h3>Actions</h3>
+                        <h3 className='profile-h3'>Actions</h3>
                         <nav className="content-navigation">
                             <button className="nav-btn" aria-label="View Blog Entries">
                                 Blog Entries

@@ -108,7 +108,8 @@ export default function BlogReview() {
             <div className="carousel-container">
               <h2 className="carousel-title">What Others Think</h2>
               {reviews.length === 0 ? (
-                <p>No reviews yet. Be the first to share your experience!</p>
+                <p style={{ color: 'goldenrod' }}>No reviews available yet.</p>
+
               ) : (
                 <div className="carousel" id="testimonialCarousel">
                   {reviews.map((review, index) => (

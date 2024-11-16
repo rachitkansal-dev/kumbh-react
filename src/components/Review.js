@@ -86,7 +86,7 @@ export default function Review() {
                 </div>
               ))
             ) : (
-              <p>No reviews available yet.</p>
+              <p style={{ color: 'goldenrod' }}>No reviews available yet.</p>
             )}
           </div>
           <button className="prev" onClick={movePrev} aria-label="Previous Review">

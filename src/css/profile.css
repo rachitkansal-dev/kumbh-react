@@ -87,7 +87,7 @@
     background: linear-gradient(135deg, #122b36, #173d50);
   }
   
-  h3 {
+  .profile-h3 {
     font-size: 1.8rem;
     margin-bottom: 20px;
     color: #e8f6f9;

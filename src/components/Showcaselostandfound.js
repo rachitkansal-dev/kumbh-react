@@ -67,9 +67,9 @@ export default function Showcaselostandfound() {
                     </Link>
                   </td>
                   <td>
-                    <Link to="/finder?type=Jewelry&location=" className="category-item">
+                    <Link to="/finder?type=Jewellery&location=" className="category-item">
                       <i className="fas fa-gem"></i>
-                      <p>Jewelry</p>
+                      <p>Jewellery</p>
                     </Link>
                   </td>
                   <td>
