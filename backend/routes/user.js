@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const { promisify } = require("util");
 require('dotenv').config();
 const User = require('../models/user');
+const OTP = require('../models/otp');
 const { Item, Item2 } = require('../models/item');
 const ContactUs = require('../models/contactus'); 
 
@@ -22,7 +23,7 @@ router.post('/login', async (req, res) => {
         req.session.phoneNumber= user.phoneNumber;
         req.session.address= user.address;
         req.session.isLogin = true;
-        res.json({ message: 'Login successful', user: { _id:user._id,name: user.name, email: user.email , phoneNumber: user.phoneNumber, address : user.address} });
+        res.json({ message: 'Login successful', user: { _id:user._id,name: user.name, email: user.email , phoneNumber: user.phoneNumber, address : user.address, isAdmin : user.isAdmin} });
     } catch (e) {
         console.log('Error in login:', e);
         res.status(500).json({ message: 'Error logging in.' });
@@ -35,20 +36,57 @@ router.post('/signup', async (req, res) => {
             return res.status(400).json({ message: 'User already registered' });
         }
         req.body.password = await bcrypt.hash(req.body.password, 12);
-        const user = new User(req.body);
-        await user.save();
-        req.session.name = user.name;
-        req.session.email = user.email;
-        req.session.user_id = user._id;
-        req.session.phoneNumber= user.phoneNumber;
-        req.session.address= user.address;
-        req.session.isLogin = true;
-        res.json({ message: 'Signup successful', user: {_id:user._id, name: user.name, email: user.email , phoneNumber: user.phoneNumber, address : user.address} });
+
+        const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
+        const expiration = Date.now() + 3600000;
+        const userOTP = Math.floor(1000 + Math.random() * 9000);
+        const otp = new OTP({
+            OTP : userOTP,
+            OTPToken : token,
+            OTPExpires : expiration,
+            data : JSON.stringify(req.body),
+        })
+        await otp.save();
+        await transporter.sendMail({
+            to: req.body.email,
+            subject: "OTP for verification",
+            text: `OTP for account verification is ${userOTP} .`
+        });
+
+        res.status(200).json({message : "otp for email verification sent to your email", token : token});
     } catch (e) {
         console.log('Error in signup:', e);
         res.status(500).json({ message: 'Error signing up.' });
     }
 });
+
+router.post('/otp-check/:token', async (req,res) => {
+    try {
+        const otp = await OTP.findOne({
+            OTPToken: req.params.token,
+            OTPExpires: { $gt: Date.now() },
+        });
+        console.log(otp);
+        if(req.body.OTP == otp.OTP){
+            const user = new User(JSON.parse(otp.data));
+            await user.save();
+            req.session.name = user.name;
+            req.session.email = user.email;
+            req.session.user_id = user._id;
+            req.session.phoneNumber= user.phoneNumber;
+            req.session.address= user.address;
+            req.session.isLogin = true;
+            res.json({ message: 'Signup successful', user: {_id:user._id, name: user.name, email: user.email , phoneNumber: user.phoneNumber, address : user.address} });
+        }
+        else{
+            res.json({message: "wrong otp"});
+        }
+    }
+    catch (e) {
+        console.log('Error in otp:', e);
+        res.status(500).json({ message: 'Error in otp.' });
+    }
+})
 
 router.get('/profile', validate, (req, res) => {
     if (!req.session.isLogin) {
