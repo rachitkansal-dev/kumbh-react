@@ -111,7 +111,8 @@ router.post('/:id/comment', validate, async (req, res) => {
         const data = {
             body: req.body.comment,
             username: req.session.name,
-            user_id: req.session.user_id
+            user_id: req.session.user_id,
+            parent_blog: req.params.id
         };
         const comment = new Comment(data);
         const post = await Blog.findById(req.params.id);

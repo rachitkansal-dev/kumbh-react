@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Page</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <button class="sidebar-button active">Users</button>
+    <button class="sidebar-button">Blog Entries</button>
+    <button class="sidebar-button">Lost Items</button>
+    <button class="sidebar-button">Found Items</button>
+    <button class="sidebar-button">Claimed Items</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h1 class="main-title">Users</h1>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="table-header">Username</th>
+          <th class="table-header">Contact Number</th>
+          <th class="table-header">Email</th>
+          <th class="table-header">Address</th>
+          <th class="table-header">Blogs</th>
+          <th class="table-header">Comments</th>
+          <th class="table-header">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="table-cell">John Doe</td>
+          <td class="table-cell">123-456-7890</td>
+          <td class="table-cell">johndoe@example.com</td>
+          <td class="table-cell">123 Main St</td>
+          <td class="table-cell">4</td>
+          <td class="table-cell">18</td>
+          <td class="table-cell"><button class="delete-button">Delete</button></td>
+        </tr>
+        <tr>
+          <td class="table-cell">Jane Smith</td>
+          <td class="table-cell">987-654-3210</td>
+          <td class="table-cell">janesmith@example.com</td>
+          <td class="table-cell">456 Elm St</td>
+          <td class="table-cell">4</td>
+          <td class="table-cell">18</td>
+          <td class="table-cell"><button class="delete-button">Delete</button></td>
+        </tr>
+        <tr>
+          <td class="table-cell">Sam Wilson</td>
+          <td class="table-cell">555-555-5555</td>
+          <td class="table-cell">samwilson@example.com</td>
+          <td class="table-cell">789 Oak St</td>
+          <td class="table-cell">4</td>
+          <td class="table-cell">18</td>
+          <td class="table-cell"><button class="delete-button">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

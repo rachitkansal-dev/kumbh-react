@@ -17,6 +17,7 @@ import './css/About.css';
 import './css/Attraction.css';
 import './css/faq.css';
 import './css/Guide.css';
+import './css/userComments.css';
 
 
 import React from 'react';
@@ -55,7 +56,7 @@ import Faq from './components/Faq';
 import Attractions from './components/Attractions';
 import Guide from './components/Guide';
 import Prayag from './components/Praygraj';
-import Otp from './components/OtpCheck';
+import Comments from './components/UserComments';
 import OtpCheck from './components/OtpCheck';
 
 function App() {
@@ -87,6 +88,16 @@ function App() {
               element={
                 <>
                   <AboutUs/>
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/usercomments/:id"
+              element={
+                <>
+                  <Comments/>
                   <Footer />
                   <GoTop />
                 </>

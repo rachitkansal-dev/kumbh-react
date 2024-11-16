@@ -22,6 +22,10 @@ const commentSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    parent_blog: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Blog'
     }
 });
 

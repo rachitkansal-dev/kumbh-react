@@ -28,7 +28,9 @@ function Profile() {
     const editProfile = () => {
         navigate('/edit-profile');
     };
-
+    const commentsfetch = () =>{
+        navigate(`/usercomments/${user._id}`);
+    }
     const handleDelete = async () => {
         const confirmation = window.prompt("Enter 'CONFIRM' to delete your profile:");
 
@@ -99,7 +101,7 @@ function Profile() {
                             <button className="nav-btn" aria-label="View Blog Entries">
                                 Blog Entries
                             </button>
-                            <button className="nav-btn" aria-label="View Comments">
+                            <button className="nav-btn" aria-label="View Comments" onClick={commentsfetch}>
                                 Comments
                             </button>
                             <button className="nav-btn" aria-label="View Items Reported">

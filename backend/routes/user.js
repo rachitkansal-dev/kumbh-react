@@ -264,13 +264,22 @@ router.get('/profile/:id/blogs',async(req,res) => {
 
 router.get('/profile/:id/comments',async(req,res) => {
     try{
-        const user = await User.findById(req.params.id).populate('comments');
+        const user = await User.findById(req.params.id)
+        .populate({
+            path: 'comments', 
+            populate: {
+                path: 'parent_blog', 
+                select: 'title image', 
+            },
+        });
+
+        console.log(user);
         res.status(200).json(user.comments);
     }
     catch(e){
         console.log(e);
         res.status(500).json({ message: 'An error occurred with contact us' });
     }
-})
+})  
 
 module.exports = router;
