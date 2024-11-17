@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { validate, transporter } = require('../middleware');
+const { validate, transporter, validateAdmin } = require('../middleware');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { promisify } = require("util");
@@ -280,5 +280,29 @@ router.get('/profile/:id/comments',async(req,res) => {
         res.status(500).json({ message: 'An error occurred with contact us' });
     }
 })  
+
+router.get('/users', validateAdmin, async (req,res) => {
+    try{
+        const users = await User.find({});
+        res.status(200).json(users);
+    }
+    catch(e){
+        console.log(e);
+        res.status(500).json({ message: 'An error occurred with users' });
+    }
+})
+
+router.delete('/users/:id', validateAdmin, async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'No such user present' });
+        }
+        res.json({ message: 'Account deleted successfully' });
+    } catch (e) {
+        console.log('Error in delete:', e);
+        res.status(500).json({ message: 'Error deleting account.' });
+    }
+});
 
 module.exports = router;
