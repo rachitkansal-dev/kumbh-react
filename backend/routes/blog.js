@@ -68,7 +68,7 @@ router.post('/edit/:id', upload.single('image'), async (req, res) => {
         if (!post) {
             return res.status(404).json({ error: "Blog post not found." });
         }
-        if (post.author.toString() !== req.session.user_id) {
+        if (post.author_id.toString() !== req.session.user_id) {
             return res.status(403).json({ error: "You are not authorized to edit this post." });
         }
 
@@ -93,7 +93,7 @@ router.delete('/:id', validate, async (req, res) => {
         if (!post) {
             return res.status(404).json({ error: "Blog post not found." });
         }
-        if (post.author.toString() !== req.session.user_id) {
+        if (post.author_id.toString() !== req.session.user_id) {
             return res.status(403).json({ error: "You are not authorized to delete this post." });
         }
         user.blogs = user.blogs.filter(c => c.toString() !== req.params.id);

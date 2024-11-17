@@ -31,6 +31,11 @@ function Profile() {
     const commentsfetch = () =>{
         navigate(`/usercomments/${user._id}`);
     }
+    const blogsFetch = () =>{
+        navigate(`/blogs/${user._id}`);
+    }
+
+
     const handleDelete = async () => {
         const confirmation = window.prompt("Enter 'CONFIRM' to delete your profile:");
 
@@ -98,7 +103,7 @@ function Profile() {
 
                         <h3 className='profile-h3'>Actions</h3>
                         <nav className="content-navigation">
-                            <button className="nav-btn" aria-label="View Blog Entries">
+                            <button className="nav-btn" aria-label="View Blog Entries" onClick={blogsFetch}>
                                 Blog Entries
                             </button>
                             <button className="nav-btn" aria-label="View Comments" onClick={commentsfetch}>

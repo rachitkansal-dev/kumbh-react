@@ -150,7 +150,7 @@ function App() {
               }
             />
             <Route
-              path="/blogs"
+              path="/blogs/:id"
               element={
                 <>
                   <UserBlog/>

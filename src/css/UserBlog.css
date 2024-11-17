@@ -37,6 +37,11 @@
     z-index: 3;
 }
 
+.user-blog-icons{
+    color: #777;
+    cursor: pointer;
+    margin-left: 10px
+}
 .blog-image-container img {
     width: 100%;
     height: 100%;

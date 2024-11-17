@@ -273,8 +273,6 @@ router.get('/profile/:id/comments',async(req,res) => {
                 select: 'title image', 
             },
         });
-
-        console.log(user);
         res.status(200).json(user.comments);
     }
     catch(e){

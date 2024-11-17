@@ -40,8 +40,8 @@ export default function Navbar() {
         <li className={`${location.pathname === '/major-attractions' ? 'activeg' : ''}`}>
           <Link to="/major-attractions">Major Attractions</Link>
         </li>
-        <li className={`${location.pathname === '/blogs' ? 'activeg' : ''}`}>
-          <Link to="/blogs">Blogs</Link>
+        <li className={`${location.pathname === '/blogs/1' ? 'activeg' : ''}`}>
+          <Link to="/blogs/1">Blogs</Link>
         </li>
         <li className={`${location.pathname === '/lost-found' ? 'activeg' : ''}`}>
           <Link to="/lost-found">Lost And Found</Link>

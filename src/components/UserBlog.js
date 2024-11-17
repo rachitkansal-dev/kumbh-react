@@ -1,33 +1,43 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 function UserBlog() {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         place: '',
         photo: null,
         description: ''
     });
-    const { blogs, getBlogs, createBlogs } = useContext(BlogContext);
+    const { blogs, userBlogs, getBlogs, createBlogs, getBlogsofUser, updateBlog } = useContext(BlogContext);
     const { user } = useContext(UserContext);
     const [isSubmitDisabled, setSubmitDisabled] = useState(true);
-    const [filteredBlogs, setFilteredBlogs] = useState(blogs);
+    const [filteredBlogs, setFilteredBlogs] = useState(id === '1' ? blogs : userBlogs);
     const [loading, setLoading] = useState(true);
     const [width, setWidth] = useState(window.innerWidth);
+    const [editingBlogId, setEditingBlogId] = useState(null);
 
     const openForm = () => {
-        if(!user) {
+        if (!user) {
             alert("Login to Create a Blog");
             navigate('/login');
         }
         setIsFormOpen(true);
+        setEditingBlogId(null);
+        setFormData({
+            title: '',
+            place: '',
+            photo: null,
+            description: '',
+        });
     };
 
     const closeForm = () => setIsFormOpen(false);
@@ -37,28 +47,42 @@ function UserBlog() {
     };
 
     const fetchBlogs = useCallback(async () => {
+
         await getBlogs();
         setLoading(false);
     }, [getBlogs]);
+    const fetchBlogsofUser = useCallback(async () => {
+
+        await getBlogsofUser(id);
+        setLoading(false);
+    }, [getBlogsofUser]);
 
     useEffect(() => {
-        fetchBlogs();
-    }, [fetchBlogs]);
+
+        if (id === "1") {
+            fetchBlogs();
+        } else {
+            fetchBlogsofUser();
+        }
+    }, [id, fetchBlogs, fetchBlogsofUser]);
+
+
 
     useEffect(() => {
-        setFilteredBlogs(blogs);
-    }, [blogs]);
+        setFilteredBlogs(id === '1' ? blogs : userBlogs);
+    }, [blogs, userBlogs]);
+
     useEffect(() => {
         const handleResize = () => {
-          setWidth(window.innerWidth);
+            setWidth(window.innerWidth);
         };
         window.addEventListener('resize', handleResize);
-    
+
         // Cleanup listener on unmount
         return () => {
-          window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', handleResize);
         };
-      }, []);
+    }, []);
 
     const handleFormChange = (e) => {
         const { name, value, files } = e.target || {};
@@ -95,25 +119,91 @@ function UserBlog() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!isSubmitDisabled) {
+        if (editingBlogId) {
+            setSubmitDisabled(false);
+        }
+        if (!isSubmitDisabled) {
             try {
+                setLoadingSubmit(true); // Start loading
                 const { title, place, description, photo } = formData;
-                const userName = user?.name || "Author Name";
-                
-                await createBlogs(title, place, description, photo, userName);
+                const userName = user?.name || 'Author Name';
+
+                if (editingBlogId) {
+                    await updateBlog(editingBlogId, title, place, description, photo, userName);
+                    alert('Blog updated successfully.');
+                } else {
+                    await createBlogs(title, place, description, photo, userName);
+                    alert('Blog created successfully.');
+                }
 
                 setFormData({ title: '', place: '', photo: null, description: '' });
                 closeForm();
+                if (id === '1') {
+                    fetchBlogs();
+                } else {
+                    fetchBlogsofUser();
+                }
             } catch (error) {
-                console.error("Error creating blog:", error);
-                alert("Failed to create blog. Please try again.");
+                console.error('Error creating/updating blog:', error);
+                alert('Failed to save blog. Please try again.');
+            } finally {
+                setLoadingSubmit(false); // End loading
             }
+        } else {
+            alert("Blog length must be at least 800 words.");
         }
     };
+
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
+
+    const editBlog = (blogId) => {
+        const blog = filteredBlogs.find((b) => b._id === blogId);
+        if (blog) {
+            setEditingBlogId(blogId);
+            setFormData({
+                title: blog.title,
+                place: blog.place,
+                description: blog.body,
+                photo: null,
+            });
+            setIsFormOpen(true);
+        }
+    };
+
+    const deleteBlog = async (blogId) => {
+
+        const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
+        if (confirmDelete) {
+            try {
+                const url = `http://localhost:8080/blog/${blogId}`;
+                const response = await fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                });
+
+                if (response.ok) {
+
+                    alert('Blog deleted successfully');
+                    fetchBlogsofUser();
+                } else {
+                    const error = await response.json();
+                    console.error('Error deleting Blog:', error.error);
+                }
+            } catch (error) {
+                console.error('Error deleting Blog:', error);
+            }
+        }
+        else {
+            alert('deletion failed');
+        }
+    };
+
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -162,7 +252,7 @@ function UserBlog() {
             {isFormOpen && (
                 <div className="unique-report-form active">
                     <button className="unique-close-button" onClick={closeForm}>&times;</button>
-                    <h2>Create new Blog</h2>
+                    <h2>{editingBlogId ? 'Edit Blog' : 'Create new Blog'}</h2>
                     <form className="unique-form" onSubmit={handleSubmit}>
                         <input
                             className="unique-input"
@@ -187,7 +277,7 @@ function UserBlog() {
                             type="file"
                             name="photo"
                             accept="image/*"
-                            required
+                            required={!editingBlogId}
                             onChange={handleFormChange}
                         />
                         <ReactQuill
@@ -201,52 +291,76 @@ function UserBlog() {
                         <button
                             className="btn-primary lost-btn new-btn"
                             type="submit"
-                            onClick={onClick}
+                            disabled={loadingSubmit}
                         >
-                            Submit
+                            {loadingSubmit ? 'Submitting...' : editingBlogId ? 'Update' : 'Submit'}
                         </button>
                     </form>
+
                 </div>
             )}
 
             <section className="showcase" id="explore-places">
-                <h1 className="heading-blog">User's experiences ---</h1>
+                <h1 className="heading-blog">{id === '1' ? "User's Experience --> " : "Your Blogs --> "}</h1>
                 <div className="container">
                     {filteredBlogs.length === 0 ? (
                         <p>No blogs found for the selected place.</p>
                     ) : (
-                        filteredBlogs.map((blog, index) => (
-                            <div className={`row ${width <= 1200 ? ('row1') : (index % 2 === 0 ? 'row1' : 'row2')}`} key={blog._id}>
-                                <div className="img-box">
-                                    <img src={blog.image} alt="pic" />
-                                </div>
-                                <div className="text-box">
-                                    <div className="number-background">{Math.log10(index+1)<1?("0"+(index + 1)):(index+1)}</div>
-                                    <div className="shift">
-                                        <div className="line-text line-blog">
-                                            <span className="line"></span>
-                                            <span className="guide-title">{blog.place}</span>
+                        filteredBlogs.map((blog, index) => {
+                            const isRow1 = width <= 1200 || index % 2 === 0;
+                            return (
+                                <div className={`row ${isRow1 ? 'row1' : 'row2'}`} key={blog._id}>
+                                    <div className="img-box">
+                                        <img src={blog.image} alt="Blog Illustration" />
+                                    </div>
+                                    <div className="text-box">
+                                        <div className="number-background">
+                                            {index + 1 < 10 ? `0${index + 1}` : index + 1}
                                         </div>
-                                        <h2 className="lg-heading">{blog.title}</h2>
-                                        <div className="author guide-title">
-                                            --- By {blog.author || "Unknown"}
-                                        </div>
-                                        <p className="text-gray blog-body" dangerouslySetInnerHTML={{ __html: truncateText(blog.body) }} />
-                                        <div className="read-btn">
-                                            <Link to={`/blog/${blog._id}`} className="btn btn-secondary">
-                                                {"Read More "}
-                                            </Link> 
-                                            <Link to={`/blog/${blog._id}`}>
-                                                <i className="fa-solid fa-arrow-right"></i>
-                                            </Link>
+                                        <div className="shift">
+                                            <div className="line-text line-blog">
+                                                <span className="line"></span>
+                                                <span className="guide-title">{blog.place}</span>
+                                            </div>
+                                            <h2 className="lg-heading">
+                                                {blog.title}
+                                                {id != '1' && (
+                                                    <>
+                                                        <i
+                                                            className="fa-regular fa-pen-to-square user-blog-icons"
+                                                            onClick={() => editBlog(blog._id)}
+                                                        ></i>
+                                                        <i
+                                                            className="user-blog-icons fa-regular fa-trash-can"
+                                                            onClick={() => deleteBlog(blog._id)}
+                                                        ></i>
+                                                    </>
+                                                )}
+                                            </h2>
+                                            <div className="author guide-title">
+                                                --- By {blog.author || "Unknown"}
+                                            </div>
+                                            <p
+                                                className="text-gray blog-body"
+                                                dangerouslySetInnerHTML={{ __html: truncateText(blog.body) }}
+                                            />
+                                            <div className="read-btn">
+                                                <Link to={`/blog/${blog._id}`} className="btn btn-secondary">
+                                                    {"Read More "}
+                                                </Link>
+                                                <Link to={`/blog/${blog._id}`}>
+                                                    <i className="fa-solid fa-arrow-right"></i>
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))
+                            );
+                        })
                     )}
                 </div>
             </section>
+
         </div>
     );
 }
