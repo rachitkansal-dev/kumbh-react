@@ -21,7 +21,7 @@ function ClaimItem() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addClaim(user._id, description, phone,user.email);
+        addClaim(id, description, phone,user.email);
     };
 
     const formattedDate = item.date

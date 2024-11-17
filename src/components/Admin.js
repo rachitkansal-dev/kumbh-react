@@ -52,7 +52,6 @@ function Admin() {
         <div className="admin-body">
             <div className="admin-sidebar">
                 <button className="admin-sidebar-button active">Users</button>
-                <button className="admin-sidebar-button">Blog Entries</button>
                 <button className="admin-sidebar-button">Lost Items</button>
                 <button className="admin-sidebar-button">Found Items</button>
                 <button className="admin-sidebar-button" onClick={onclick}>
@@ -84,7 +83,7 @@ function Admin() {
                                     <td className="admin-table-cell">{user.phoneNumber}</td>
                                     <td className="admin-table-cell">{user.email}</td>
                                     <td className="admin-table-cell">{user.address}</td>
-                                    <td className="admin-table-cell"><Link to={`/blogs/${user._id}`}>View Comments</Link></td>
+                                    <td className="admin-table-cell"><Link to={`/blogs/${user._id}`}>View Blogs</Link></td>
                                     <td className="admin-table-cell"><Link to={`/usercomments/${user._id}`}>View Comments</Link></td>
                                     <td className="admin-table-cell">
                                         <button

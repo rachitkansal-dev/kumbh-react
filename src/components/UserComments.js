@@ -7,7 +7,8 @@ function UserComments() {
 
   // Function to delete a comment
   const deleteComment = async (comment) => {
-    console.log(comment.parent_blog._id);
+    const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
+    if (confirmDelete) {
     try {
       const url = `http://localhost:8080/blog/${comment.parent_blog._id}/comment/${comment._id}`;
       const response = await fetch(url, {
@@ -31,6 +32,10 @@ function UserComments() {
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
+  }
+  else{
+    alert('deletion failed');
+  }
   };
 
   // Function to fetch comments

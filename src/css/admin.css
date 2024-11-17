@@ -66,6 +66,9 @@
     text-align: left;
     border-bottom: 1px solid #444;
 }
+.admin-table-cell a{
+    color: #d0ad53;
+}
 .admin-table-header {
     background-color: #3c4851;
     font-weight: bold;
