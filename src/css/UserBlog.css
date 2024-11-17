@@ -1,4 +1,8 @@
 /* Base Styles */
+.userblog-body{
+    min-height: 69vh;
+    background-color: #0b1d26;
+}
 .blog-header-text {
     margin-top: 20px;
     font-size: 18px;

@@ -10,7 +10,7 @@ function Admin() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/users'); // Ensure the base URL is configured properly
+                const response = await fetch('/users'); 
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
@@ -25,22 +25,28 @@ function Admin() {
     }, []);
 
     const handleDelete = async (id) => {
-        try {
-            const response = await fetch(`/users/${id}`, {
-                method: 'DELETE',
-            });
-            const result = await response.json();
+        const confirmDelete = window.confirm("Are you sure you want to delete this User?");
+        if(confirmDelete) {
+            try {
+                const response = await fetch(`/users/${id}`, {
+                    method: 'DELETE',
+                });
+                const result = await response.json();
 
-            if (!response.ok) {
-                throw new Error(result.message || 'Failed to delete user');
+                if (!response.ok) {
+                    throw new Error(result.message || 'Failed to delete user');
+                }
+
+                // Update the users list after successful deletion
+                setUsers(users.filter((user) => user._id !== id));
+                console.log(result.message); // Optionally log success message
+            } catch (err) {
+                console.error('Error deleting user:', err.message);
+                setError(err.message); // Optionally show an error message
             }
-
-            // Update the users list after successful deletion
-            setUsers(users.filter((user) => user._id !== id));
-            console.log(result.message); // Optionally log success message
-        } catch (err) {
-            console.error('Error deleting user:', err.message);
-            setError(err.message); // Optionally show an error message
+        }
+        else {
+            alert('deletion failed');
         }
     };
 
@@ -52,8 +58,7 @@ function Admin() {
         <div className="admin-body">
             <div className="admin-sidebar">
                 <button className="admin-sidebar-button active">Users</button>
-                <button className="admin-sidebar-button">Lost Items</button>
-                <button className="admin-sidebar-button">Found Items</button>
+                <button className="admin-sidebar-button" onClick={()=>{navigate('/finder')}}>Lost/Found Items</button>
                 <button className="admin-sidebar-button" onClick={onclick}>
                     Claimed Items
                 </button>

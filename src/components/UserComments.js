@@ -7,7 +7,7 @@ function UserComments() {
 
   // Function to delete a comment
   const deleteComment = async (comment) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
+    const confirmDelete = window.confirm("Are you sure you want to delete this Comment?");
     if (confirmDelete) {
     try {
       const url = `http://localhost:8080/blog/${comment.parent_blog._id}/comment/${comment._id}`;

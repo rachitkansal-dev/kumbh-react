@@ -57,6 +57,7 @@ export default function Finder() {
       getItems();
     }
   }, [submittedFilters, getItems, getItemsBySearch]);
+  
 
   return (
     <div>

@@ -229,7 +229,7 @@ function UserBlog() {
     }
 
     return (
-        <div>
+        <div className='userblog-body'>
             <div className="user-blog-header">
                 <button className="btn-primary lost-btn" onClick={openForm}>
                     Create Blog
@@ -304,7 +304,7 @@ function UserBlog() {
                 <h1 className="heading-blog">{id === '1' ? "User's Experience --> " : "Your Blogs --> "}</h1>
                 <div className="container">
                     {filteredBlogs.length === 0 ? (
-                        <p>No blogs found for the selected place.</p>
+                        <p>No blogs found </p>
                     ) : (
                         filteredBlogs.map((blog, index) => {
                             const isRow1 = width <= 1200 || index % 2 === 0;

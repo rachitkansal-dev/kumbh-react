@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function AdminClaimed() {
+    const navigate = useNavigate();
     const [claimedItems, setClaimedItems] = useState([]);
-    const [loading, setLoading] = useState(true); // Loading state
-    const [error, setError] = useState(null); // Error state
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchClaimedItems = async () => {
             try {
-                const response = await fetch('http://localhost:8080/lf/admin-claim-requests'); // Replace with your backend URL
+                const response = await fetch('/lf/admin-claim-requests');
                 if (!response.ok) {
                     throw new Error('Failed to fetch items');
                 }
@@ -25,6 +27,69 @@ function AdminClaimed() {
         fetchClaimedItems();
     }, []);
 
+    const handleDeleteItem = async (itemId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this Item?");
+        if (confirmDelete) {
+            try {
+                const response = await fetch(`/lf/found-item/${itemId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete item');
+                }
+
+                const result = await response.json();
+                alert(result.message);
+                setClaimedItems((prevItems) =>
+                    prevItems.filter(
+                        (item) => item.foundandlostItem[0]?._id !== itemId
+                    )
+                );
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                alert('Failed to delete item. Please try again later.');
+            }
+        }
+        else {
+            alert('deletion failed');
+        }
+    };
+
+    const handleDeleteClaim = async (claimId, itemId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this Claim?");
+        if (confirmDelete) {
+            try {
+                const response = await fetch(`/lf/claim-item/${claimId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete claim');
+                }
+
+                const result = await response.json();
+                alert(result.message);
+
+                setClaimedItems((prevItems) =>
+                    prevItems.map((item) => {
+                        if (item.claim?._id === claimId) {
+                            return { ...item, claim: null };
+                        }
+                        return item;
+                    })
+                );
+                window.location.reload();
+            } catch (error) {
+                console.error('Error deleting claim:', error);
+                alert('Failed to delete claim. Please try again later.');
+            }
+        }
+        else {
+            alert('deletion failed');
+        }
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -35,44 +100,53 @@ function AdminClaimed() {
 
     return (
         <div className='admin-claimed-body'>
-            {/* Sidebar */}
             <div className="admin-claimed-sidebar">
-                <button className="admin-claimed-sidebar-button">Users</button>
-                <button className="admin-claimed-sidebar-button">Blog Entries</button>
-                <button className="admin-claimed-sidebar-button">Lost Items</button>
-                <button className="admin-claimed-sidebar-button">Found Items</button>
-                <button className="admin-claimed-sidebar-button admin-claimed-active">Claimed Items</button>
+                <button className="admin-sidebar-button" onClick={ ()=>{navigate('/admin')}}>Users</button>
+                <button className="admin-sidebar-button" onClick={()=>{navigate('/finder')}}>Lost/Found Items</button>
+                <button className="admin-sidebar-button active">Claimed Items</button>
             </div>
 
-            {/* Main Content */}
             <div className="admin-claimed-main-content">
                 <h1 className="admin-claimed-main-title">Claimed Items</h1>
                 <div className="admin-claimed-items-container">
-                    {claimedItems.map(item => (
-                        <div key={item._id} className="admin-claimed-item-card">
+                    {claimedItems.map((item, index) => (
+                        <div key={index} className="admin-claimed-item-card">
                             <div className="admin-claimed-item-image">
-                                <img src={item.image || 'placeholder.jpg'} alt={item.reporterDescription} />
+                                <img
+                                    src={item.foundandlostItem[0]?.photo || 'placeholder.jpg'}
+                                    alt={item.foundandlostItem[0]?.description || 'No description'}
+                                />
                             </div>
                             <div className="admin-claimed-item-info">
                                 <h2 className="admin-claimed-item-title">Reporter Description:</h2>
-                                <p className="admin-claimed-item-description">{item.reporterDescription}</p>
+                                <p className="admin-claimed-item-description">
+                                    {item.foundandlostItem[0]?.description || 'No description provided'}
+                                </p>
                                 <h3 className="admin-claimed-contact-label">Reporter Contact:</h3>
-                                <p className="admin-claimed-contact-number">{item.reporterContact}</p>
+                                <p className="admin-claimed-contact-number">
+                                    {item.foundandlostItem[0]?.contact || 'No contact provided'}
+                                </p>
                                 <h2 className="admin-claimed-item-title">Claimer Description:</h2>
-                                <p className="admin-claimed-item-description">{item.claimerDescription}</p>
+                                <p className="admin-claimed-item-description">
+                                    {item.claim?.description || 'No description provided'}
+                                </p>
                                 <h3 className="admin-claimed-contact-label">Claimer Contact:</h3>
-                                <p className="admin-claimed-contact-number">{item.claimerContact}</p>
+                                <p className="admin-claimed-contact-number">
+                                    {item.claim?.phone || 'No contact provided'}
+                                </p>
                             </div>
                             <div className="admin-claimed-item-actions">
                                 <button
                                     className="admin-claimed-delete-button"
-                                    onClick={() => console.log(`Delete item with id: ${item._id}`)}
+                                    onClick={() => handleDeleteItem(item.foundandlostItem[0]?._id)}
+                                    aria-label="Delete item"
                                 >
                                     Delete Item
                                 </button>
                                 <button
                                     className="admin-claimed-delete-button"
-                                    onClick={() => console.log(`Delete claim for item with id: ${item._id}`)}
+                                    onClick={() => handleDeleteClaim(item.claim?._id, item.foundandlostItem[0]?._id)}
+                                    aria-label="Delete claim"
                                 >
                                     Delete Claim
                                 </button>

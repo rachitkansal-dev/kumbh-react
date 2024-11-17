@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import LfContext from '../context/LfContext';
 import UserContext from '../context/UserContext';
 
@@ -13,6 +13,30 @@ function ClaimItem() {
     const { user } = useContext(UserContext);
     const [item, setItem] = useState(null);
 
+    const handleDeleteItem = async (itemId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this Item?");
+        if (confirmDelete) {
+            try {
+                const response = await fetch(`/lf/found-item/${itemId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete item');
+                }
+
+                alert("item succefully deleted");
+                navigate('/finder');
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                alert('Failed to delete item. Please try again later.');
+            }
+        }
+        else {
+            alert('deletion failed');
+        }
+    };
+
     useEffect(() => {
         getItemById(id).then(setItem);
     }, [id, getItemById]);
@@ -21,7 +45,8 @@ function ClaimItem() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addClaim(id, description, phone,user.email);
+        addClaim(id, description, phone, user.email);
+
     };
 
     const formattedDate = item.date
@@ -44,7 +69,7 @@ function ClaimItem() {
                     </h1>
                     <div className="claim-item-meta">
                         <span>{formattedDate}</span> •
-                        <span>{item.location}</span> 
+                        <span>{item.location}</span>
                     </div>
 
                     <img src={item.photo} alt="Placeholder" className="claim-item-image" />
@@ -68,39 +93,56 @@ function ClaimItem() {
                     <div className="claim-user-info">
                         <div className="claim-user-name">{item.name}</div>
                         <div>{item.email}</div>
+                        {user.isAdmin && <div>{item.contact}</div>}
                     </div>
 
-                    <button className="claim-contact-button" onClick={() => navigate('/contact')}>Contact us</button>
-                    
-                    {/* WhatsApp Button */}
-                    <a 
-                        href="https://wa.me/919464910100"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        role='button'
-                    >
-                        <button className="claim-message-button">Message us on WhatsApp</button>
-                    </a>
+                    {!user.isAdmin && (
+                        <>
+                            <button className="claim-contact-button" onClick={() => navigate('/contact')}>
+                                Contact us
+                            </button>
 
-                    <form id="claim-form" onSubmit={handleSubmit}>
-                        <textarea
-                            type="text"
-                            name="description"
-                            placeholder={"Give a description of the item you " + (item.landf === "lost" ? "Found" : "Claim")}
-                            required
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            name="phone"
-                            placeholder="+91XXXXXXXXXX"
-                            required
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                        />
-                        <button type="submit" className="claim-submit-button">{item.landf === "lost" ? "Found" : "Submit Claim"}</button>
-                    </form>
+                            <Link
+                                href="https://wa.me/919464910100"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                role="button"
+                            >
+                                <button className="claim-message-button">Message us on WhatsApp</button>
+                            </Link>
+
+                            <form id="claim-form" onSubmit={handleSubmit}>
+                                <textarea
+                                    type="text"
+                                    name="description"
+                                    placeholder={`Give a description of the item you ${item.landf === "lost" ? "Found" : "Claim"}`}
+                                    required
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    placeholder="+91XXXXXXXXXX"
+                                    required
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                />
+                                <button type="submit" className="claim-submit-button">
+                                    {item.landf === "lost" ? "Found" : "Submit Claim"}
+                                </button>
+                            </form>
+                        </>
+                    )}
+                    {user.isAdmin && (
+                        <button
+                            className="claim-contact-button"
+                            onClick={() => handleDeleteItem(id)}
+                        >
+                            Delete Item
+                        </button>
+                    )}
+
                 </div>
             </div>
         </section>

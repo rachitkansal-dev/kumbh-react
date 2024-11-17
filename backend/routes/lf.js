@@ -145,18 +145,7 @@ router.get('/claim-item', async (req, res) => {
 
 
 
-router.get('/lostitems', validate , async (req, res) => {
-    try {
-        const usermail = req.session.email ;
-        
-        const items = await Item.find({ email: usermail, landf :"lost" }); 
-        
-        res.json(items); 
-    } catch (error) {
-        console.error('Error retrieving items:', error);
-        res.status(500).json({ message: 'Server Error' }); 
-    }
-});
+
 
 
 router.get('/userclaims',validate , async(req,res)=>{
@@ -204,27 +193,74 @@ router.get('/founditems', async (req, res) => {
 });
 
 
+router.get('/lostitems', validate, async (req, res) => {
+    try {
+        const usermail = req.session.email ;
+        
+        const items = await Item.find({ email: usermail, landf :"found" }); 
+        res.json(items); 
+    } catch (error) {
+        console.error('Error retrieving items:', error);
+        res.status(500).json({ message: 'Server Error' }); 
+    }
+});
 
-// Get all claim requests with corresponding items
+
+router.get('/adminfounditems', validateAdmin , async (req, res) => {
+    try {
+       
+        const items = await Item.find({ landf :"found" }); 
+        res.json(items); 
+    } catch (error) {
+        console.error('Error retrieving items:', error);
+        res.status(500).json({ message: 'Server Error' }); 
+    }
+});
+
+
+router.get('/adminlostitems', validateAdmin , async (req, res) => {
+    try {
+       
+        const items = await Item.find({ landf :"lost" }); 
+        res.json(items); 
+    } catch (error) {
+        console.error('Error retrieving items:', error);
+        res.status(500).json({ message: 'Server Error' }); 
+    }
+});
+
+
+
+
 router.get('/admin-claim-requests', async (req, res) => {
     try {
         const claims = await Item2.find();
+        
         const itemsWithClaims = [];
-        for (let claim of claims) {
-            const foundItem = await Item.findById(claim.id);
-            if (foundItem) {
+        
+
+        
+        for (const claim of claims) {
+            
+            
+            
+            const foundandlostItem = await Item.find( { _id :claim.id} ); 
+            if (foundandlostItem) {
                 itemsWithClaims.push({
-                    foundItem: foundItem,
+                    foundandlostItem: foundandlostItem,
                     claim: claim
                 });
             }
+            
         }
+
         res.json(itemsWithClaims);
     } catch (error) {
         console.error('Error retrieving claim requests with items:', error);
         res.status(500).json({ message: 'Server Error' });
     }
 });
+
 
 // Delete a claimed item
 router.delete('/claim-item/:id', async (req, res) => {
