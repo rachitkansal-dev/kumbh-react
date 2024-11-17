@@ -11,6 +11,7 @@ export default function Navbar() {
   // Close the menu when navigating to a new page
   useEffect(() => {
     setIsMenuOpen(false);
+    console.log(user);
   }, [location]);
 
   const toggleMenu = () => {

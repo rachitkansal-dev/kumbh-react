@@ -109,12 +109,12 @@ function Profile() {
                             <button className="nav-btn" aria-label="View Comments" onClick={commentsfetch}>
                                 Comments
                             </button>
-                            <button className="nav-btn" aria-label="View Items Reported">
+                            {/* <button className="nav-btn" aria-label="View Items Reported">
                                 Items Reported
                             </button>
                             <button className="nav-btn" aria-label="View Lost Items Claimed">
                                 Lost Items Claimed
-                            </button>
+                            </button> */}
                         </nav>
 
                         <div className="profile-actions">

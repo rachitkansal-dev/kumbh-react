@@ -18,6 +18,8 @@ import './css/Attraction.css';
 import './css/faq.css';
 import './css/Guide.css';
 import './css/userComments.css';
+import './css/admin.css';
+import './css/adminClaimed.css';
 
 
 import React from 'react';
@@ -58,6 +60,8 @@ import Guide from './components/Guide';
 import Prayag from './components/Praygraj';
 import Comments from './components/UserComments';
 import OtpCheck from './components/OtpCheck';
+import Admin from './components/Admin';
+import AdminClaimed from './components//AdminClaimed';
 
 function App() {
   return (
@@ -88,6 +92,26 @@ function App() {
               element={
                 <>
                   <AboutUs/>
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <>
+                  <Admin/>
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/admin-claimed"
+              element={
+                <>
+                  <AdminClaimed/>
                   <Footer />
                   <GoTop />
                 </>
