@@ -68,8 +68,8 @@ router.post('/edit/:id', upload.single('image'), async (req, res) => {
         if (!post) {
             return res.status(404).json({ error: "Blog post not found." });
         }
-        if (post.author_id.toString() !== req.session.user_id) {
-            return res.status(403).json({ error: "You are not authorized to edit this post." });
+        if(!(req.session.isAdmin || (post.author_id.toString() === req.session.user_id))){
+            return res.status(403).json({ error: "You are not authorized to delete this post." });
         }
 
         const updatedData = req.body;
@@ -93,7 +93,7 @@ router.delete('/:id', validate, async (req, res) => {
         if (!post) {
             return res.status(404).json({ error: "Blog post not found." });
         }
-        if (post.author_id.toString() !== req.session.user_id) {
+        if(!(req.session.isAdmin || (post.author_id.toString() === req.session.user_id))){
             return res.status(403).json({ error: "You are not authorized to delete this post." });
         }
         user.blogs = user.blogs.filter(c => c.toString() !== req.params.id);
@@ -143,7 +143,7 @@ router.delete('/:id/comment/:c_id', validate, async (req, res) => {
         if (!comment) {
             return res.status(404).json({ error: "Comment not found." });
         }
-        if (comment.user_id.toString() !== req.session.user_id) {
+        if(!(req.session.isAdmin || (comment.user_id.toString() === req.session.user_id))){
             return res.status(403).json({ error: "You are not authorized to delete this comment." });
         }
         post.comments = post.comments.filter(c => c.toString() !== req.params.c_id);
