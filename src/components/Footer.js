@@ -23,7 +23,7 @@ export default function Footer() {
             <ul>
               <li><Link to="/about">About TPW</Link></li>
               <li><Link to="/Faq">Faqs</Link></li>
-              <li><Link to="/blogs">Write your experiences</Link></li>
+              <li><Link to="/blogs/1">Write your experiences</Link></li>
               <li><Link to="/contact">Contact Us</Link></li>
             </ul>
           </div>
