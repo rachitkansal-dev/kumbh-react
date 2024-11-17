@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import blogData from '../bolgData/blogData'; // Assuming this is a fallback for local data
+import blogData from '../bolgData/blogData'; 
 import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
 import { useParams, useNavigate } from 'react-router-dom';
+import Loading from './Loading';
 
 export default function Blog() {
   const { id } = useParams();
@@ -13,11 +14,11 @@ export default function Blog() {
   const [blog, setBlog] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [loading, setLoading] = useState(true); 
 
-  // useEffect to fetch the blog details and initialize like state
+
   useEffect(() => {
-    setLoading(true); // Start loading when fetching the blog
+    setLoading(true);
     getBlogById(id).then(fetchedBlog => {
       if (fetchedBlog && !fetchedBlog.error) {
         setBlog(fetchedBlog);
@@ -35,11 +36,11 @@ export default function Blog() {
           navigate('/blog');
         }
       }
-      setLoading(false); // Set loading to false once the blog is fetched
+      setLoading(false);
     });
   }, [id, getBlogById, navigate, user]);
 
-  // Like functionality
+
   const handleLike = async () => {
     if (!user) {
       alert("Please log in to UpVote the blog.");
@@ -105,7 +106,7 @@ export default function Blog() {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading state while the blog is being fetched
+    return <Loading/>
   }
 
   if (!blog) {

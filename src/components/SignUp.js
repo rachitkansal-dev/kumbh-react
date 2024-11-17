@@ -12,6 +12,7 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const { loginUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   function isValidPhoneNumber(phoneNumber) {
     const cleanedPhoneNumber = phoneNumber.replace(/(?!^\+)[^\d]/g, '');
     const phoneRegex = /^(?:\+(\d{1,3}))?(\d{7,15})$/;
@@ -45,7 +46,7 @@ export default function SignUp() {
       alert("Passwords do not match");
       return;
     } 
-
+    setLoadingSubmit(true);
     try {
       const response = await fetch('http://localhost:8080/signup', {
         method: 'POST',
@@ -67,11 +68,13 @@ export default function SignUp() {
     } catch (error) {
       console.error('Error signing up:', error);
       alert('Signup failed');
+    }finally{
+      setLoadingSubmit(false);
     }
   };
 
   return (
-    <div>
+    <div className='sign-up-body'>
       <section className="login-center">
         <div className="login-container">
           <form className="login-form" onSubmit={handleSignUp}>
@@ -155,7 +158,7 @@ export default function SignUp() {
                 onChange={(e) => setcPassword(e.target.value)}
               />
             </div>
-            <button type="submit" className="login-btn">Sign Up</button>
+            <button type="submit" className="login-btn"  disabled={loadingSubmit} > {loadingSubmit ? 'Sending Otp...' : 'Send Otp'}</button>
             <p className="text-smaller">
               Already have an account? <Link to="/login">Go to login</Link>
             </p>

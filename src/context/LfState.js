@@ -188,7 +188,6 @@ const getItemById = async (id) => {
         if (!response.ok) {
             throw new Error('Failed to add item');
         }
-        alert("Report Submitted SuccessFuly");
         const json = await response.json();
         setItems(items.concat(json));  
     } catch (error) {

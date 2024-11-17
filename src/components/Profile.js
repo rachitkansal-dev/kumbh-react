@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import avatar from '../images/user-avatar-reloaded.png';
+import Loading from './Loading';
 
 function Profile() {
     const { user, logoutUser } = useContext(UserContext);
@@ -69,7 +70,7 @@ function Profile() {
     };
 
     if (!user) {
-        return <div>Loading...</div>; // Render a loading state or a redirect.
+        return <Loading/>
     }
 
     return (

@@ -20,6 +20,7 @@ import './css/Guide.css';
 import './css/userComments.css';
 import './css/admin.css';
 import './css/adminClaimed.css';
+import './css/loading.css';
 
 
 import React from 'react';
@@ -61,7 +62,9 @@ import Prayag from './components/Praygraj';
 import Comments from './components/UserComments';
 import OtpCheck from './components/OtpCheck';
 import Admin from './components/Admin';
+import loading from './components/Loading';
 import AdminClaimed from './components//AdminClaimed';
+import Loading from './components/Loading';
 
 function App() {
   return (

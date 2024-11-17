@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Loading from './Loading';
 
 function AdminClaimed() {
     const navigate = useNavigate();
@@ -91,7 +92,7 @@ function AdminClaimed() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loading/>
     }
 
     if (error) {

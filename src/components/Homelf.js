@@ -9,6 +9,7 @@ import image3 from '../images/image3.jpeg';
 
 export default function Showcaselostandfound() {
   const [bgIndex, setBgIndex] = useState(0);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const backgrounds = [
     image1,
     image5,
@@ -64,6 +65,7 @@ export default function Showcaselostandfound() {
 
   const handleClick = (e) => {
     e.preventDefault();
+    
     if (!item.landf || !item.type || !item.description || !item.location || !item.date || !item.contact) {
       alert("Please fill all required fields.");
       return;
@@ -72,9 +74,13 @@ export default function Showcaselostandfound() {
       alert("Phone number invalid !");
       return;
     }
+    setLoadingSubmit(true);
     addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact , user.name,user.email);
+    alert("Report submitted successfully!");
     setItem(initialItemState); // Clear form fields
-    setIsActive(false); // Close form
+    setLoadingSubmit(false);
+    setIsActive(false);
+    
   };
 
   const onChange = (e) => {
@@ -284,8 +290,8 @@ export default function Showcaselostandfound() {
               required
             />
 
-            <button className="btn-primary lost-btn new-btn" type="submit" onClick={handleClick}>
-              Submit
+            <button className="btn-primary lost-btn new-btn" type="submit" onClick={handleClick} disabled={loadingSubmit}>
+              {loadingSubmit ? 'Submitting...' : 'Submit'}
             </button>
           </form>
         </div>

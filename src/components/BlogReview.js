@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import Loading from './Loading';
 
 export default function BlogReview() {
   const { id } = useParams();
@@ -9,7 +10,7 @@ export default function BlogReview() {
   const [newReview, setNewReview] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(true); 
   const { user } = useContext(UserContext);
 
   // Fetch reviews on component load
@@ -20,14 +21,14 @@ export default function BlogReview() {
       });
       if (response.ok) {
         const data = await response.json();
-        setReviews(data.comments); // Assuming `data.comments` contains an array of review objects
+        setReviews(data.comments); 
       } else {
         console.error('Failed to fetch reviews');
       }
     } catch (error) {
       console.error('Error fetching reviews:', error);
     } finally {
-      setIsLoading(false);  // Set loading state to false after the fetch is done
+      setIsLoading(false);  
     }
   };
 
@@ -101,7 +102,7 @@ export default function BlogReview() {
   return (
     <div>
       {isLoading ? (
-        <p>Loading...</p> // Display loading message until reviews are fetched
+        <Loading/>
       ) : (
         <>
           <section className="review">

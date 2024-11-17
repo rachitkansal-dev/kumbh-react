@@ -4,6 +4,7 @@ import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Loading from './Loading';
 
 function UserBlog() {
     const { id } = useParams();
@@ -124,7 +125,7 @@ function UserBlog() {
         }
         if (!isSubmitDisabled) {
             try {
-                setLoadingSubmit(true); // Start loading
+                setLoadingSubmit(true); 
                 const { title, place, description, photo } = formData;
                 const userName = user?.name || 'Author Name';
 
@@ -147,7 +148,7 @@ function UserBlog() {
                 console.error('Error creating/updating blog:', error);
                 alert('Failed to save blog. Please try again.');
             } finally {
-                setLoadingSubmit(false); // End loading
+                setLoadingSubmit(false); 
             }
         } else {
             alert("Blog length must be at least 800 words.");
@@ -225,7 +226,7 @@ function UserBlog() {
     }, [searchTerm, blogs]);
 
     if (loading) {
-        return <div>Loading blogs...</div>;
+        return <Loading/>;
     }
 
     return (

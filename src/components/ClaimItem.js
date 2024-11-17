@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import LfContext from '../context/LfContext';
 import UserContext from '../context/UserContext';
+import Loading from './Loading';
 
 function ClaimItem() {
     const navigate = useNavigate();
@@ -41,7 +42,7 @@ function ClaimItem() {
         getItemById(id).then(setItem);
     }, [id, getItemById]);
 
-    if (!item) return <div>Loading...</div>;
+    if (!item) return <Loading/>
 
     const handleSubmit = (e) => {
         e.preventDefault();
