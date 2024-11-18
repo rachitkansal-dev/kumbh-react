@@ -105,6 +105,7 @@ function AdminClaimed() {
                 <button className="admin-sidebar-button" onClick={ ()=>{navigate('/admin')}}>Users</button>
                 <button className="admin-sidebar-button" onClick={()=>{navigate('/finder')}}>Lost/Found Items</button>
                 <button className="admin-sidebar-button active">Claimed Items</button>
+                <button className="admin-sidebar-button" onClick={()=>{navigate('/admin-feedback')}}>Feedbacks</button>
             </div>
 
             <div className="admin-claimed-main-content">

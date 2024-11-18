@@ -65,6 +65,7 @@ import Admin from './components/Admin';
 import loading from './components/Loading';
 import AdminClaimed from './components//AdminClaimed';
 import Loading from './components/Loading';
+import UserFeedback from './components/UserFeedback';
 
 function App() {
   return (
@@ -96,6 +97,16 @@ function App() {
               element={
                 <>
                   <AboutUs/>
+                  <Footer />
+                  <GoTop />
+                </>
+              }
+            />
+            <Route
+              path="/admin-feedback"
+              element={
+                <>
+                  <UserFeedback/>
                   <Footer />
                   <GoTop />
                 </>

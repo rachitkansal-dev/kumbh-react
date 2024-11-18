@@ -367,23 +367,4 @@ router.get('/lfcomments', async (req, res) => {
     }
 });
 
-router.delete('/deluser', async (req, res) => {
-    try {
-        const { email } = req.body; // Extract email from the request body
-        
-        if (!email) {
-            return res.status(400).json({ message: 'Email is required' });
-        }
-        await Item.deleteMany({ email });
-
-        // Delete items and associated claims by email
-        await Item2.deleteMany({ email });
-
-        res.status(200).json({ message: 'Items and associated claims deleted successfully' });
-    } catch (error) {
-        console.error('Error deleting items and claims:', error);
-        res.status(500).json({ message: 'Server Error', error: error.message });
-    }
-});
-
 module.exports = router;

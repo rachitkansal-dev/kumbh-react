@@ -25,25 +25,24 @@
 .admin-claimed-sidebar {
     background-color: #3c4a51;
     width: 250px;
-    padding: 20px 0; /* Reduced padding for consistency */
+    padding: 30px 0;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Adjusted spacing for smaller screens */
+    gap: 20px;
     align-items: center;
 }
 
 .admin-claimed-sidebar-button {
     background-color: #d1bc85;
-    color: #0b1d26; /* Adjusted color for contrast */
+    color: #000;
     border: none;
-    padding: 12px 16px; /* Reduced padding for a balanced look */
-    width: 85%;
-    font-size: 15px;
+    padding: 15px 20px;
+    width: 80%;
+    font-size: 16px;
     text-align: center;
     cursor: pointer;
-    border-radius: 6px; /* Slightly smaller radius for modern look */
+    border-radius: 8px;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .admin-claimed-sidebar-button:hover {
@@ -173,24 +172,38 @@
     .admin-claimed-items-container {
         gap: 20px;
     }
+    .admin-claimed-body{
+        flex-direction: column;
+    }
 
     .admin-claimed-item-card {
         width: 200px; /* Reduced width for smaller screens */
     }
-}
-
-@media (max-width: 768px) {
     .admin-claimed-sidebar {
         width: 100%;
         flex-direction: row;
         justify-content: space-around;
         padding: 10px 0;
+        align-items: center;
     }
-
     .admin-claimed-sidebar-button {
         width: auto;
-        padding: 8px 12px;
         font-size: 14px;
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-claimed-sidebar {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        align-items: center;
+    }
+    .admin-claimed-sidebar-button {
+        width: 90%;
+        font-size: 14px;
+        padding: 10px 15px;
     }
 
     .admin-claimed-main-content {
@@ -207,8 +220,12 @@
         width: 100%; /* Full-width cards on very small screens */
     }
 
+    .admin-claimed-sidebar {
+        padding: 5px 0;
+        width: 100%;
+    }
     .admin-claimed-sidebar-button {
-        padding: 6px 8px;
         font-size: 12px;
+        padding: 8px 10px;
     }
 }

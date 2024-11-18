@@ -82,7 +82,7 @@ export default function Finder() {
               <div className="finder-filter-group">
                 <label htmlFor="location">Location</label>
                 <select id="location" value={filters.location} onChange={handleChange}>
-                  <option value="" disabled>Select Location</option>
+                  <option value="" >Select Location</option>
                   <option value="Triveni Sangam">Triveni Sangam</option>
                   <option value="Railway Station">Railway Station</option>
                   <option value="Airport">Airport</option>
@@ -95,7 +95,7 @@ export default function Finder() {
                 <label htmlFor="type">Item Type</label>
                 <select id="type" value={filters.type} onChange={handleChange}>
 
-                  <option value="" disabled>Select Item Type</option>
+                  <option value="" >Select Item Type</option>
                   <option value="Phones & Tablets">Phones & Tablets</option>
                   <option value="Bags">Bags</option>
                   <option value="Jewellery">Jewellery</option>

@@ -159,6 +159,8 @@ router.delete('/profile/:id', validate, async (req, res) => {
         const blogIds = blogs.map(blog => blog._id);
         await Comment.deleteMany({ parent_blog: { $in: blogIds } });
         await Blog.deleteMany({ author_id: user._id });
+        await Item.deleteMany({ email :  user.email});        
+        await Item2.deleteMany({ email : user.email});  
         await User.findByIdAndDelete(req.params.id);
 
         req.session.destroy();
@@ -261,6 +263,20 @@ router.get('/contactus',async(req,res)=>{
     }
 })
 
+router.delete('/contactus/:id', async (req,res) => {
+    try{
+        const item = await ContactUs.findByIdAndDelete(req.params.id);
+        if(!item){
+            res.status(500).json({message : "contact us report not available"});
+        }
+        res.status(200).json({message : "contact us report deleted"});
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({ message: 'An error occurred with deleting contact us' });
+    }
+})
+
 router.get('/profile/:id/blogs',async(req,res) => {
     try{
         const user = await User.findById(req.params.id).populate('blogs');
@@ -312,6 +328,8 @@ router.delete('/users/:id', validateAdmin, async (req, res) => {
         const blogIds = blogs.map(blog => blog._id);
         await Comment.deleteMany({ parent_blog: { $in: blogIds } });
         await Blog.deleteMany({ author_id: user._id });
+        await Item.deleteMany({ email :  user.email});        
+        await Item2.deleteMany({ email : user.email});        
         await User.findByIdAndDelete(req.params.id);
 
         res.json({ message: 'Account deleted successfully' });

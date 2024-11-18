@@ -60,6 +60,11 @@
   background-color: #556d77; /* Muted slate color on hover */
 }
 
+.user-details-contact {
+  color: #556d77;
+  font-size: small;
+}
+
 .blog-image {
   width: 120px;
   height: 120px;

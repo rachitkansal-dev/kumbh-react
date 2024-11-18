@@ -6,6 +6,20 @@ import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
 
 function ClaimItem() {
+    function isValidPhoneNumber(phoneNumber) {
+        const cleanedPhoneNumber = phoneNumber.replace(/(?!^\+)[^\d]/g, '');
+        const phoneRegex = /^(?:\+(\d{1,3}))?(\d{7,15})$/;
+        const match = cleanedPhoneNumber.match(phoneRegex);
+      
+        if (match) {
+          const countryCode = match[1];
+          const mainNumber = match[2];
+          if (mainNumber.length >= 7 && mainNumber.length <= 15) {
+            return true;
+          }
+        }
+        return false;
+      }
     const navigate = useNavigate();
     const [description, setDescription] = useState('');
     const [phone, setPhone] = useState('');
@@ -47,7 +61,12 @@ function ClaimItem() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(isValidPhoneNumber) {
         addClaim(id, description, phone, user.email);
+        }
+        else{
+            alert('invalid phone number');
+        }
 
     };
 
@@ -107,14 +126,14 @@ function ClaimItem() {
                                 Contact us
                             </button>
 
-                            <Link
+                            <a
                                 href="https://wa.me/919464910100"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 role="button"
                             >
                                 <button className="claim-message-button">Message us on WhatsApp</button>
-                            </Link>
+                            </a>
 
                             <form id="claim-form" onSubmit={handleSubmit}>
                                 <textarea

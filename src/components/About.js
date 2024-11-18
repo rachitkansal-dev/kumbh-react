@@ -12,9 +12,9 @@ const AboutUs = () => {
                 <section className="about-us-about-us">
                     <div className="about-us-content">
                         <h2>How It Started</h2>
-                        <h1>Our Dream is Global Learning Transformation</h1>
+                        <h1>Explore, Experience, and Reconnect</h1>
                         <p>
-                            Kawruh was founded by Robert Anderson, a passionate lifelong learner, and Maria Sanchez, a visionary educator. Their shared dream was to create a digital haven of knowledge accessible to all. United by their belief in the transformational power of education, they embarked on a journey to build 'Kawruh.' With relentless dedication, they gathered a team of experts and launched this innovative platform, creating a global community of eager learners, all connected by the desire to explore, learn, and grow.
+                            Welcome to Prayatak, your ultimate companion for an extraordinary Kumbh Mela experience. At Prayatak, we understand the spiritual, cultural, and logistical marvel that is the Kumbh Mela—a festival where millions come together in search of spiritual awakening, cultural connections, and unforgettable memories. Discover captivating stories and essential travel tips while staying connected and safe, knowing we’re here to help reunite people and belongings amid the festival’s vibrant chaos. Join us to make your Kumbh Mela experience unforgettable and stress-free.
                         </p>
                     </div>
                     <div className="about-us-image">
