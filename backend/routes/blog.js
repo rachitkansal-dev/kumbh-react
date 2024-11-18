@@ -69,7 +69,7 @@ router.post('/edit/:id', upload.single('image'), async (req, res) => {
             return res.status(404).json({ error: "Blog post not found." });
         }
         if(!(req.session.isAdmin || (post.author_id.toString() === req.session.user_id))){
-            return res.status(403).json({ error: "You are not authorized to delete this post." });
+            return res.status(403).json({ error: "You are not authorized to edit this post." });
         }
 
         const updatedData = req.body;
@@ -89,21 +89,35 @@ router.post('/edit/:id', upload.single('image'), async (req, res) => {
 router.delete('/:id', validate, async (req, res) => {
     try {
         const post = await Blog.findById(req.params.id);
-        const user = await User.findById(post.author_id);
         if (!post) {
             return res.status(404).json({ error: "Blog post not found." });
         }
-        if(!(req.session.isAdmin || (post.author_id.toString() === req.session.user_id))){
+        if (!(req.session.isAdmin || (post.author_id.toString() === req.session.user_id))) {
             return res.status(403).json({ error: "You are not authorized to delete this post." });
         }
-        user.blogs = user.blogs.filter(c => c.toString() !== req.params.id);
-        await Blog.findByIdAndDelete(req.params.id);
+        const comments = await Comment.find({ parent_blog: post._id });
+        for (const comment of comments) {
+            await User.updateOne(
+                { _id: comment.user_id },
+                { $pull: { comments: comment._id } }
+            );
+        }
+        await Comment.deleteMany({ parent_blog: post._id });
+
+        const user = await User.findById(post.author_id);
+        user.blogs = user.blogs.filter(blogId => blogId.toString() !== req.params.id);
         await user.save();
-        res.json({ message: 'Blog post deleted successfully' });
+
+        await Blog.findByIdAndDelete(req.params.id);
+
+        res.json({ message: 'Blog post and associated comments deleted successfully' });
     } catch (error) {
+        console.log('Error in delete:', error);
         res.status(500).json({ error: "Server error while deleting the blog post." });
     }
 });
+
+
 
 // Post a comment on a blog post
 router.post('/:id/comment', validate, async (req, res) => {
@@ -135,24 +149,27 @@ router.post('/:id/comment', validate, async (req, res) => {
 router.delete('/:id/comment/:c_id', validate, async (req, res) => {
     try {
         const post = await Blog.findById(req.params.id);
-        const user = await User.findById(req.session.user_id);
         if (!post) {
             return res.status(404).json({ error: "Blog post not found." });
         }
+        const user = await User.findById(req.session.user_id);
         const comment = await Comment.findById(req.params.c_id);
         if (!comment) {
             return res.status(404).json({ error: "Comment not found." });
         }
-        if(!(req.session.isAdmin || (comment.user_id.toString() === req.session.user_id))){
+        if (!(req.session.isAdmin || (comment.user_id.toString() === req.session.user_id))) {
             return res.status(403).json({ error: "You are not authorized to delete this comment." });
         }
         post.comments = post.comments.filter(c => c.toString() !== req.params.c_id);
         user.comments = user.comments.filter(c => c.toString() !== req.params.c_id);
         await Comment.findByIdAndDelete(req.params.c_id);
+
         await post.save();
         await user.save();
+
         res.json({ message: 'Comment deleted successfully' });
     } catch (error) {
+        console.log('Error deleting comment:', error);
         res.status(500).json({ error: "Server error while deleting the comment." });
     }
 });

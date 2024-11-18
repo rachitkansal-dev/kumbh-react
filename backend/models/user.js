@@ -43,21 +43,5 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-//middleware to delete all blogs and post of user
-userSchema.post('findByIdAndDelete', async function (doc) {
-    if (doc) {
-        await Blog.deleteMany({
-            _id: {
-                $in: doc.blogs
-            }
-        })
-        await Comment.deleteMany({
-            _id: {
-                $in: doc.comments
-            }
-        })
-    }
-})
-
 module.exports = User;
 

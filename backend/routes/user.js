@@ -8,6 +8,7 @@ require('dotenv').config();
 const User = require('../models/user');
 const OTP = require('../models/otp');
 const { Item, Item2 } = require('../models/item');
+const { Comment, Blog } = require('../models/blog');
 const ContactUs = require('../models/contactus'); 
 
 
@@ -149,17 +150,26 @@ router.post('/profile/:id', validate, async (req, res) => {
 
 router.delete('/profile/:id', validate, async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findById(req.params.id);
         if (!user) {
             return res.status(404).json({ message: 'No such user present' });
         }
+        await Comment.deleteMany({ user_id: user._id });
+        const blogs = await Blog.find({ author_id: user._id });
+        const blogIds = blogs.map(blog => blog._id);
+        await Comment.deleteMany({ parent_blog: { $in: blogIds } });
+        await Blog.deleteMany({ author_id: user._id });
+        await User.findByIdAndDelete(req.params.id);
+
         req.session.destroy();
-        res.json({ message: 'Account deleted successfully' });
+
+        res.json({ message: 'Account and related data deleted successfully' });
     } catch (e) {
         console.log('Error in delete:', e);
-        res.status(500).json({ message: 'Error deleting account.' });
+        res.status(500).json({ message: 'Error deleting account and related data.' });
     }
 });
+
 
 router.post('/logout', validate, (req, res) => {
     req.session.destroy(err => {
@@ -240,7 +250,6 @@ router.post('/submit-contactus', async (req, res) => {
     }
   });
 
-
 router.get('/contactus',async(req,res)=>{
     try{
         const items = await ContactUs.find();
@@ -294,26 +303,21 @@ router.get('/users', validateAdmin, async (req,res) => {
 
 router.delete('/users/:id', validateAdmin, async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findById(req.params.id);
         if (!user) {
             return res.status(404).json({ message: 'No such user present' });
         }
+        await Comment.deleteMany({ user_id: user._id });
+        const blogs = await Blog.find({ author_id: user._id });
+        const blogIds = blogs.map(blog => blog._id);
+        await Comment.deleteMany({ parent_blog: { $in: blogIds } });
+        await Blog.deleteMany({ author_id: user._id });
+        await User.findByIdAndDelete(req.params.id);
+
         res.json({ message: 'Account deleted successfully' });
     } catch (e) {
         console.log('Error in delete:', e);
         res.status(500).json({ message: 'Error deleting account.' });
-    }
-});
-
-//for admin to get contact us
-
-router.get('/contactus', async (req, res) => {
-    try {
-      const contacts = await ContactUs.find(); 
-      res.status(200).json(contacts); 
-    } catch (err) {
-      console.error('Error retrieving contact submissions:', err);
-      res.status(500).send('Error retrieving contact submissions');
     }
 });
 
