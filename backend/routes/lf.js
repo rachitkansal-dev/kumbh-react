@@ -232,7 +232,7 @@ router.get('/adminlostitems', validateAdmin , async (req, res) => {
 
 
 
-router.get('/admin-claim-requests', async (req, res) => {
+router.get('/admin-claim-requests', validateAdmin , async (req, res) => {
     try {
         const claims = await Item2.find();
         
