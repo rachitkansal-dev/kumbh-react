@@ -4,6 +4,8 @@ import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import Loading from './Loading';
+import { Helmet } from 'react-helmet-async';
+
 
 export default function Blog() {
   const { id } = useParams();
@@ -115,6 +117,9 @@ export default function Blog() {
 
   return (
     <div className='rootClass'>
+      <Helmet>
+                <title>Prayatak - Blogs </title>
+            </Helmet>
       <div className="blog-container">
         <div className="blog-content">
           <h1 className="blog-place-name">{blog.place}</h1>

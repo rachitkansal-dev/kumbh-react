@@ -4,6 +4,7 @@ import image4 from '../images/image4.jpeg';
 import image5 from '../images/image5.jpeg';
 import image3 from '../images/image3.jpeg';
 import image6 from '../images/image6.jpeg';
+import { Helmet, HelmetData } from 'react-helmet-async';
 export default function Home() {
   const [bgIndex, setBgIndex] = useState(0);
   const backgrounds = [
@@ -36,6 +37,9 @@ export default function Home() {
 
   return (
     <>
+    <Helmet>
+                <title>Prayatak - Home </title>
+            </Helmet>
       <div className="home" style={{
         backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%), url(${backgrounds[bgIndex]})`,
       }}>

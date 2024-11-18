@@ -6,6 +6,7 @@ import image1 from '../images/image1.jpeg';
 import image4 from '../images/image4.jpeg';
 import image5 from '../images/image5.jpeg';
 import image3 from '../images/image3.jpeg';
+import { Helmet } from 'react-helmet-async';
 
 export default function Showcaselostandfound() {
   const [bgIndex, setBgIndex] = useState(0);
@@ -126,6 +127,9 @@ export default function Showcaselostandfound() {
 
   return (
     <>
+    <Helmet>
+                <title>Prayatak - Lost and Found </title>
+            </Helmet>
       <div className="home" style={{
         backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%), url(${backgrounds[bgIndex]})`,
       }}>

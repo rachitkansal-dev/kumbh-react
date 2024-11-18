@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import attractionsData from '../bolgData/attractionsData'; 
 import peopleData from '../bolgData/peopleData'; 
+import { Helmet } from 'react-helmet-async';
 
 const Attractions = () => {
   const location = useLocation();
@@ -28,7 +29,9 @@ const Attractions = () => {
   }, [data]);
 
   return (
+    
     <div className="attractions-container">
+      
       <h2 className="attractions-title">{path==='prayag'?"Famous Personalities of Prayagraj":"Attractions of Maha Kumbh 2025"}</h2>
       <div className="attractions-content">
         <div className="attractions-sidebar">

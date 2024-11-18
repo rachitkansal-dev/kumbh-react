@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+
 
 export default function ResetPassword() {
   const [email, setEmail] = useState('');
@@ -30,6 +32,9 @@ export default function ResetPassword() {
 
   return (
     <div>
+      <Helmet>
+                <title>Prayatak - Reset Password </title>
+            </Helmet>
       <section className="login-center">
         <div className="login-container">
           <form className="login-form" onSubmit={handleSubmit}>

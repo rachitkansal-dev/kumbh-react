@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import { Helmet } from 'react-helmet-async';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -75,6 +76,9 @@ export default function SignUp() {
 
   return (
     <div className='sign-up-body'>
+      <Helmet>
+                <title>Prayatak - SignUp</title>
+            </Helmet>
       <section className="login-center">
         <div className="login-container">
           <form className="login-form" onSubmit={handleSignUp}>

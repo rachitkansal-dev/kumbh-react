@@ -5,6 +5,7 @@ import UserContext from '../context/UserContext';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Loading from './Loading';
+import { Helmet } from 'react-helmet-async';
 
 function UserBlog() {
     const { id } = useParams();
@@ -231,6 +232,9 @@ function UserBlog() {
 
     return (
         <div className='userblog-body'>
+            <Helmet>
+                <title>Prayatak - User Blogs</title>
+            </Helmet>
             <div className="user-blog-header">
                 <button className="btn-primary lost-btn" onClick={openForm}>
                     Create Blog

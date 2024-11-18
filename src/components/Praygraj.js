@@ -1,10 +1,14 @@
 import React from 'react';
 import pryag from '../images/praygraj.jpg'
+import { Helmet } from 'react-helmet-async';
 
 
 const Prayagraj = () => {
     return (
         <div className="prayagraj-container">
+            <Helmet>
+                <title>Prayatak - History </title>
+            </Helmet>
             <div className="prayagraj-content">
                 <h1 className="prayagraj-title">About Prayagraj</h1>
                 <div className="guide-header">

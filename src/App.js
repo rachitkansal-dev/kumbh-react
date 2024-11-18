@@ -22,7 +22,7 @@ import './css/admin.css';
 import './css/adminClaimed.css';
 import './css/loading.css';
 
-
+import { HelmetProvider,Helmet } from 'react-helmet-async';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/navbar';
@@ -68,6 +68,7 @@ import Loading from './components/Loading';
 
 function App() {
   return (
+    <HelmetProvider>
     <LfState>
     <BlogState>
       <UserState>
@@ -337,6 +338,7 @@ function App() {
       </UserState>
       </BlogState>
     </LfState>
+    </HelmetProvider>
   );
 }
 

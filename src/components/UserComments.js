@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-
 function UserComments() {
   const { id } = useParams();
   const [comments, setComments] = useState([]);
@@ -68,6 +68,9 @@ function UserComments() {
 
   return (
     <div className="comments-body">
+      <Helmet>
+                <title>Prayatak - Comments</title>
+            </Helmet>
       <div className="comments-page">
         <h1 className="page-title">Your Comment History</h1>
         <p className="page-subtitle">See your thoughts on our adventures!</p>

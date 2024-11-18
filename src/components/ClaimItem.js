@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import LfContext from '../context/LfContext';
 import UserContext from '../context/UserContext';
 import Loading from './Loading';
+import { Helmet } from 'react-helmet-async';
 
 function ClaimItem() {
     const navigate = useNavigate();
@@ -60,6 +61,9 @@ function ClaimItem() {
 
     return (
         <section className="claim-section">
+            <Helmet>
+                <title>Prayatak - Claim Item </title>
+            </Helmet>
             <div className="claim-container">
                 <div className="claim-main-content">
                     <h1 className="claim-item-title">

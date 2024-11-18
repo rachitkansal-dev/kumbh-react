@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import faqData from '../bolgData/faqData';
+import { Helmet } from 'react-helmet-async';
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -10,6 +11,9 @@ const FAQ = () => {
 
   return (
     <div className="faq-background">
+      <Helmet>
+                <title>Prayatak - Faq </title>
+            </Helmet>
       <div className="faq-container">
         <h2>Frequently Asked Questions</h2>
         <div>

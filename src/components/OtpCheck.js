@@ -1,6 +1,7 @@
 import React, { useState,useContext } from 'react';
 import { Link ,useParams,useNavigate} from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import { Helmet } from 'react-helmet-async';
 
 function OtpCheck() {
     const { token } = useParams(); 
@@ -40,6 +41,9 @@ function OtpCheck() {
 
     return (
         <div>
+          <Helmet>
+                <title>Prayatak - Otp </title>
+            </Helmet>
             <section className="login-center">
                 <div className="login-container">
                     <form className="login-form" onSubmit={verifyOtp}>

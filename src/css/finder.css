@@ -1,7 +1,7 @@
 /* Container for overall layout */
 .finder-container {
     display: flex;
-    min-height: 55vh;
+    min-height: 75vh;
     flex-direction: column;
 }
 

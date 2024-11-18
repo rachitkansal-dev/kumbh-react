@@ -1,9 +1,13 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import aboutImg from '../images/social-integration-working-team_23-2149341140.avif';
 
 const AboutUs = () => {
     return (
         <div className="about-us-body">
+            <Helmet>
+                <title>Prayatak - About Us</title>
+            </Helmet>
             <div className='about-us-main'>
                 <section className="about-us-about-us">
                     <div className="about-us-content">

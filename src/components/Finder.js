@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import LfContext from '../context/LfContext';
 import UserContext from '../context/UserContext';
+import { Helmet } from 'react-helmet-async';
+
 
 export default function Finder() {
   const { items, getItems, getItemsBySearch } = useContext(LfContext);
@@ -61,6 +63,9 @@ export default function Finder() {
 
   return (
     <div>
+      <Helmet>
+                <title>Prayatak - Items </title>
+            </Helmet>
       <div className="finder-container">
         <div className="finder-main-content">
           <aside className="finder-sidebar">

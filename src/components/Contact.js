@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import '../css/Contact.css';
 import companyImage from '../images/company-image.jpeg';
 import BlogContext from '../context/BlogContext';
+import { Helmet } from 'react-helmet-async';
 
 const ContactForm = () => {
   const { contactform } = useContext(BlogContext);
@@ -65,6 +66,9 @@ const ContactForm = () => {
 
   return (
     <div className="contact-main">
+      <Helmet>
+                <title>Prayatak - Contact Us </title>
+            </Helmet>
       <section className="contact-contact-form">
         <div className="contact-container">
           <div className="contact-form-wrapper">

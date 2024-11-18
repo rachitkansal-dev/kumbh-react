@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import avatar from '../images/user-avatar-reloaded.png';
 import Loading from './Loading';
+import { Helmet } from 'react-helmet-async';
 
 function Profile() {
     const { user, logoutUser } = useContext(UserContext);
@@ -75,6 +76,9 @@ function Profile() {
 
     return (
         <div className='profile-body'>
+            <Helmet>
+                <title>Prayatak - Profile </title>
+            </Helmet>
             <div className="profile-container">
                 <div className="profile-card">
                     <div className="profile-side">

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import { Helmet } from 'react-helmet-async';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -44,6 +45,9 @@ export default function Login() {
 
   return (
     <div>
+      <Helmet>
+                <title>Prayatak - Login </title>
+            </Helmet>
       <section className="login-center">
         <div className="login-container">
           <form className="login-form" onSubmit={handleLogin}>
