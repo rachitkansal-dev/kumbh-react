@@ -305,4 +305,16 @@ router.delete('/users/:id', validateAdmin, async (req, res) => {
     }
 });
 
+//for admin to get contact us
+
+router.get('/contactus', async (req, res) => {
+    try {
+      const contacts = await ContactUs.find(); 
+      res.status(200).json(contacts); 
+    } catch (err) {
+      console.error('Error retrieving contact submissions:', err);
+      res.status(500).send('Error retrieving contact submissions');
+    }
+});
+
 module.exports = router;
