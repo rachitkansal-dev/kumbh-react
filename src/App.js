@@ -325,9 +325,6 @@ function App() {
               element={
                 <>
                   <Blog />
-                  <BluetoBlack />
-                  <BlogReview />
-                  <Toblue />
                   <Footer />
                   <GoTop />
                 </>

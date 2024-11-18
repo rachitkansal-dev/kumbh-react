@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import blogData from '../bolgData/blogData'; 
+import blogData from '../bolgData/blogData';
 import BlogContext from '../context/BlogContext';
 import UserContext from '../context/UserContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
-
+import BluetoBlack from './BluetoBlack';
+import BlogReview from './BlogReview';
+import Toblue from './Toblue';
 
 export default function Blog() {
   const { id } = useParams();
@@ -16,8 +18,8 @@ export default function Blog() {
   const [blog, setBlog] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const [loading, setLoading] = useState(true); 
-
+  const [loading, setLoading] = useState(true);
+  const [isLocalBlog, setIsLocalBlog] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -25,16 +27,16 @@ export default function Blog() {
       if (fetchedBlog && !fetchedBlog.error) {
         setBlog(fetchedBlog);
         setLikeCount(fetchedBlog.likes);
-        // Ensure user._id is checked before accessing it
         if (user) {
-          setIsLiked(fetchedBlog.likedBy.includes(user._id)); // Check if the user has already liked
+          setIsLiked(fetchedBlog.likedBy.includes(user._id));
         }
       } else {
         const localBlog = blogData.find(blog => blog.id === parseInt(id));
         if (localBlog) {
           setBlog(localBlog);
+          setIsLocalBlog(true);
         } else {
-          alert("Blog Not Found !!");
+          alert("Blog Not Found!");
           navigate('/blog');
         }
       }
@@ -42,92 +44,53 @@ export default function Blog() {
     });
   }, [id, getBlogById, navigate, user]);
 
-
-  const handleLike = async () => {
+  const handleLikeDislike = async (action) => {
     if (!user) {
-      alert("Please log in to UpVote the blog.");
+      alert(`Please log in to ${action === 'like' ? 'UpVote' : 'downvote'} the blog.`);
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/blog/${id}/like`, {
+      const response = await fetch(`http://localhost:8080/blog/${id}/${action}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_id: user._id, // Only access _id if user is not null
+          user_id: user._id,
         }),
       });
 
       const data = await response.json();
       if (response.ok) {
         setLikeCount(data.likes);
-        setIsLiked(true);
-        alert('Upvote Successful');
+        setIsLiked(action === 'like');
+        alert(`${action === 'like' ? 'Upvote' : 'DownVote'} Successful`);
       } else {
-        alert(data.error || "Error liking the blog.");
+        alert(data.error || `Error ${action === 'like' ? 'liking' : 'unliking'} the blog.`);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to like the blog.");
-    }
-  };
-
-  // Dislike functionality (unlike)
-  const handleDislike = async () => {
-    if (!user) {
-      alert("Please log in to downvote the blog.");
-      return;
-    }
-    try {
-      const response = await fetch(`http://localhost:8080/blog/${id}/dislike`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: user._id, // Only access _id if user is not null
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setLikeCount(data.likes); // Update the like count
-        setIsLiked(false); 
-        alert('DownVote Successful');
-        // Set isLiked to false after unliking
-      } else {
-        alert(data.error || "Error unliking the blog.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to unlike the blog.");
+      alert(`Failed to ${action === 'like' ? 'like' : 'unlike'} the blog.`);
     }
   };
 
   if (loading) {
-    return <Loading/>
+    return <Loading />;
   }
 
   if (!blog) {
-    return <div>Blog Not Found!</div>; // Display message if the blog is not found
+    return <div>Blog Not Found!</div>;
   }
 
   return (
     <div className='rootClass'>
       <Helmet>
-                <title>Prayatak - Blogs </title>
-            </Helmet>
+        <title>Prayatak - Blogs</title>
+      </Helmet>
       <div className="blog-container">
         <div className="blog-content">
           <h1 className="blog-place-name">{blog.place}</h1>
-          {/* <div className="blog-ratings">
-            <span className="blog-stars">★★★★☆</span>
-            <span className="blog-rating-value">(3.8 out of 5)</span>
-            <div className="blog-global-ratings">164 global ratings</div>
-          </div> */}
           <h1 className="blog-header-text">{blog.title}</h1>
           <h1 className="blog-author">--- By {blog.author}</h1>
         </div>
@@ -139,21 +102,25 @@ export default function Blog() {
       </div>
       <div className="blog-container1">
         <p className="blog-text" dangerouslySetInnerHTML={{ __html: blog.body }} />
-
-        <p className="blog-fav-icons">
+        {!isLocalBlog && (<div className="blog-fav-icons">
           <i
             className={`fa-regular fa-circle-up ${isLiked ? 'liked' : ''}`}
-            onClick={handleLike} // Handle like
-            disabled={isLiked} // Disable like button if already liked
+            onClick={() => handleLikeDislike('like')}
           ></i>
           <p className="blog-likeCount">{likeCount}</p>
           <i
             className={`fa-solid fa-circle-down ${!isLiked ? 'disliked' : ''}`}
-            onClick={handleDislike} // Handle dislike/unlike
-            disabled={!isLiked} // Disable dislike button if not liked
+            onClick={() => handleLikeDislike('dislike')}
           ></i>
-        </p>
+        </div>)}
       </div>
+      {!isLocalBlog && (
+        <>
+          <BluetoBlack />
+          <BlogReview />
+          <Toblue/>
+        </>
+      )}
     </div>
   );
 }
