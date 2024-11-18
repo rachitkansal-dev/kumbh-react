@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import logo from '../images/logo192.png';
+import logoText from '../images/logofinal-removebg-preview.png';
 
 export default function Navbar() {
   const { user } = useContext(UserContext);
@@ -27,10 +28,12 @@ export default function Navbar() {
 
       {/* Logo */}
       <div className="logo">
-        <Link to="/">
+        <Link className='logoimg' to="/">
           <img src={logo} alt="Logo" />
         </Link>
-        <Link to="/">TPW</Link>
+        <Link className='logotxt' to="/">
+          <img src={logoText} alt="Logo" />
+        </Link>
       </div>
 
       {/* Navigation Items */}

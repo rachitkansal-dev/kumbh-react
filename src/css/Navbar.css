@@ -14,9 +14,14 @@
 .logo{
     display: flex;
 }
-.logo a img{
+.logo .logoimg img{
     cursor: pointer;
     width: 40px;
+    height: 40px;
+}
+.logotxt img{
+    cursor: pointer;
+    width: 150px;
     height: 40px;
 }
 
