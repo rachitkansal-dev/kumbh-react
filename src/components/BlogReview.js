@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import Loading from './Loading';
 
 export default function BlogReview() {
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
   const { id } = useParams();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
@@ -16,7 +17,7 @@ export default function BlogReview() {
   // Fetch reviews on component load
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/blog/${id}`, {
+      const response = await fetch(`${HOST_URL}/blog/${id}`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -76,7 +77,7 @@ export default function BlogReview() {
     e.preventDefault();
     if (newReview.trim()) {
       try {
-        const response = await fetch(`http://localhost:8080/blog/${id}/comment`, {
+        const response = await fetch(`${HOST_URL}/blog/${id}/comment`, {
           method: 'POST',
           credentials: 'include',
           headers: {

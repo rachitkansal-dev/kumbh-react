@@ -8,6 +8,7 @@ import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
 
 function UserBlog() {
+    const HOST_URL = process.env.REACT_APP_HOST_URL; 
     const { id } = useParams();
     const navigate = useNavigate();
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -180,7 +181,7 @@ function UserBlog() {
         const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
         if (confirmDelete) {
             try {
-                const url = `http://localhost:8080/blog/${blogId}`;
+                const url = `${HOST_URL}/blog/${blogId}`;
                 const response = await fetch(url, {
                     method: 'DELETE',
                     headers: {

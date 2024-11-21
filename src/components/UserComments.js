@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 function UserComments() {
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
   const { id } = useParams();
   const [comments, setComments] = useState([]);
 
@@ -10,7 +11,7 @@ function UserComments() {
     const confirmDelete = window.confirm("Are you sure you want to delete this Comment?");
     if (confirmDelete) {
     try {
-      const url = `http://localhost:8080/blog/${comment.parent_blog._id}/comment/${comment._id}`;
+      const url = `${HOST_URL}/blog/${comment.parent_blog._id}/comment/${comment._id}`;
       const response = await fetch(url, {
         method: 'DELETE',
         headers: {
@@ -41,7 +42,7 @@ function UserComments() {
   // Function to fetch comments
   const getComment = async () => {
     try {
-      const url = `http://localhost:8080/profile/${id}/comments`;
+      const url = `${HOST_URL}/profile/${id}/comments`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {

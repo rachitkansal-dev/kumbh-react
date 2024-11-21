@@ -101,6 +101,10 @@ function ClaimItem() {
                     <div className="claim-listing-details">
                         <h3>Details</h3>
                         <div className="claim-detail-row">
+                            <div className="claim-detail-label">Title:</div>
+                            <div className='claim-detail-text'>{item.title}</div>
+                        </div>
+                        <div className="claim-detail-row">
                             <div className="claim-detail-label">Location:</div>
                             <div className='claim-detail-text'>{item.location}</div>
                         </div>

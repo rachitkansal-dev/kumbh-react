@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function ResetPassword() {
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
   const [email, setEmail] = useState('');
 
   const handleEmailChange = (e) => {
@@ -13,7 +14,7 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/forgot-password', {
+      const response = await fetch(`${HOST_URL}/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })

@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 
 export default function EditProfile() {
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
   const [password, setPassword] = useState('');
   const [cpassword, setcPassword] = useState('');
   const [name, setName] = useState('');
@@ -39,7 +40,7 @@ export default function EditProfile() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/profile/${user._id}`, {
+      const response = await fetch(`${HOST_URL}/profile/${user._id}`, {
         method: 'POST',
         credentials: 'include',
         headers: {

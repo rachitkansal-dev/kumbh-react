@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 
 function OtpCheck() {
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
     const { token } = useParams(); 
     const navigate = useNavigate();
     const [OTP, setOTP] = useState('');
@@ -11,7 +12,7 @@ function OtpCheck() {
     const verifyOtp = async (e) => {
         e.preventDefault(); 
         try {
-          const response = await fetch(`http://localhost:8080/otp-check/${token}`, {
+          const response = await fetch(`${HOST_URL}/otp-check/${token}`, {
             method: 'POST',
             credentials: 'include',
             headers: {

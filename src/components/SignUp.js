@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 
 export default function SignUp() {
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,7 +50,7 @@ export default function SignUp() {
     } 
     setLoadingSubmit(true);
     try {
-      const response = await fetch('http://localhost:8080/signup', {
+      const response = await fetch(`${HOST_URL}/signup`, {
         method: 'POST',
         credentials: 'include',
         headers: {

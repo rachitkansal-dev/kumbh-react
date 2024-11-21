@@ -10,6 +10,7 @@ import BlogReview from './BlogReview';
 import Toblue from './Toblue';
 
 export default function Blog() {
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
   const { id } = useParams();
   const navigate = useNavigate();
   const { getBlogById } = useContext(BlogContext);
@@ -50,7 +51,7 @@ export default function Blog() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/blog/${id}/${action}`, {
+      const response = await fetch(`${HOST_URL}/blog/${id}/${action}`, {
         method: 'POST',
         credentials: 'include',
         headers: {

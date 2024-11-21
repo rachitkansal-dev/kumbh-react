@@ -1,173 +1,178 @@
-import { useState, useCallback} from "react";
+import { useState, useCallback } from "react";
 import LfContext from "./LfContext";
 
 const LfState = (props) => {
-  const itemsInitial = [];
-  const [items, setItems] = useState(itemsInitial);
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
+  const [items, setItems] = useState([]);
+  const [comments, setComments] = useState([]);
 
-  const commentInitial = [];
-  const [comments, setComments] = useState(commentInitial);
-
-  const addComment = async (username,commentText) => {
-    const url = "http://localhost:8080/lf/addcomment";
+  // Function to add a comment
+  const addComment = async (username, commentText) => {
+    const url = `${HOST_URL}/lf/addcomment`;
     const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, commentText }), 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, commentText }),
     });
 
     if (response.ok) {
-        const result = await response.json();
-        alert(result.message);
+      const result = await response.json();
+      alert(result.message);
     } else {
-        console.error('Error sending data:', response.statusText);
+      console.error('Error sending data:', response.statusText);
     }
-};
-  const addClaim = async (id,description,phone,email) => {
-    const url = "http://localhost:8080/lf/claim-item";
-   
+  };
+
+  // Function to add a claim to an item
+  const addClaim = async (id, description, phone, email) => {
+    const url = `${HOST_URL}/lf/claim-item`;
+
     const response = await fetch(url, {
-      
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id,description,phone,email}), 
-       
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id, description, phone, email }),
     });
 
     if (response.ok) {
-        const result = await response.json();
-        alert("Claim Submitted , we will contact you soon ! ");
+      const result = await response.json();
+      alert("Claim Submitted, we will contact you soon!");
     } else {
-        console.error('Error sending data:', response.statusText);
+      console.error('Error sending data:', response.statusText);
     }
-};
+  };
 
-const getComments = async () => {
-  const url = "http://localhost:8080/lf/lfcomments";
-  const response = await fetch(url, {
+  // Function to get comments
+  const getComments = async () => {
+    const url = `${HOST_URL}/lf/lfcomments`;
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
-  });
+    });
 
-  if (response.ok) {
+    if (response.ok) {
       const json = await response.json();
-      console.log(json);
       setComments(json);
-  } else {
+    } else {
       console.error('Error fetching data:', response.statusText);
-  }
-};
+    }
+  };
 
-
+  // Function to get all items
   const getItems = useCallback(async () => {
     try {
-      const url = "http://localhost:8080/lf/items";
+      const url = `${HOST_URL}/lf/items`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
+
       if (!response.ok) {
         throw new Error('Failed to fetch items');
       }
-      const json = await response.json();
 
+      const json = await response.json();
       const itemsWithFullPhotoUrl = json.map(item => ({
         ...item,
-        photo: `${item.photo}`
+        photo: item.photo ? `${HOST_URL}${item.photo}` : "#",
       }));
-  
       setItems(itemsWithFullPhotoUrl);
     } catch (error) {
       console.error("Error fetching items:", error);
     }
-  }, []);
+  }, [HOST_URL]);
+
+  // Function to get items by type
   const getItemsByType = useCallback(async (type) => {
     try {
-        const url = `http://localhost:8080/lf/type/${type}`;
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        
-        if (!response.ok) {
-            throw new Error('Failed to fetch items');
-        }
+      const url = `${HOST_URL}/lf/type/${type}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-        const json = await response.json();
-        const itemsWithFullPhotoUrl = json.map(item => ({
-            ...item,
-            photo: item.photo ? `http://localhost:8080${item.photo}` : "#", // Handle potential undefined photo
-        }));
+      if (!response.ok) {
+        throw new Error('Failed to fetch items');
+      }
 
-        setItems(itemsWithFullPhotoUrl);
+      const json = await response.json();
+      const itemsWithFullPhotoUrl = json.map(item => ({
+        ...item,
+        photo: item.photo ? `${HOST_URL}${item.photo}` : "#",
+      }));
+      setItems(itemsWithFullPhotoUrl);
     } catch (error) {
-        console.error("Error fetching items:", error);
+      console.error("Error fetching items:", error);
     }
-}, [setItems]);
+  }, [HOST_URL]);
+
+  // Function to get items by location
   const getItemsByLocation = useCallback(async (location) => {
     try {
-        const url = `http://localhost:8080/lf/location/${location}`;
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        
-        if (!response.ok) {
-            throw new Error('Failed to fetch items');
-        }
+      const url = `${HOST_URL}/lf/location/${location}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-        const json = await response.json();
-        const itemsWithFullPhotoUrl = json.map(item => ({
-            ...item,
-            photo: item.photo ? `http://localhost:8080${item.photo}` : "#", 
-        }));
+      if (!response.ok) {
+        throw new Error('Failed to fetch items');
+      }
 
-        setItems(itemsWithFullPhotoUrl);
+      const json = await response.json();
+      const itemsWithFullPhotoUrl = json.map(item => ({
+        ...item,
+        photo: item.photo ? `${HOST_URL}${item.photo}` : "#",
+      }));
+      setItems(itemsWithFullPhotoUrl);
     } catch (error) {
-        console.error("Error fetching items:", error);
+      console.error("Error fetching items:", error);
     }
-}, [setItems]);
-const getItemsBySearch = async (filters) => {
-  try {
-    // Convert filters into query parameters
-    const queryParams = new URLSearchParams(filters).toString();
-    
-    const response = await fetch(`http://localhost:8080/lf/search?${queryParams}`);
-    
-    if (!response.ok) {
-      throw new Error(`Error fetching filtered items: ${response.statusText}`);
+  }, [HOST_URL]);
+
+  // Function to search items based on filters
+  const getItemsBySearch = async (filters) => {
+    try {
+      const queryParams = new URLSearchParams(filters).toString();
+      const response = await fetch(`${HOST_URL}/lf/search?${queryParams}`);
+
+      if (!response.ok) {
+        throw new Error(`Error fetching filtered items: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setItems(data);
+    } catch (error) {
+      console.error('Error fetching filtered items:', error);
     }
-    
-    const data = await response.json();
-    setItems(data);
-  } catch (error) {
-    console.error('Error fetching filtered items:', error);
-  }
-};
-const getItemById = async (id) => {
-  const response = await fetch(`http://localhost:8080/lf/items/${id}`);
-  const data = await response.json();
-  return data;
-};
+  };
 
-  
+  // Function to get an item by its ID
+  const getItemById = async (id) => {
+    try {
+      const response = await fetch(`${HOST_URL}/lf/items/${id}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching item by ID:', error);
+    }
+  };
 
-  const addItems = async (landf, type, description, location, date, photo, contact,name,email) => {
-    const url = "http://localhost:8080/lf/items";
-    
-    // Create a FormData object
+  // Function to add new item
+  const addItems = async (landf, type, description, location, date, photo, contact, name, email) => {
+    const url = `${HOST_URL}/lf/items`;
+
     const formData = new FormData();
     formData.append('landf', landf);
     formData.append('type', type);
@@ -180,22 +185,36 @@ const getItemById = async (id) => {
     formData.append('email', email);
 
     try {
-        const response = await fetch(url, {
-            method: 'POST',
-            body: formData // Use FormData as the body
-        });
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData, // Use FormData as the body
+      });
 
-        if (!response.ok) {
-            throw new Error('Failed to add item');
-        }
-        const json = await response.json();
-        setItems(items.concat(json));  
+      if (!response.ok) {
+        throw new Error('Failed to add item');
+      }
+
+      const json = await response.json();
+      setItems(prevItems => [...prevItems, json]);  
     } catch (error) {
-        console.error("Error adding item:", error);
+      console.error("Error adding item:", error);
     }
-};
+  };
+
   return (
-    <LfContext.Provider value={{ items,addClaim, getItems,addItems,getItemsByType,getItemsByLocation,getItemsBySearch,addComment,comments,getComments,getItemById }}>
+    <LfContext.Provider value={{
+      items,
+      addClaim,
+      getItems,
+      addItems,
+      getItemsByType,
+      getItemsByLocation,
+      getItemsBySearch,
+      addComment,
+      comments,
+      getComments,
+      getItemById,
+    }}>
       {props.children}
     </LfContext.Provider>
   );

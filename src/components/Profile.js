@@ -6,6 +6,7 @@ import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
 
 function Profile() {
+    const HOST_URL = process.env.REACT_APP_HOST_URL; 
     const { user, logoutUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -13,7 +14,7 @@ function Profile() {
         logoutUser();
         navigate('/login');
         try {
-            const response = await fetch('http://localhost:8080/logout', {
+            const response = await fetch(`${HOST_URL}/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });
@@ -43,7 +44,7 @@ function Profile() {
 
         if (confirmation === 'CONFIRM') {
             try {
-                const response = await fetch(`http://localhost:8080/profile/${user?._id}`, {
+                const response = await fetch(`${HOST_URL}/profile/${user?._id}`, {
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {

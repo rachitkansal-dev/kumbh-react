@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 
 export default function Login() {
+  const HOST_URL = process.env.REACT_APP_HOST_URL; 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
@@ -20,7 +21,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/login', {
+      const response = await fetch(`${HOST_URL}/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
