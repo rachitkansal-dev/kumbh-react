@@ -2,22 +2,14 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const methodOverride = require('method-override');
 const session = require('express-session');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-const multer = require('multer');
-const { promisify } = require("util");
+const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const {checkCloudinaryConnection} = require('./middleware')
 require('dotenv').config();
 
-const User = require('./models/user');
-const { Comment, Blog } = require('./models/blog');
-const { Item, Item2 } = require('./models/item');
 const userRouter = require('./routes/user');
 const blogRouter = require('./routes/blog');
 const lfRouter = require('./routes/lf');
@@ -47,8 +39,19 @@ cloudinary.config({
 
 checkCloudinaryConnection();
 
+const dbUrl = process.env.MONGODB_URI;
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: process.env.STORE_SECRET
+    }
+});
+
 // Secure session setup
 app.use(session({
+    store,
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
@@ -56,7 +59,7 @@ app.use(session({
 }));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(dbUrl)
     .then(() => console.log('MongoDB connected'))
     .catch(e => console.error('Error connecting to MongoDB'));
 
