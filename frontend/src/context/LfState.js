@@ -58,7 +58,6 @@ const getComments = async () => {
 
   if (response.ok) {
       const json = await response.json();
-      console.log(json);
       setComments(json);
   } else {
       console.error('Error fetching data:', response.statusText);

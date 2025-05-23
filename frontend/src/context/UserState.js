@@ -10,7 +10,6 @@ export const UserState = ({ children }) => {
   // Function to update user and persist it in localStorage
   const loginUser = (userData) => {
     setUser(userData);
-    console.log(userData);
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
