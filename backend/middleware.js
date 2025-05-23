@@ -7,14 +7,14 @@ require('dotenv').config();
 
 // Middleware to check if the user is logged in
 function validate(req, res, next) {
-    if (!req.session.isLogin) {
+    if (!req.session || !req.session.isLogin) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
     next();
 }
 
 function validateAdmin(req, res, next) {
-    if (!req.session.isAdmin) {
+    if (!req.session || !req.session.isAdmin) {
         return res.status(401).json({ message: 'not admin' });
     }
     next();

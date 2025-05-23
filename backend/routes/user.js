@@ -179,13 +179,17 @@ router.post('/logout', (req, res) => {
             if (err) {
                 return res.status(500).json({ message: 'Error logging out.' });
             }
-            // Clear the cookie
+            
+            const isProduction = process.env.NODE_ENV === 'production';
+            
+            // Clear the cookie with appropriate settings for environment
             res.clearCookie('connect.sid', {
                 path: '/',
-                sameSite: 'none',
-                secure: true,
+                sameSite: isProduction ? 'none' : 'lax',
+                secure: isProduction,
                 httpOnly: true
             });
+            
             res.json({ message: 'Logout successful' });
         });
     } else {
