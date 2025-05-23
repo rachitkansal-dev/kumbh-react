@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 
+const API_URL = process.env.API_URI || "http://localhost:8080";
+
 export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -49,7 +51,7 @@ export default function SignUp() {
     } 
     setLoadingSubmit(true);
     try {
-      const response = await fetch('http://localhost:8080/signup', {
+      const response = await fetch(`${API_URL}/signup`, {
         method: 'POST',
         credentials: 'include',
         headers: {

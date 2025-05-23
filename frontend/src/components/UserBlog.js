@@ -7,6 +7,8 @@ import 'react-quill/dist/quill.snow.css';
 import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
 
+const API_URL = process.env.API_URI || "http://localhost:8080";
+
 function UserBlog() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -180,7 +182,7 @@ function UserBlog() {
         const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
         if (confirmDelete) {
             try {
-                const url = `http://localhost:8080/blog/${blogId}`;
+                const url = `${API_URL}/blog/${blogId}`;
                 const response = await fetch(url, {
                     method: 'DELETE',
                     headers: {

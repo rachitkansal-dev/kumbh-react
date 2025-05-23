@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 
+const API_URL = process.env.API_URI || "http://localhost:8080";
+
 export default function EditProfile() {
   const [password, setPassword] = useState('');
   const [cpassword, setcPassword] = useState('');
@@ -39,7 +41,7 @@ export default function EditProfile() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/profile/${user._id}`, {
+      const response = await fetch(`${API_URL}/profile/${user._id}`, {
         method: 'POST',
         credentials: 'include',
         headers: {

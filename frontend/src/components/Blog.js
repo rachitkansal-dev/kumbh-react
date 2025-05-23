@@ -9,6 +9,8 @@ import BluetoBlack from './BluetoBlack';
 import BlogReview from './BlogReview';
 import Toblue from './Toblue';
 
+const API_URL = process.env.API_URI || "http://localhost:8080";
+
 export default function Blog() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ export default function Blog() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/blog/${id}/${action}`, {
+      const response = await fetch(`${API_URL}/blog/${id}/${action}`, {
         method: 'POST',
         credentials: 'include',
         headers: {

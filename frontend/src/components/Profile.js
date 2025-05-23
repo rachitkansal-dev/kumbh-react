@@ -5,6 +5,8 @@ import avatar from '../images/user-avatar-reloaded.png';
 import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
 
+const API_URL = process.env.API_URI || "http://localhost:8080";
+
 function Profile() {
     const { user, logoutUser } = useContext(UserContext);
     const navigate = useNavigate();
@@ -13,7 +15,7 @@ function Profile() {
         logoutUser();
         navigate('/login');
         try {
-            const response = await fetch('http://localhost:8080/logout', {
+            const response = await fetch(`${API_URL}/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });
@@ -43,7 +45,7 @@ function Profile() {
 
         if (confirmation === 'CONFIRM') {
             try {
-                const response = await fetch(`http://localhost:8080/profile/${user?._id}`, {
+                const response = await fetch(`${API_URL}/profile/${user?._id}`, {
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {

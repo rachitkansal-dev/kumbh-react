@@ -2,6 +2,7 @@ import { useState, useCallback} from "react";
 import LfContext from "./LfContext";
 
 const LfState = (props) => {
+  const API_URL = process.env.API_URI || "http://localhost:8080";
   const itemsInitial = [];
   const [items, setItems] = useState(itemsInitial);
 
@@ -9,7 +10,7 @@ const LfState = (props) => {
   const [comments, setComments] = useState(commentInitial);
 
   const addComment = async (username,commentText) => {
-    const url = "http://localhost:8080/lf/addcomment";
+    const url = `${API_URL}/lf/addcomment`;
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -26,7 +27,7 @@ const LfState = (props) => {
     }
 };
   const addClaim = async (id,description,phone,email) => {
-    const url = "http://localhost:8080/lf/claim-item";
+    const url = `${API_URL}/lf/claim-item`;
    
     const response = await fetch(url, {
       
@@ -47,7 +48,7 @@ const LfState = (props) => {
 };
 
 const getComments = async () => {
-  const url = "http://localhost:8080/lf/lfcomments";
+  const url = `${API_URL}/lf/lfcomments`;
   const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -67,7 +68,7 @@ const getComments = async () => {
 
   const getItems = useCallback(async () => {
     try {
-      const url = "http://localhost:8080/lf/items";
+      const url = `${API_URL}/lf/items`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -91,7 +92,7 @@ const getComments = async () => {
   }, []);
   const getItemsByType = useCallback(async (type) => {
     try {
-        const url = `http://localhost:8080/lf/type/${type}`;
+        const url = `${API_URL}/lf/type/${type}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -106,7 +107,7 @@ const getComments = async () => {
         const json = await response.json();
         const itemsWithFullPhotoUrl = json.map(item => ({
             ...item,
-            photo: item.photo ? `http://localhost:8080${item.photo}` : "#", // Handle potential undefined photo
+            photo: item.photo ? `${API_URL}${item.photo}` : "#", // Handle potential undefined photo
         }));
 
         setItems(itemsWithFullPhotoUrl);
@@ -116,7 +117,7 @@ const getComments = async () => {
 }, [setItems]);
   const getItemsByLocation = useCallback(async (location) => {
     try {
-        const url = `http://localhost:8080/lf/location/${location}`;
+        const url = `${API_URL}/lf/location/${location}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -131,7 +132,7 @@ const getComments = async () => {
         const json = await response.json();
         const itemsWithFullPhotoUrl = json.map(item => ({
             ...item,
-            photo: item.photo ? `http://localhost:8080${item.photo}` : "#", 
+            photo: item.photo ? `${API_URL}${item.photo}` : "#", 
         }));
 
         setItems(itemsWithFullPhotoUrl);
@@ -144,7 +145,7 @@ const getItemsBySearch = async (filters) => {
     // Convert filters into query parameters
     const queryParams = new URLSearchParams(filters).toString();
     
-    const response = await fetch(`http://localhost:8080/lf/search?${queryParams}`);
+    const response = await fetch(`${API_URL}/lf/search?${queryParams}`);
     
     if (!response.ok) {
       throw new Error(`Error fetching filtered items: ${response.statusText}`);
@@ -157,7 +158,7 @@ const getItemsBySearch = async (filters) => {
   }
 };
 const getItemById = async (id) => {
-  const response = await fetch(`http://localhost:8080/lf/items/${id}`);
+  const response = await fetch(`${API_URL}/lf/items/${id}`);
   const data = await response.json();
   return data;
 };
@@ -165,7 +166,7 @@ const getItemById = async (id) => {
   
 
   const addItems = async (landf, type, description, location, date, photo, contact,name,email) => {
-    const url = "http://localhost:8080/lf/items";
+    const url = `${API_URL}/lf/items`;
     
     // Create a FormData object
     const formData = new FormData();

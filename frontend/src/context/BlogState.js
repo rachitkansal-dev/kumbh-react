@@ -2,10 +2,11 @@ import { useState, useCallback } from "react";
 import BlogContext from "./BlogContext";
 
 const BlogState = (props) => {
+    const API_URL = process.env.API_URI || "http://localhost:8080";
     const blogsInitial = [];
     const [blogs, setBlogs] = useState(blogsInitial);
     const getBlogs = async () => {
-        const url = "http://localhost:8080/blog";
+        const url = `${API_URL}/blog`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -22,7 +23,7 @@ const BlogState = (props) => {
     const UserblogsInitial = [];
     const [userBlogs, setUserBlogs] = useState(UserblogsInitial);
     const getBlogsofUser = async (id) => {
-        const url = `http://localhost:8080/profile/${id}/blogs`;
+        const url = `${API_URL}/profile/${id}/blogs`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -38,7 +39,7 @@ const BlogState = (props) => {
     };
 
     const contactform = async (name,email,phoneNumber,message) => {
-        const url = "http://localhost:8080/submit-contactus";
+        const url = `${API_URL}/submit-contactus`;
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -57,7 +58,7 @@ const BlogState = (props) => {
 
 
     const createBlogs = async (title, place, body, image, author) => {
-        const url = "http://localhost:8080/blog/create"; // Make sure this matches your backend
+        const url = `${API_URL}/blog/create`; // Make sure this matches your backend
     
         const formData = new FormData();
         formData.append('title', title);
@@ -87,7 +88,7 @@ const BlogState = (props) => {
         }
     };
     const updateBlog = async (bid, title, place, body, image) => {
-        const url = `http://localhost:8080/blog/edit/${bid}`; 
+        const url = `${API_URL}/blog/edit/${bid}`; 
     
         const formData = new FormData();
         formData.append('title', title);
@@ -120,7 +121,7 @@ const BlogState = (props) => {
     
 
     const getBlogById = async (id) => {
-        const response = await fetch(`http://localhost:8080/blog/${id}`);
+        const response = await fetch(`${API_URL}/blog/${id}`);
         const data = await response.json();
         return data;
       };

@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import Loading from './Loading';
 
+const API_URL = process.env.API_URI || "http://localhost:8080";
+
 export default function BlogReview() {
   const { id } = useParams();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,7 +18,7 @@ export default function BlogReview() {
   // Fetch reviews on component load
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/blog/${id}`, {
+      const response = await fetch(`${API_URL}/blog/${id}`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -76,7 +78,7 @@ export default function BlogReview() {
     e.preventDefault();
     if (newReview.trim()) {
       try {
-        const response = await fetch(`http://localhost:8080/blog/${id}/comment`, {
+        const response = await fetch(`${API_URL}/blog/${id}/comment`, {
           method: 'POST',
           credentials: 'include',
           headers: {
