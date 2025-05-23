@@ -9,6 +9,7 @@ const BlogState = (props) => {
         const url = `${API_URL}/blog`;
         const response = await fetch(url, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -26,6 +27,7 @@ const BlogState = (props) => {
         const url = `${API_URL}/profile/${id}/blogs`;
         const response = await fetch(url, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -42,6 +44,7 @@ const BlogState = (props) => {
         const url = `${API_URL}/submit-contactus`;
         const response = await fetch(url, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -121,7 +124,9 @@ const BlogState = (props) => {
     
 
     const getBlogById = async (id) => {
-        const response = await fetch(`${API_URL}/blog/${id}`);
+        const response = await fetch(`${API_URL}/blog/${id}`, {
+            credentials: 'include'
+        });
         const data = await response.json();
         return data;
       };

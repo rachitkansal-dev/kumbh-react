@@ -11,7 +11,9 @@ function AdminClaimed() {
     useEffect(() => {
         const fetchClaimedItems = async () => {
             try {
-                const response = await fetch('/lf/admin-claim-requests');
+                const response = await fetch('/lf/admin-claim-requests', {
+                    credentials: 'include'
+                });
                 if (!response.ok) {
                     throw new Error('Failed to fetch items');
                 }

@@ -13,6 +13,7 @@ const LfState = (props) => {
     const url = `${API_URL}/lf/addcomment`;
     const response = await fetch(url, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -32,6 +33,7 @@ const LfState = (props) => {
     const response = await fetch(url, {
       
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -51,6 +53,7 @@ const getComments = async () => {
   const url = `${API_URL}/lf/lfcomments`;
   const response = await fetch(url, {
       method: 'GET',
+      credentials: 'include',
       headers: {
           'Content-Type': 'application/json',
       },
@@ -70,6 +73,7 @@ const getComments = async () => {
       const url = `${API_URL}/lf/items`;
       const response = await fetch(url, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

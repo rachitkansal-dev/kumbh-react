@@ -10,7 +10,9 @@ function Admin() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/users'); 
+                const response = await fetch('/users', {
+                    credentials: 'include'
+                }); 
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
@@ -30,6 +32,7 @@ function Admin() {
             try {
                 const response = await fetch(`/users/${id}`, {
                     method: 'DELETE',
+                    credentials: 'include'
                 });
                 const result = await response.json();
 
