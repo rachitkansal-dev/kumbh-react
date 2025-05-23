@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-const API_URL = process.env.API_URI || "http://localhost:8080";
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
 function UserComments() {
   const { id } = useParams();

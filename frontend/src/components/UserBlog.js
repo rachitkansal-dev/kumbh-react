@@ -7,7 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
 
-const API_URL = process.env.API_URI || "http://localhost:8080";
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
 function UserBlog() {
     const { id } = useParams();

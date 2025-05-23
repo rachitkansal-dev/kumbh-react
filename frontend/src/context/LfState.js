@@ -2,7 +2,7 @@ import { useState, useCallback} from "react";
 import LfContext from "./LfContext";
 
 const LfState = (props) => {
-  const API_URL = process.env.API_URI || "http://localhost:8080";
+  const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
   const itemsInitial = [];
   const [items, setItems] = useState(itemsInitial);
 

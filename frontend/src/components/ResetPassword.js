@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-const API_URL = process.env.API_URI || "http://localhost:8080";
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
 export default function ResetPassword() {
   const [email, setEmail] = useState('');
