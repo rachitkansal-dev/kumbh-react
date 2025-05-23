@@ -10,6 +10,8 @@ const cloudinary = require('cloudinary').v2;
 const {checkCloudinaryConnection} = require('./middleware')
 require('dotenv').config();
 
+app.set('trust proxy', 1);
+
 // Set NODE_ENV if not already set
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const isProduction = process.env.NODE_ENV === 'production';
