@@ -12,8 +12,6 @@ require('dotenv').config();
 
 app.set('trust proxy', 1);
 
-console.log(`Running in ${process.env.NODE_ENV} mode`);
-
 const userRouter = require('./routes/user');
 const blogRouter = require('./routes/blog');
 const lfRouter = require('./routes/lf');
