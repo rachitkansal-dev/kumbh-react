@@ -83,6 +83,10 @@ app.use('', userRouter);
 app.use('/blog', blogRouter);
 app.use('/lf', lfRouter);
 
+app.get('/', (req,res) => {
+    res.status(500).json({message : "Backend server running"});
+});
+
 app.get('*', (req, res) => {
     res.status(500).json({ error: "Api not available" });
 });
