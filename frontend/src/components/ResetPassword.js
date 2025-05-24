@@ -16,6 +16,7 @@ export default function ResetPassword() {
     try {
       const response = await fetch(`${API_URL}/forgot-password`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       });
