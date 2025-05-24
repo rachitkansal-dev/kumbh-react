@@ -13,6 +13,7 @@ const LfState = (props) => {
     const url = `${API_URL}/lf/addcomment`;
     const response = await fetch(url, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -32,6 +33,7 @@ const LfState = (props) => {
     const response = await fetch(url, {
       
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -51,6 +53,7 @@ const getComments = async () => {
   const url = `${API_URL}/lf/lfcomments`;
   const response = await fetch(url, {
       method: 'GET',
+      credentials: 'include',
       headers: {
           'Content-Type': 'application/json',
       },
@@ -58,7 +61,6 @@ const getComments = async () => {
 
   if (response.ok) {
       const json = await response.json();
-      console.log(json);
       setComments(json);
   } else {
       console.error('Error fetching data:', response.statusText);
@@ -71,6 +73,7 @@ const getComments = async () => {
       const url = `${API_URL}/lf/items`;
       const response = await fetch(url, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -95,6 +98,7 @@ const getComments = async () => {
         const url = `${API_URL}/lf/type/${type}`;
         const response = await fetch(url, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -120,6 +124,7 @@ const getComments = async () => {
         const url = `${API_URL}/lf/location/${location}`;
         const response = await fetch(url, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -145,7 +150,9 @@ const getItemsBySearch = async (filters) => {
     // Convert filters into query parameters
     const queryParams = new URLSearchParams(filters).toString();
     
-    const response = await fetch(`${API_URL}/lf/search?${queryParams}`);
+    const response = await fetch(`${API_URL}/lf/search?${queryParams}`, {
+      credentials: 'include'
+    });
     
     if (!response.ok) {
       throw new Error(`Error fetching filtered items: ${response.statusText}`);
@@ -158,7 +165,9 @@ const getItemsBySearch = async (filters) => {
   }
 };
 const getItemById = async (id) => {
-  const response = await fetch(`${API_URL}/lf/items/${id}`);
+  const response = await fetch(`${API_URL}/lf/items/${id}`, {
+    credentials: 'include'
+  });
   const data = await response.json();
   return data;
 };
@@ -183,6 +192,7 @@ const getItemById = async (id) => {
     try {
         const response = await fetch(url, {
             method: 'POST',
+            credentials: 'include',
             body: formData // Use FormData as the body
         });
 

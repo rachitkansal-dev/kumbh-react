@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from './Loading';
 
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
+
 function AdminClaimed() {
     const navigate = useNavigate();
     const [claimedItems, setClaimedItems] = useState([]);
@@ -11,7 +13,9 @@ function AdminClaimed() {
     useEffect(() => {
         const fetchClaimedItems = async () => {
             try {
-                const response = await fetch('/lf/admin-claim-requests');
+                const response = await fetch(`${API_URL}/lf/admin-claim-requests`, {
+                    credentials: 'include'
+                });
                 if (!response.ok) {
                     throw new Error('Failed to fetch items');
                 }
@@ -32,7 +36,7 @@ function AdminClaimed() {
         const confirmDelete = window.confirm("Are you sure you want to delete this Item?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`/lf/found-item/${itemId}`, {
+                const response = await fetch(`${API_URL}/lf/found-item/${itemId}`, {
                     method: 'DELETE',
                 });
 
@@ -61,7 +65,7 @@ function AdminClaimed() {
         const confirmDelete = window.confirm("Are you sure you want to delete this Claim?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`/lf/claim-item/${claimId}`, {
+                const response = await fetch(`${API_URL}/lf/claim-item/${claimId}`, {
                     method: 'DELETE',
                 });
 

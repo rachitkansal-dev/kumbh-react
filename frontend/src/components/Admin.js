@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate ,Link} from 'react-router-dom';
 
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
+
 function Admin() {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
@@ -10,7 +12,9 @@ function Admin() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/users'); 
+                const response = await fetch(`${API_URL}/users`, {
+                    credentials: 'include'
+                }); 
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
@@ -28,8 +32,9 @@ function Admin() {
         const confirmDelete = window.confirm("Are you sure you want to delete this User?");
         if(confirmDelete) {
             try {
-                const response = await fetch(`/users/${id}`, {
+                const response = await fetch(`${API_URL}/users/${id}`, {
                     method: 'DELETE',
+                    credentials: 'include'
                 });
                 const result = await response.json();
 

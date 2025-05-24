@@ -10,6 +10,8 @@ const cloudinary = require('cloudinary').v2;
 const {checkCloudinaryConnection} = require('./middleware')
 require('dotenv').config();
 
+app.set('trust proxy', 1);
+
 const userRouter = require('./routes/user');
 const blogRouter = require('./routes/blog');
 const lfRouter = require('./routes/lf');
@@ -26,8 +28,10 @@ app.use(methodOverride('_method'));
 
 // CORS configuration
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_ORIGIN || 'http://localhost:3000',
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 };
 app.use(cors(corsOptions));
 
@@ -55,7 +59,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true, maxAge: 1000 * 60 * 60 * 24 } 
+    cookie: { 
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        sameSite: 'none',
+        secure: true
+    } 
 }));
 
 // MongoDB connection
@@ -67,6 +75,10 @@ mongoose.connect(dbUrl)
 app.use('', userRouter);
 app.use('/blog', blogRouter);
 app.use('/lf', lfRouter);
+
+app.get('/', (req,res) => {
+    res.status(200).json({message : "Backend server running"});
+});
 
 app.get('*', (req, res) => {
     res.status(500).json({ error: "Api not available" });

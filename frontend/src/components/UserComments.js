@@ -47,6 +47,7 @@ function UserComments() {
       const url = `${API_URL}/profile/${id}/comments`;
       const response = await fetch(url, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

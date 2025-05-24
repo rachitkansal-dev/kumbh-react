@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
+
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState('');
   const { token } = useParams(); 
@@ -11,8 +13,9 @@ export default function ResetPasswordForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`/reset-password/${token}`, {
+      const response = await fetch(`${API_URL}/reset-password/${token}`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

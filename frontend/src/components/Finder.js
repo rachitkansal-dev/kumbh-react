@@ -36,8 +36,6 @@ export default function Finder() {
   };
 
   const handleSubmit = (e) => {
-    console.log("Items:", items); // Log all items to check their structure
-    items.forEach((item) => console.log("Photo URL:", item.photo));
     e.preventDefault();
     setSubmittedFilters(filters);  // Update submittedFilters with current filter values
   };

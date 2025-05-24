@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
+
 function UserFeedback() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -12,7 +14,7 @@ function UserFeedback() {
         const confirmDelete = window.confirm("Are you sure you want to delete this feedback?");
         if (confirmDelete) {
             try {
-                const url = `/contactus/${feedbackId}`; 
+                const url = `${API_URL}/contactus/${feedbackId}`; 
                 const response = await fetch(url, {
                     method: 'DELETE',
                     headers: {
@@ -40,9 +42,10 @@ function UserFeedback() {
 
     const getFeedback = async () => {
         try {
-            const url = `/contactus`;
+            const url = `${API_URL}/contactus`;
             const response = await fetch(url, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },

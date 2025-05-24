@@ -5,6 +5,8 @@ import UserContext from '../context/UserContext';
 import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
 
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
+
 function ClaimItem() {
     function isValidPhoneNumber(phoneNumber) {
         const cleanedPhoneNumber = phoneNumber.replace(/(?!^\+)[^\d]/g, '');
@@ -33,7 +35,7 @@ function ClaimItem() {
         const confirmDelete = window.confirm("Are you sure you want to delete this Item?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`/lf/found-item/${itemId}`, {
+                const response = await fetch(`${API_URL}/lf/found-item/${itemId}`, {
                     method: 'DELETE',
                 });
 

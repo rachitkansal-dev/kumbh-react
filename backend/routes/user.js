@@ -173,13 +173,25 @@ router.delete('/profile/:id', validate, async (req, res) => {
 });
 
 
-router.post('/logout', validate, (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            return res.status(500).json({ message: 'Error logging out.' });
-        }
-        res.json({ message: 'Logout successful' });
-    });
+router.post('/logout', (req, res) => {
+    if (req.session) {
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).json({ message: 'Error logging out.' });
+            }
+            
+            
+            res.clearCookie('connect.sid', {
+                path: '/',
+                sameSite: 'none',
+                secure: true
+            });
+            
+            res.json({ message: 'Logout successful' });
+        });
+    } else {
+        res.json({ message: 'No active session to logout' });
+    }
 });
 
 router.post('/forgot-password', async (req, res) => {

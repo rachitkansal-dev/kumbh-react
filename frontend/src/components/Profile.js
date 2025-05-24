@@ -12,8 +12,6 @@ function Profile() {
     const navigate = useNavigate();
 
     const onClick = async () => {
-        logoutUser();
-        navigate('/login');
         try {
             const response = await fetch(`${API_URL}/logout`, {
                 method: 'POST',
@@ -23,9 +21,13 @@ function Profile() {
             if (!response.ok) {
                 throw new Error('Logout failed');
             }
+            
+            // Only logout on the frontend after successful server logout
+            logoutUser();
+            navigate('/login');
         } catch (error) {
             console.error('Logout error:', error);
-            alert('No User Logged In');
+            alert('Failed to logout. Please try again.');
         }
     };
 
