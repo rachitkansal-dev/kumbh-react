@@ -77,7 +77,7 @@ app.use('/blog', blogRouter);
 app.use('/lf', lfRouter);
 
 app.get('/', (req,res) => {
-    res.status(500).json({message : "Backend server running"});
+    res.status(200).json({message : "Backend server running"});
 });
 
 app.get('*', (req, res) => {
