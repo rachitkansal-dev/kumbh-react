@@ -150,7 +150,7 @@ Runs both the frontend and backend concurrently.
 
 Runs only the frontend application in development mode.
 
-### `npm run start-backend`
+### `npm run start-backend `
 
 Runs only the backend server.
 
