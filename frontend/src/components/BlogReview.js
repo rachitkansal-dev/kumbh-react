@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -12,12 +13,14 @@ export default function BlogReview() {
   const [newReview, setNewReview] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useContext(UserContext);
 
   // Fetch reviews on component load
   const fetchReviews = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(`${API_URL}/blog/${id}`, {
         credentials: 'include',
       });
@@ -41,15 +44,19 @@ export default function BlogReview() {
   useEffect(() => {
     const interval = setInterval(moveNext, 5000);
     return () => clearInterval(interval); // Clean up on unmount
-  }, [currentIndex]);
+  }, [currentIndex, reviews.length]);
 
   // Carousel logic for moving to the next item
   const moveNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
+    if (reviews.length > 0) {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % reviews.length);
+    }
   };
 
   const movePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length);
+    if (reviews.length > 0) {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length);
+    }
   };
 
   // Handle review input change
@@ -59,7 +66,7 @@ export default function BlogReview() {
 
   // Truncate text for display
   const truncateText = (text, length = 100) => {
-    return text.length > length ? text.slice(0, length) + '...' : text;
+    return text && text.length > length ? text.slice(0, length) + '...' : text;
   };
 
   // Modal open and close handlers
@@ -77,6 +84,7 @@ export default function BlogReview() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newReview.trim()) {
+      setIsSubmitting(true);
       try {
         const response = await fetch(`${API_URL}/blog/${id}/comment`, {
           method: 'POST',
@@ -96,7 +104,9 @@ export default function BlogReview() {
           alert('Failed to post comment');
         }
       } catch (error) {
-        alert('Error:', error);
+        alert('Error: ' + error.message);
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -155,9 +165,17 @@ export default function BlogReview() {
                   onChange={handleReviewChange}
                   required
                 ></textarea>
-                <button type="submit" className="btn-primary lost-btn toCenter">Submit Review</button>
+                <button type="submit" className="btn-primary lost-btn toCenter" disabled={isSubmitting} style={{position: 'relative'}}>
+                  {isSubmitting ? (
+                    <>
+                      <span>Submitting...</span>
+                      <ButtonSpinner variant="clip" position="inline" size={12} color="#fff" />
+                    </>
+                  ) : 'Submit Review'}
+                </button>
               </div>
             </form>
+
           </section>
           {isModalOpen && selectedReview && (
             <div className="modal-overlay">

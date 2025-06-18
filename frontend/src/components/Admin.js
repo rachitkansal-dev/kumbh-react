@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate ,Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
 function Admin() {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [deletingUserId, setDeletingUserId] = useState(null);
     const navigate = useNavigate();
 
     // Fetch users from the API
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
             try {
                 const response = await fetch(`${API_URL}/users`, {
                     credentials: 'include'
@@ -22,6 +28,8 @@ function Admin() {
                 setUsers(data);
             } catch (err) {
                 setError(err.message);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -32,6 +40,8 @@ function Admin() {
         const confirmDelete = window.confirm("Are you sure you want to delete this User?");
         if(confirmDelete) {
             try {
+                setIsDeleting(true);
+                setDeletingUserId(id);
                 const response = await fetch(`${API_URL}/users/${id}`, {
                     method: 'DELETE',
                     credentials: 'include'
@@ -48,10 +58,13 @@ function Admin() {
             } catch (err) {
                 console.error('Error deleting user:', err.message);
                 setError(err.message); // Optionally show an error message
+            } finally {
+                setIsDeleting(false);
+                setDeletingUserId(null);
             }
         }
         else {
-            alert('deletion failed');
+            alert('Deletion cancelled');
         }
     };
 
@@ -66,13 +79,15 @@ function Admin() {
                 <button className="admin-sidebar-button" onClick={()=>{navigate('/finder')}}>Lost/Found Items</button>
                 <button className="admin-sidebar-button" onClick={onclick}>Claimed Items</button>
                 <button className="admin-sidebar-button" onClick={()=>{navigate('/admin-feedback')}}>Feedbacks</button>
-                    
-                
             </div>
 
             <div className="admin-main-content">
                 <h1 className="admin-main-title">Users</h1>
-                {error ? (
+                {isLoading ? (
+                    <div className="loading-center">
+                        <Loading />
+                    </div>
+                ) : error ? (
                     <p className="error-message">{error}</p>
                 ) : (
                     <table className="admin-data-table">
@@ -100,8 +115,15 @@ function Admin() {
                                         <button
                                             className="admin-delete-button"
                                             onClick={() => handleDelete(user._id)}
+                                            disabled={isDeleting && deletingUserId === user._id}
+                                            style={{position: 'relative'}}
                                         >
-                                            Delete
+                                            {isDeleting && deletingUserId === user._id ? (
+                                                <>
+                                                    <span>Deleting...</span>
+                                                    <ButtonSpinner variant="clip" position="inline" size={12} color="#fff" />
+                                                </>
+                                            ) : 'Delete'}
                                         </button>
                                     </td>
                                 </tr>

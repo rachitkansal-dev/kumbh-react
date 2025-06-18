@@ -17,6 +17,7 @@ const blogRouter = require('./routes/blog');
 const lfRouter = require('./routes/lf');
 
 const PORT = process.env.PORT || 8080;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Setting up paths and middleware
 app.set('view engine', 'ejs');
@@ -31,7 +32,8 @@ const corsOptions = {
     origin: process.env.FRONTEND_ORIGIN || 'http://localhost:3000',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposedHeaders: ['Set-Cookie']
 };
 app.use(cors(corsOptions));
 
@@ -61,8 +63,9 @@ app.use(session({
     saveUninitialized: false,
     cookie: { 
         maxAge: 1000 * 60 * 60 * 24, // 1 day
-        sameSite: 'none',
-        secure: true
+        sameSite: isProduction ? 'none' : 'lax',
+        secure: isProduction,
+        httpOnly: true
     } 
 }));
 

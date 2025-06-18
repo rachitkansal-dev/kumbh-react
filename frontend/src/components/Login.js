@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
+import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -9,7 +11,8 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
-   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const { user, loginUser } = useContext(UserContext); // Access user from context
 
   useEffect(() => {
@@ -21,6 +24,7 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
@@ -42,6 +46,8 @@ export default function Login() {
     } catch (error) {
       console.error('Error logging in:', error);
       alert('Login failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,6 +70,7 @@ export default function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
               />
             </div>
             <div className="form-group">
@@ -77,18 +84,27 @@ export default function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
                 />
                 <i
                   className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
-                  onClick={() => setShowPassword((prev) => !prev)}
+                  onClick={() => !isLoading && setShowPassword((prev) => !prev)}
                   aria-hidden="true"
+                  style={{cursor: isLoading ? 'not-allowed' : 'pointer'}}
                 ></i>
               </div>
             </div>
             <p>
               <Link to="/forget-password">Forget password?</Link>
             </p>
-            <button type="submit" className="login-btn">Login</button>
+            <button type="submit" className="login-btn" disabled={isLoading} style={{position: 'relative'}}>
+              {isLoading ? (
+                <>
+                  <span>Logging in</span>
+                  <ButtonSpinner variant="clip" position="inline" size={12} />
+                </>
+              ) : 'Login'}
+            </button>
             <p className="text-smaller">
               Don't have an account? <Link to="/signup">Create new</Link>
             </p>

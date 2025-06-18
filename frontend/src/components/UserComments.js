@@ -1,48 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
+import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
 function UserComments() {
   const { id } = useParams();
   const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Function to delete a comment
   const deleteComment = async (comment) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this Comment?");
     if (confirmDelete) {
-    try {
-      const url = `${API_URL}/blog/${comment.parent_blog._id}/comment/${comment._id}`;
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Ensure this is required for your session
-      });
+      setIsDeleting(true);
+      try {
+        const url = `${API_URL}/blog/${comment.parent_blog._id}/comment/${comment._id}`;
+        const response = await fetch(url, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Ensure this is required for your session
+        });
 
-      if (response.ok) {
-        // Remove the deleted comment from the state
-        setComments((prevComments) =>
-          prevComments.filter((c) => c._id !== comment._id)
-        );
-        alert('Comment deleted successfully');
-      } else {
-        const error = await response.json();
-        console.error('Error deleting comment:', error.error);
+        if (response.ok) {
+          // Remove the deleted comment from the state
+          setComments((prevComments) =>
+            prevComments.filter((c) => c._id !== comment._id)
+          );
+          alert('Comment deleted successfully');
+        } else {
+          const error = await response.json();
+          console.error('Error deleting comment:', error.error);
+        }
+      } catch (error) {
+        console.error('Error deleting comment:', error);
+      } finally {
+        setIsDeleting(false);
       }
-    } catch (error) {
-      console.error('Error deleting comment:', error);
+    } else {
+      alert('Deletion cancelled');
     }
-  }
-  else{
-    alert('deletion failed');
-  }
   };
 
   // Function to fetch comments
   const getComment = async () => {
+    setIsLoading(true);
     try {
       const url = `${API_URL}/profile/${id}/comments`;
       const response = await fetch(url, {
@@ -60,6 +67,8 @@ function UserComments() {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,6 +78,14 @@ function UserComments() {
       getComment();
     }
   }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="loading-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="comments-body">
@@ -95,14 +112,21 @@ function UserComments() {
                 <button
                   className="delete-btn"
                   onClick={() => deleteComment(comment)} // Pass comment as an argument
+                  disabled={isDeleting}
+                  style={{position: 'relative'}}
                 >
-                  Delete
+                  {isDeleting ? (
+                    <>
+                      <span>Deleting...</span>
+                      <ButtonSpinner size={16} borderWidth={2} />
+                    </>
+                  ) : 'Delete'}
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <p style={{ textAlign: 'center' }}>No comments to display.</p>
+          <p className="no-comments">You haven't made any comments yet.</p>
         )}
       </div>
     </div>
