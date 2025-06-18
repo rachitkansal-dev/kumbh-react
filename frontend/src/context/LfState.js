@@ -1,5 +1,6 @@
 import { useState, useCallback} from "react";
 import LfContext from "./LfContext";
+import { showSuccess, showError } from '../utils/toast';
 
 const LfState = (props) => {
   const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
@@ -22,9 +23,10 @@ const LfState = (props) => {
 
     if (response.ok) {
         const result = await response.json();
-        alert(result.message);
+        showSuccess(result.message);
     } else {
         console.error('Error sending data:', response.statusText);
+        showError('Failed to add comment');
     }
 };
   const addClaim = async (id,description,phone,email) => {
@@ -43,9 +45,10 @@ const LfState = (props) => {
 
     if (response.ok) {
         const result = await response.json();
-        alert("Claim Submitted , we will contact you soon ! ");
+        showSuccess("Claim Submitted , we will contact you soon ! ");
     } else {
         console.error('Error sending data:', response.statusText);
+        showError('Failed to submit claim');
     }
 };
 

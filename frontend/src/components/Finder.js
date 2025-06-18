@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import LfContext from '../context/LfContext';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
+import { showInfo } from '../utils/toast';
 
 
 export default function Finder() {
@@ -42,7 +43,7 @@ export default function Finder() {
 
   const viewItemDetails = (itemId) => {
     if (!user) {
-      alert("To View Details, You need to Login!");
+      showInfo("To View Details, You need to Login!");
       navigate('/login');
     } else {
       navigate(`/claimItem/${itemId}`);

@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 import Loading from './Loading';
 import ButtonSpinner from './ButtonSpinner';
+import { showSuccess, showError, showLoading, dismissToast, showNetworkError, showFieldRequired } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -24,7 +25,20 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
+    // Validation
+    if (!email.trim()) {
+      showFieldRequired('Email');
+      return;
+    }
+    if (!password) {
+      showFieldRequired('Password');
+      return;
+    }
+    
     setIsLoading(true);
+    const loadingToast = showLoading('Signing you in...');
+    
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
@@ -36,16 +50,23 @@ export default function Login() {
       });
 
       const data = await response.json();
+      dismissToast(loadingToast);
+      
       if (response.ok) {
-        alert(data.message);
+        showSuccess('Welcome back! Login successful.');
         loginUser(data.user); // Use loginUser from context
         navigate('/'); // Redirect to home or another route
       } else {
-        alert(data.message);
+        showError(data.message || 'Login failed');
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      alert('Login failed');
+      dismissToast(loadingToast);
+      if (error.message.includes('Network') || error.message.includes('fetch')) {
+        showNetworkError();
+      } else {
+        showError('An error occurred during login. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

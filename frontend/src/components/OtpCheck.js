@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 import Loading from './Loading';
 import ButtonSpinner from './ButtonSpinner';
+import { showSuccess, showError } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -29,15 +30,15 @@ function OtpCheck() {
     
           const data = await response.json();
           if (response.ok) {
-            alert(data.message);
+            showSuccess(data.message);
             loginUser(data.user);
             navigate('/');
           } else {
-            alert(data.message);
+            showError(data.message);
           }
         } catch (error) {
           console.error('Error signing up:', error);
-          alert('Signup failed');
+          showError('Signup failed');
         } finally {
           setIsLoading(false);
         }

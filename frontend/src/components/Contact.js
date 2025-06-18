@@ -4,6 +4,7 @@ import companyImage from '../images/company-image.jpeg';
 import BlogContext from '../context/BlogContext';
 import { Helmet } from 'react-helmet-async';
 import ButtonSpinner from './ButtonSpinner';
+import { showSuccess, showError, showWarning, showLoading, dismissToast, showFieldRequired, showValidationError } from '../utils/toast';
 
 const ContactForm = () => {
   const { contactform } = useContext(BlogContext);
@@ -42,19 +43,46 @@ const ContactForm = () => {
     
     const { name, email, phone, message } = formData;
     
-    // Validate form data (optional)
-    if (!name || !email || !phone || !message) {
-      alert('All fields are required.');
+    // Validate form data with specific field messages
+    if (!name) {
+      showFieldRequired('Name');
+      return;
+    }
+    if (!email) {
+      showFieldRequired('Email');
+      return;
+    }
+    if (!phone) {
+      showFieldRequired('Phone');
+      return;
+    }
+    if (!message) {
+      showFieldRequired('Message');
       return;
     }
 
-    // Call context function
+    // Validate phone number
     if(!isValidPhoneNumber(phone)) {
-      alert('Invalid phone number');
+      showValidationError('Phone', 'Please enter a valid phone number');
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showValidationError('Email', 'Please enter a valid email address');
+      return;
+    }
+
+    // Validate message length
+    if (message.length < 10) {
+      showValidationError('Message', 'Message must be at least 10 characters long');
       return;
     }
     
     setIsLoading(true);
+    const loadingToast = showLoading('Sending your message...');
+    
     try {
       await contactform(name, email, phone, message);
       
@@ -66,10 +94,12 @@ const ContactForm = () => {
         message: '',
       });
       
-      alert('Your message has been sent successfully!');
+      dismissToast(loadingToast);
+      showSuccess('Your message has been sent successfully! We will get back to you soon.');
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('An error occurred. Please try again.');
+      dismissToast(loadingToast);
+      showError('An error occurred while sending your message. Please try again.');
     } finally {
       setIsLoading(false);
     }

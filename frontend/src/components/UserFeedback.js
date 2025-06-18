@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { showSuccess, showInfo } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -27,7 +28,7 @@ function UserFeedback() {
                     setFeedbacks((prevFeedbacks) =>
                         prevFeedbacks.filter((feedback) => feedback._id !== feedbackId)
                     );
-                    alert('feedback deleted successfully');
+                    showSuccess('feedback deleted successfully');
                 } else {
                     const error = await response.json();
                     console.error('Error deleting feedback:', error.error);
@@ -36,7 +37,7 @@ function UserFeedback() {
                 console.error('Error deleting feedback:', error);
             }
         } else {
-            alert('Deletion canceled');
+            showInfo('Deletion canceled');
         }
     };
 

@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import BlogContext from "./BlogContext";
+import { showSuccess, showError } from '../utils/toast';
 
 const BlogState = (props) => {
     const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
@@ -53,9 +54,10 @@ const BlogState = (props) => {
     
         if (response.ok) {
             const result = await response.json();
-            alert(result.message);
+            showSuccess(result.message);
         } else {
             console.error('Error sending data:', response.statusText);
+            showError('Failed to send message');
         }
     };
 
@@ -84,10 +86,10 @@ const BlogState = (props) => {
     
             const json = await response.json();
             setBlogs(prevBlogs => [...prevBlogs, json.post]); 
-            alert("Blog submitted successfully!");
+            showSuccess("Blog submitted successfully!");
         } catch (error) {
             console.error("Error adding blog:", error);
-            alert("An error occurred while submitting your blog. Please try again.");
+            showError("An error occurred while submitting your blog. Please try again.");
         }
     };
     const updateBlog = async (bid, title, place, body, image) => {
@@ -118,7 +120,7 @@ const BlogState = (props) => {
     
         } catch (error) {
             console.error("Error updating blog:", error);
-            alert(`An error occurred: ${error.message}`);
+            showError(`An error occurred: ${error.message}`);
         }
     };
     

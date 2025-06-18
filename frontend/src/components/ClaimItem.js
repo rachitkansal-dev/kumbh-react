@@ -4,6 +4,7 @@ import LfContext from '../context/LfContext';
 import UserContext from '../context/UserContext';
 import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
+import { showSuccess, showError, showWarning, showDeleteConfirm, showLoading, dismissToast } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -32,27 +33,32 @@ function ClaimItem() {
     const [item, setItem] = useState(null);
 
     const handleDeleteItem = async (itemId) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this Item?");
-        if (confirmDelete) {
-            try {
-                const response = await fetch(`${API_URL}/lf/found-item/${itemId}`, {
-                    method: 'DELETE',
-                });
+        showDeleteConfirm(
+            item?.name || "this item",
+            async () => {
+                const loadingToast = showLoading('Deleting item...');
+                try {
+                    const response = await fetch(`${API_URL}/lf/found-item/${itemId}`, {
+                        method: 'DELETE',
+                    });
 
-                if (!response.ok) {
-                    throw new Error('Failed to delete item');
+                    if (!response.ok) {
+                        throw new Error('Failed to delete item');
+                    }
+
+                    dismissToast(loadingToast);
+                    showSuccess("Item deleted successfully");
+                    navigate('/finder');
+                } catch (error) {
+                    console.error('Error deleting item:', error);
+                    dismissToast(loadingToast);
+                    showError('Failed to delete item. Please try again later.');
                 }
-
-                alert("item succefully deleted");
-                navigate('/finder');
-            } catch (error) {
-                console.error('Error deleting item:', error);
-                alert('Failed to delete item. Please try again later.');
+            },
+            () => {
+                showWarning('Item deletion cancelled');
             }
-        }
-        else {
-            alert('deletion failed');
-        }
+        );
     };
 
     useEffect(() => {
@@ -67,7 +73,7 @@ function ClaimItem() {
         addClaim(id, description, phone, user.email);
         }
         else{
-            alert('invalid phone number');
+            showWarning('invalid phone number');
         }
 
     };

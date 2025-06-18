@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
 import Loading from './Loading';
 import ButtonSpinner from './ButtonSpinner';
+import { showSuccess, showError, showWarning, showFieldRequired, showValidationError, showLoading, dismissToast } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -31,20 +32,44 @@ export default function EditProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password.length < 6) {
-      alert("Password too short");
+    
+    // Detailed validation
+    if (!name.trim()) {
+      showFieldRequired('Name');
       return;
     }
     if (name.length < 3) {
-      alert("Name too short");
+      showValidationError('Name', 'Name must be at least 3 characters long');
       return;
     }
-    if(password!=cpassword) {
-      alert('Passwords do not match !');
+    if (!password) {
+      showFieldRequired('Password');
+      return;
+    }
+    if (password.length < 6) {
+      showValidationError('Password', 'Password must be at least 6 characters long');
+      return;
+    }
+    if (!cpassword) {
+      showFieldRequired('Confirm Password');
+      return;
+    }
+    if(password !== cpassword) {
+      showValidationError('Passwords', 'Passwords do not match');
+      return;
+    }
+    if (!phoneNumber.trim()) {
+      showFieldRequired('Phone Number');
+      return;
+    }
+    if (!address.trim()) {
+      showFieldRequired('Address');
       return;
     }
     
     setIsLoading(true);
+    const loadingToast = showLoading('Updating your profile...');
+    
     try {
       const response = await fetch(`${API_URL}/profile/${user._id}`, {
         method: 'POST',
@@ -56,20 +81,22 @@ export default function EditProfile() {
       });
 
       const data = await response.json();
+      dismissToast(loadingToast);
 
       if (response.ok) {
-        alert(data.message);
+        showSuccess('Profile updated successfully!');
         const updatedUser = { ...user, name , phoneNumber , address };
         setUser(updatedUser);
         
         localStorage.setItem('user', JSON.stringify(updatedUser));
         navigate('/profile'); 
       } else {
-        alert(data.message); 
+        showError(data.message || 'Failed to update profile'); 
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('An error occurred. Please try again.');
+      dismissToast(loadingToast);
+      showError('Network error. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
     }

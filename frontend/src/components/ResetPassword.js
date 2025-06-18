@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
 import ButtonSpinner from './ButtonSpinner';
+import { showSuccess, showError } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -26,13 +27,13 @@ export default function ResetPassword() {
       });
       const result = await response.json();
       if (response.ok) {
-        alert(result.message); // Show alert for success message
+        showSuccess(result.message); // Show alert for success message
       } else {
-        alert(result.message || 'Failed to send reset link'); // Show alert for error message
+        showError(result.message || 'Failed to send reset link'); // Show alert for error message
       }
     } catch (error) {
       console.error('Error sending reset email:', error);
-      alert('An error occurred. Please try again.'); // Show alert for catch error
+      showError('An error occurred. Please try again.'); // Show alert for catch error
     } finally {
       setIsLoading(false);
     }

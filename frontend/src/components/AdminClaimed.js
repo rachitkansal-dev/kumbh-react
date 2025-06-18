@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from './Loading';
+import { showSuccess, showError } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -45,7 +46,7 @@ function AdminClaimed() {
                 }
 
                 const result = await response.json();
-                alert(result.message);
+                showSuccess(result.message);
                 setClaimedItems((prevItems) =>
                     prevItems.filter(
                         (item) => item.foundandlostItem[0]?._id !== itemId
@@ -53,11 +54,11 @@ function AdminClaimed() {
                 );
             } catch (error) {
                 console.error('Error deleting item:', error);
-                alert('Failed to delete item. Please try again later.');
+                showError('Failed to delete item. Please try again later.');
             }
         }
         else {
-            alert('deletion failed');
+            showError('deletion failed');
         }
     };
 
@@ -74,7 +75,7 @@ function AdminClaimed() {
                 }
 
                 const result = await response.json();
-                alert(result.message);
+                showSuccess(result.message);
 
                 setClaimedItems((prevItems) =>
                     prevItems.map((item) => {
@@ -87,11 +88,11 @@ function AdminClaimed() {
                 window.location.reload();
             } catch (error) {
                 console.error('Error deleting claim:', error);
-                alert('Failed to delete claim. Please try again later.');
+                showError('Failed to delete claim. Please try again later.');
             }
         }
         else {
-            alert('deletion failed');
+            showError('deletion failed');
         }
     };
 

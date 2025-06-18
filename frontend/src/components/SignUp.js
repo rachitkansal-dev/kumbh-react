@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
+import { showSuccess, showError, showWarning, showFieldRequired, showValidationError, showLoading, dismissToast } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -33,23 +34,62 @@ export default function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (password.length < 6) {
-      alert("Password too short");
+    
+    // Detailed validation with specific error messages
+    if (!name.trim()) {
+      showFieldRequired('Name');
       return;
     }
     if (name.length < 3) {
-      alert("Name too short");
+      showValidationError('Name', 'Name must be at least 3 characters long');
+      return;
+    }
+    
+    if (!email.trim()) {
+      showFieldRequired('Email');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showValidationError('Email', 'Please enter a valid email address');
+      return;
+    }
+    
+    if (!password) {
+      showFieldRequired('Password');
+      return;
+    }
+    if (password.length < 6) {
+      showValidationError('Password', 'Password must be at least 6 characters long');
+      return;
+    }
+    
+    if (!cpassword) {
+      showFieldRequired('Confirm Password');
+      return;
+    }
+    if(password != cpassword) {
+      showValidationError('Passwords', 'Passwords do not match');
+      return;
+    }
+    
+    if (!phoneNumber.trim()) {
+      showFieldRequired('Phone Number');
       return;
     }
     if(!isValidPhoneNumber(phoneNumber)) {
-      alert("Invalid Phone Number");
+      showValidationError('Phone Number', 'Please enter a valid phone number');
       return;
     }
-    if(password!=cpassword) {
-      alert("Passwords do not match");
+    
+    if (!address.trim()) {
+      showFieldRequired('Address');
       return;
-    } 
+    }
+    
     setLoadingSubmit(true);
+    const loadingToast = showLoading('Creating your account...');
+    
     try {
       const response = await fetch(`${API_URL}/signup`, {
         method: 'POST',
@@ -57,20 +97,22 @@ export default function SignUp() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password, phoneNumber, address }),  // Include phoneNumber and address
+        body: JSON.stringify({ name, email, password, phoneNumber, address }),
       });
 
       const data = await response.json();
+      dismissToast(loadingToast);
+      
       if (response.ok) {
-        alert(data.message);
-
+        showSuccess('Account created successfully! Please check your email for OTP verification.');
         navigate(`/OtpCheck/${data.token}`);
       } else {
-        alert(data.message);
+        showError(data.message || 'Failed to create account');
       }
     } catch (error) {
       console.error('Error signing up:', error);
-      alert('Signup failed');
+      dismissToast(loadingToast);
+      showError('Network error. Please check your connection and try again.');
     }finally{
       setLoadingSubmit(false);
     }

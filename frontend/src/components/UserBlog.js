@@ -6,6 +6,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Loading from './Loading';
 import { Helmet } from 'react-helmet-async';
+import { showSuccess, showError, showWarning, showInfo, showDeleteConfirm, showLoading, dismissToast } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -31,7 +32,7 @@ function UserBlog() {
 
     const openForm = () => {
         if (!user) {
-            alert("Login to Create a Blog");
+            showInfo("Login to Create a Blog");
             navigate('/login');
         }
         setIsFormOpen(true);
@@ -116,7 +117,7 @@ function UserBlog() {
 
     const onClick = () => {
         if (isSubmitDisabled) {
-            alert("Blog length must be at least 800 words.");
+            showWarning("Blog length must be at least 800 words.");
             return;
         }
     };
@@ -134,10 +135,10 @@ function UserBlog() {
 
                 if (editingBlogId) {
                     await updateBlog(editingBlogId, title, place, description, photo, userName);
-                    alert('Blog updated successfully.');
+                    showSuccess('Blog updated successfully.');
                 } else {
                     await createBlogs(title, place, description, photo, userName);
-                    alert('Blog created successfully.');
+                    showSuccess('Blog created successfully.');
                 }
 
                 setFormData({ title: '', place: '', photo: null, description: '' });
@@ -149,12 +150,12 @@ function UserBlog() {
                 }
             } catch (error) {
                 console.error('Error creating/updating blog:', error);
-                alert('Failed to save blog. Please try again.');
+                showError('Failed to save blog. Please try again.');
             } finally {
                 setLoadingSubmit(false); 
             }
         } else {
-            alert("Blog length must be at least 800 words.");
+            showWarning("Blog length must be at least 800 words.");
         }
     };
 
@@ -178,34 +179,41 @@ function UserBlog() {
     };
 
     const deleteBlog = async (blogId) => {
+        const blogToDelete = blogs.find(blog => blog._id === blogId);
+        showDeleteConfirm(
+            blogToDelete?.title || "this blog",
+            async () => {
+                const loadingToast = showLoading('Deleting blog...');
+                try {
+                    const url = `${API_URL}/blog/${blogId}`;
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'include',
+                    });
 
-        const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
-        if (confirmDelete) {
-            try {
-                const url = `${API_URL}/blog/${blogId}`;
-                const response = await fetch(url, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                });
-
-                if (response.ok) {
-
-                    alert('Blog deleted successfully');
-                    fetchBlogsofUser();
-                } else {
-                    const error = await response.json();
-                    console.error('Error deleting Blog:', error.error);
+                    if (response.ok) {
+                        dismissToast(loadingToast);
+                        showSuccess('Blog deleted successfully');
+                        fetchBlogsofUser();
+                    } else {
+                        const error = await response.json();
+                        console.error('Error deleting Blog:', error.error);
+                        dismissToast(loadingToast);
+                        showError('Failed to delete blog. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error deleting Blog:', error);
+                    dismissToast(loadingToast);
+                    showError('Failed to delete blog. Please try again.');
                 }
-            } catch (error) {
-                console.error('Error deleting Blog:', error);
+            },
+            () => {
+                showInfo('Blog deletion cancelled');
             }
-        }
-        else {
-            alert('deletion failed');
-        }
+        );
     };
 
 
