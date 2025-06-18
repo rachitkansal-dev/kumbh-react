@@ -25,6 +25,9 @@ function ClaimItem() {
     const navigate = useNavigate();
     const [description, setDescription] = useState('');
     const [phone, setPhone] = useState('');
+    const [isItemLoading, setIsItemLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const { id } = useParams();
     const { getItemById, addClaim } = useContext(LfContext);
@@ -35,6 +38,7 @@ function ClaimItem() {
         const confirmDelete = window.confirm("Are you sure you want to delete this Item?");
         if (confirmDelete) {
             try {
+                setIsDeleting(true);
                 const response = await fetch(`${API_URL}/lf/found-item/${itemId}`, {
                     method: 'DELETE',
                 });
@@ -43,33 +47,48 @@ function ClaimItem() {
                     throw new Error('Failed to delete item');
                 }
 
-                alert("item succefully deleted");
+                alert("Item successfully deleted");
                 navigate('/finder');
             } catch (error) {
                 console.error('Error deleting item:', error);
                 alert('Failed to delete item. Please try again later.');
+            } finally {
+                setIsDeleting(false);
             }
         }
         else {
-            alert('deletion failed');
+            alert('Deletion cancelled');
         }
     };
 
     useEffect(() => {
-        getItemById(id).then(setItem);
+        setIsItemLoading(true);
+        getItemById(id).then(fetchedItem => {
+            setItem(fetchedItem);
+            setIsItemLoading(false);
+        });
     }, [id, getItemById]);
 
-    if (!item) return <Loading/>
+    if (isItemLoading) return <Loading />
+
+    if (!item) return <div>Item not found</div>
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(isValidPhoneNumber) {
-        addClaim(id, description, phone, user.email);
+        if(!isValidPhoneNumber(phone)) {
+            alert('Invalid phone number');
+            return;
         }
-        else{
-            alert('invalid phone number');
+        
+        setIsSubmitting(true);
+        try {
+            addClaim(id, description, phone, user.email);
+        } catch (error) {
+            console.error('Error submitting claim:', error);
+            alert('An error occurred. Please try again.');
+        } finally {
+            setIsSubmitting(false);
         }
-
     };
 
     const formattedDate = item.date
@@ -154,8 +173,8 @@ function ClaimItem() {
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
                                 />
-                                <button type="submit" className="claim-submit-button">
-                                    {item.landf === "lost" ? "Found" : "Submit Claim"}
+                                <button type="submit" className="claim-submit-button" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Submitting...' : item.landf === "lost" ? "Found" : "Submit Claim"}
                                 </button>
                             </form>
                         </>
@@ -164,13 +183,15 @@ function ClaimItem() {
                         <button
                             className="claim-contact-button"
                             onClick={() => handleDeleteItem(id)}
+                            disabled={isDeleting}
                         >
-                            Delete Item
+                            {isDeleting ? 'Deleting...' : 'Delete Item'}
                         </button>
                     )}
 
                 </div>
             </div>
+            {(isSubmitting || isDeleting) && <Loading />}
         </section>
     );
 }

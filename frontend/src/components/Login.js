@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
+import Loading from './Loading';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -9,7 +10,8 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
-   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const { user, loginUser } = useContext(UserContext); // Access user from context
 
   useEffect(() => {
@@ -21,6 +23,7 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
@@ -42,6 +45,8 @@ export default function Login() {
     } catch (error) {
       console.error('Error logging in:', error);
       alert('Login failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -88,13 +93,16 @@ export default function Login() {
             <p>
               <Link to="/forget-password">Forget password?</Link>
             </p>
-            <button type="submit" className="login-btn">Login</button>
+            <button type="submit" className="login-btn" disabled={isLoading}>
+              {isLoading ? 'Logging in...' : 'Login'}
+            </button>
             <p className="text-smaller">
               Don't have an account? <Link to="/signup">Create new</Link>
             </p>
           </form>
         </div>
       </section>
+      {isLoading && <Loading />}
     </div>
   );
 }

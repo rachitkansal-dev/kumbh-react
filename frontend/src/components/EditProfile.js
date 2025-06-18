@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
+import Loading from './Loading';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -12,7 +13,8 @@ export default function EditProfile() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
   const [address, setAddress] = useState('');
-  const { user,setUser } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +42,8 @@ export default function EditProfile() {
       alert('Passwords do not match !');
       return;
     }
+    
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_URL}/profile/${user._id}`, {
         method: 'POST',
@@ -65,6 +69,8 @@ export default function EditProfile() {
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -136,11 +142,14 @@ export default function EditProfile() {
                 required
               />
             </div>
-            <button type="submit" className="login-btn">Update Profile</button>
+            <button type="submit" className="login-btn" disabled={isLoading}>
+              {isLoading ? 'Updating...' : 'Update Profile'}
+            </button>
             <p><Link to="/login">Back to Login</Link></p>
           </form>
         </div>
       </section>
+      {isLoading && <Loading />}
     </div>
   );
 }

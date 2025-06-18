@@ -3,9 +3,11 @@ import '../css/Contact.css';
 import companyImage from '../images/company-image.jpeg';
 import BlogContext from '../context/BlogContext';
 import { Helmet } from 'react-helmet-async';
+import Loading from './Loading';
 
 const ContactForm = () => {
   const { contactform } = useContext(BlogContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -35,7 +37,7 @@ const ContactForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     const { name, email, phone, message } = formData;
@@ -51,17 +53,26 @@ const ContactForm = () => {
       alert('Invalid phone number');
       return;
     }
-    contactform(name, email, phone, message);
-
-    // Optional: Reset form after submission
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-    });
-
-    alert('Your message has been sent successfully!');
+    
+    setIsLoading(true);
+    try {
+      await contactform(name, email, phone, message);
+      
+      // Reset form after submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+      });
+      
+      alert('Your message has been sent successfully!');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -142,8 +153,8 @@ const ContactForm = () => {
                   required
                 ></textarea>
               </div>
-              <button type="submit" className="contact-form-btn">
-                Submit
+              <button type="submit" className="contact-form-btn" disabled={isLoading}>
+                {isLoading ? 'Submitting...' : 'Submit'}
               </button>
               <div className="contact-social-media">
                 <h2 className="contact-head">Follow Us</h2>
@@ -184,6 +195,7 @@ const ContactForm = () => {
           </div>
         </div>
       </section>
+      {isLoading && <Loading />}
     </div>
   );
 };

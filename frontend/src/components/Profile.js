@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import avatar from '../images/user-avatar-reloaded.png';
@@ -10,9 +10,12 @@ const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 function Profile() {
     const { user, logoutUser } = useContext(UserContext);
     const navigate = useNavigate();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const onClick = async () => {
         try {
+            setIsLoggingOut(true);
             const response = await fetch(`${API_URL}/logout`, {
                 method: 'POST',
                 credentials: 'include',
@@ -28,6 +31,8 @@ function Profile() {
         } catch (error) {
             console.error('Logout error:', error);
             alert('Failed to logout. Please try again.');
+        } finally {
+            setIsLoggingOut(false);
         }
     };
 
@@ -47,6 +52,7 @@ function Profile() {
 
         if (confirmation === 'CONFIRM') {
             try {
+                setIsDeleting(true);
                 const response = await fetch(`${API_URL}/profile/${user?._id}`, {
                     method: 'DELETE',
                     credentials: 'include',
@@ -68,6 +74,8 @@ function Profile() {
             } catch (e) {
                 console.error('Error deleting profile:', e);
                 alert('An error occurred while deleting the profile.');
+            } finally {
+                setIsDeleting(false);
             }
         } else {
             alert("Profile deletion canceled. You must enter 'CONFIRM' to delete.");
@@ -100,43 +108,38 @@ function Profile() {
                                 <strong>Email: </strong>
                                 {user.email}
                             </p>
+                        </div>
+                        <div className="info-row">
                             <p>
-                                <strong>Phone: </strong>
-                                {user.phoneNumber || 'Not provided'}
+                                <strong>Phone Number: </strong>
+                                {user.phoneNumber}
                             </p>
+                        </div>
+                        <div className="info-row">
                             <p>
                                 <strong>Address: </strong>
-                                {user.address || 'Not provided'}
+                                {user.address}
                             </p>
                         </div>
 
-                        <h3 className='profile-h3'>Actions</h3>
-                        <nav className="content-navigation">
-                            <button className="nav-btn" aria-label="View Blog Entries" onClick={blogsFetch}>
-                                Blog Entries
-                            </button>
-                            <button className="nav-btn" aria-label="View Comments" onClick={commentsfetch}>
-                                Comments
-                            </button>
-                            {/* <button className="nav-btn" aria-label="View Items Reported">
-                                Items Reported
-                            </button>
-                            <button className="nav-btn" aria-label="View Lost Items Claimed">
-                                Lost Items Claimed
-                            </button> */}
-                        </nav>
-
                         <div className="profile-actions">
-                            <button className="btn-profile delete-profile" onClick={handleDelete}>
-                                Delete Profile
+                            <button className="btn-profile logout" onClick={onClick} disabled={isLoggingOut}>
+                                {isLoggingOut ? 'Logging out...' : 'Logout'}
                             </button>
-                            <button className="btn-profile logout" onClick={onClick}>
-                                Logout
+                            <button className="btn-profile blogs" onClick={blogsFetch}>
+                                Your Blogs
+                            </button>
+                            <button className="btn-profile comments" onClick={commentsfetch}>
+                                Your Comments
+                            </button>
+                            <button className="btn-profile delete" onClick={handleDelete} disabled={isDeleting}>
+                                {isDeleting ? 'Deleting Account...' : 'Delete Account'}
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+            {(isLoggingOut || isDeleting) && <Loading />}
         </div>
     );
 }

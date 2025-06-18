@@ -1,7 +1,8 @@
-import React, { useState,useContext } from 'react';
-import { Link ,useParams,useNavigate} from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
+import Loading from './Loading';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -9,9 +10,12 @@ function OtpCheck() {
     const { token } = useParams(); 
     const navigate = useNavigate();
     const [OTP, setOTP] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { user, loginUser } = useContext(UserContext);
+    
     const verifyOtp = async (e) => {
         e.preventDefault(); 
+        setIsLoading(true);
         try {
           const response = await fetch(`${API_URL}/otp-check/${token}`, {
             method: 'POST',
@@ -19,7 +23,7 @@ function OtpCheck() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({OTP}),  // Include phoneNumber and address
+            body: JSON.stringify({OTP}),
           });
     
           const data = await response.json();
@@ -29,11 +33,12 @@ function OtpCheck() {
             navigate('/');
           } else {
             alert(data.message);
-            
           }
         } catch (error) {
           console.error('Error signing up:', error);
           alert('Signup failed');
+        } finally {
+          setIsLoading(false);
         }
       };
 
@@ -63,11 +68,14 @@ function OtpCheck() {
                                 required
                             />
                         </div>
-                        <button type="submit" className="login-btn">Verify OTP</button>
+                        <button type="submit" className="login-btn" disabled={isLoading}>
+                            {isLoading ? 'Verifying...' : 'Verify OTP'}
+                        </button>
                         <p><Link to="/login">Back to Login</Link></p>
                     </form>
                 </div>
             </section>
+            {isLoading && <Loading />}
         </div>
     );
 }

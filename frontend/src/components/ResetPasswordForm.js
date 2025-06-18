@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import Loading from './Loading';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { token } = useParams(); 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch(`${API_URL}/reset-password/${token}`, {
@@ -33,6 +36,8 @@ export default function ResetPasswordForm() {
     } catch (error) {
       console.error('Error resetting password:', error);
       alert('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,11 +62,14 @@ export default function ResetPasswordForm() {
                 required
               />
             </div>
-            <button type="submit" className="login-btn">Update Password</button>
+            <button type="submit" className="login-btn" disabled={isLoading}>
+              {isLoading ? 'Updating...' : 'Update Password'}
+            </button>
             <p><Link to="/login">Back to Login</Link></p>
           </form>
         </div>
       </section>
+      {isLoading && <Loading />}
     </div>
   );
 }

@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 import LfContext from '../context/LfContext';
 import UserContext from '../context/UserContext';
 import { Helmet } from 'react-helmet-async';
-
+import Loading from './Loading';
 
 export default function Finder() {
   const { items, getItems, getItemsBySearch } = useContext(LfContext);
   const { user } = useContext(UserContext);
   const locations = useLocation();
   const queryParams = new URLSearchParams(locations.search);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Extract specific query parameters
   const types = queryParams.get("type");
@@ -37,6 +37,7 @@ export default function Finder() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     setSubmittedFilters(filters);  // Update submittedFilters with current filter values
   };
 
@@ -50,15 +51,24 @@ export default function Finder() {
   };
 
   useEffect(() => {
-    // Fetch items based on submittedFilters only when they change
-    if (submittedFilters.location || submittedFilters.type || submittedFilters.landf) {
-      getItemsBySearch(submittedFilters);
-    } else {
-      getItems();
-    }
+    const fetchItems = async () => {
+      setIsLoading(true);
+      try {
+        if (submittedFilters.location || submittedFilters.type || submittedFilters.landf) {
+          await getItemsBySearch(submittedFilters);
+        } else {
+          await getItems();
+        }
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchItems();
   }, [submittedFilters, getItems, getItemsBySearch]);
   
-
   return (
     <div>
       <Helmet>
@@ -92,7 +102,6 @@ export default function Finder() {
               <div className="finder-filter-group">
                 <label htmlFor="type">Item Type</label>
                 <select id="type" value={filters.type} onChange={handleChange}>
-
                   <option value="" >Select Item Type</option>
                   <option value="Phones & Tablets">Phones & Tablets</option>
                   <option value="Bags">Bags</option>
@@ -109,7 +118,6 @@ export default function Finder() {
                   <option value="Sports Equipment">Sports Equipment</option>
                   <option value="Automobile">Automobile</option>
                   <option value="Other">Other</option>
-
                 </select>
               </div>
               <button type="submit" className="searching-btn btn-primary-finder lost-btn-finder">
@@ -119,19 +127,23 @@ export default function Finder() {
           </aside>
           <section className="finder-content">
             <h2>Lost and Found Items</h2>
-            <div className="finder-item-grid">
-              {items.map((item, index) => (
-                <div key={index} className="finder-item-card">
-                  <img src={item.photo} alt={item.type || "Item"} />
-                  <h3>{item.type || "Unknown Type"}</h3>
-                  <p>Location: {item.location || "Unknown Location"}</p>
-                  <p>Status: {item.landf || "Unknown Status"}</p>
-                  <button type="button" className="btn-primary-finder lost-btn-finder" onClick={() => viewItemDetails(item._id)}>
-                    View
-                  </button>
-                </div>
-              ))}
-            </div>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <div className="finder-item-grid">
+                {items.map((item, index) => (
+                  <div key={index} className="finder-item-card">
+                    <img src={item.photo} alt={item.type || "Item"} />
+                    <h3>{item.type || "Unknown Type"}</h3>
+                    <p>Location: {item.location || "Unknown Location"}</p>
+                    <p>Status: {item.landf || "Unknown Status"}</p>
+                    <button type="button" className="btn-primary-finder lost-btn-finder" onClick={() => viewItemDetails(item._id)}>
+                      View
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         </div>
       </div>
