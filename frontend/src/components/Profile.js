@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import avatar from '../images/user-avatar-reloaded.png';
 import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 import { Helmet } from 'react-helmet-async';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
@@ -123,8 +124,13 @@ function Profile() {
                         </div>
 
                         <div className="profile-actions">
-                            <button className="btn-profile logout" onClick={onClick} disabled={isLoggingOut}>
-                                {isLoggingOut ? 'Logging out...' : 'Logout'}
+                            <button className="btn-profile logout" onClick={onClick} disabled={isLoggingOut} style={{position: 'relative'}}>
+                                {isLoggingOut ? (
+                                    <>
+                                        <span>Logging out</span>
+                                        <ButtonSpinner variant="clip" position="inline" size={12} />
+                                    </>
+                                ) : 'Logout'}
                             </button>
                             <button className="btn-profile blogs" onClick={blogsFetch}>
                                 Your Blogs
@@ -132,14 +138,19 @@ function Profile() {
                             <button className="btn-profile comments" onClick={commentsfetch}>
                                 Your Comments
                             </button>
-                            <button className="btn-profile delete" onClick={handleDelete} disabled={isDeleting}>
-                                {isDeleting ? 'Deleting Account...' : 'Delete Account'}
+                            <button className="btn-profile delete" onClick={handleDelete} disabled={isDeleting} style={{position: 'relative'}}>
+                                {isDeleting ? (
+                                    <>
+                                        <span>Deleting Account</span>
+                                        <ButtonSpinner variant="clip" position="inline" size={12} />
+                                    </>
+                                ) : 'Delete Account'}
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            {(isLoggingOut || isDeleting) && <Loading />}
+
         </div>
     );
 }

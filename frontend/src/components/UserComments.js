@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -79,7 +80,11 @@ function UserComments() {
   }, [id]);
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="loading-center">
+        <Loading />
+      </div>
+    );
   }
 
   return (
@@ -108,8 +113,14 @@ function UserComments() {
                   className="delete-btn"
                   onClick={() => deleteComment(comment)} // Pass comment as an argument
                   disabled={isDeleting}
+                  style={{position: 'relative'}}
                 >
-                  {isDeleting ? 'Deleting...' : 'Delete'}
+                  {isDeleting ? (
+                    <>
+                      <span>Deleting...</span>
+                      <ButtonSpinner size={16} borderWidth={2} />
+                    </>
+                  ) : 'Delete'}
                 </button>
               </div>
             </div>

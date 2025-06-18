@@ -7,7 +7,6 @@ import image4 from '../images/image4.jpeg';
 import image5 from '../images/image5.jpeg';
 import image3 from '../images/image3.jpeg';
 import { Helmet } from 'react-helmet-async';
-import Loading from './Loading';
 
 export default function Showcaselostandfound() {
   const [bgIndex, setBgIndex] = useState(0);
@@ -65,7 +64,7 @@ export default function Showcaselostandfound() {
   const [item, setItem] = useState(initialItemState);
   const [isActive, setIsActive] = useState(false);
 
-  const handleClick = async (e) => {
+  const handleClick = (e) => {
     e.preventDefault();
     
     if (!item.landf || !item.type || !item.description || !item.location || !item.date || !item.contact) {
@@ -76,19 +75,13 @@ export default function Showcaselostandfound() {
       alert("Phone number invalid !");
       return;
     }
-    
     setLoadingSubmit(true);
-    try {
-      await addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact, user.name, user.email);
-      alert("Report submitted successfully!");
-      setItem(initialItemState); // Clear form fields
-      setIsActive(false);
-    } catch (error) {
-      console.error('Error submitting report:', error);
-      alert('An error occurred while submitting your report. Please try again.');
-    } finally {
-      setLoadingSubmit(false);
-    }
+    addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact , user.name,user.email);
+    alert("Report submitted successfully!");
+    setItem(initialItemState); // Clear form fields
+    setLoadingSubmit(false);
+    setIsActive(false);
+    
   };
 
   const onChange = (e) => {
@@ -305,7 +298,6 @@ export default function Showcaselostandfound() {
               {loadingSubmit ? 'Submitting...' : 'Submit'}
             </button>
           </form>
-          {loadingSubmit && <Loading />}
         </div>
         <button
           className="carousel-button-home left"

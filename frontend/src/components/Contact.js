@@ -3,7 +3,7 @@ import '../css/Contact.css';
 import companyImage from '../images/company-image.jpeg';
 import BlogContext from '../context/BlogContext';
 import { Helmet } from 'react-helmet-async';
-import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const ContactForm = () => {
   const { contactform } = useContext(BlogContext);
@@ -153,8 +153,13 @@ const ContactForm = () => {
                   required
                 ></textarea>
               </div>
-              <button type="submit" className="contact-form-btn" disabled={isLoading}>
-                {isLoading ? 'Submitting...' : 'Submit'}
+              <button type="submit" className="contact-form-btn" disabled={isLoading} style={{position: 'relative'}}>
+                {isLoading ? (
+                  <>
+                    <span>Submitting</span>
+                    <ButtonSpinner variant="pulse" position="inline" size={8} color="#ffffff" />
+                  </>
+                ) : 'Submit'}
               </button>
               <div className="contact-social-media">
                 <h2 className="contact-head">Follow Us</h2>
@@ -195,7 +200,7 @@ const ContactForm = () => {
           </div>
         </div>
       </section>
-      {isLoading && <Loading />}
+
     </div>
   );
 };

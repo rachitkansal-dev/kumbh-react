@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -83,7 +84,9 @@ function Admin() {
             <div className="admin-main-content">
                 <h1 className="admin-main-title">Users</h1>
                 {isLoading ? (
-                    <Loading />
+                    <div className="loading-center">
+                        <Loading />
+                    </div>
                 ) : error ? (
                     <p className="error-message">{error}</p>
                 ) : (
@@ -113,8 +116,14 @@ function Admin() {
                                             className="admin-delete-button"
                                             onClick={() => handleDelete(user._id)}
                                             disabled={isDeleting && deletingUserId === user._id}
+                                            style={{position: 'relative'}}
                                         >
-                                            {isDeleting && deletingUserId === user._id ? 'Deleting...' : 'Delete'}
+                                            {isDeleting && deletingUserId === user._id ? (
+                                                <>
+                                                    <span>Deleting...</span>
+                                                    <ButtonSpinner variant="clip" position="inline" size={12} color="#fff" />
+                                                </>
+                                            ) : 'Delete'}
                                         </button>
                                     </td>
                                 </tr>

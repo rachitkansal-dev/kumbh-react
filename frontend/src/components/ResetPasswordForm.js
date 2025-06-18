@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -62,14 +63,19 @@ export default function ResetPasswordForm() {
                 required
               />
             </div>
-            <button type="submit" className="login-btn" disabled={isLoading}>
-              {isLoading ? 'Updating...' : 'Update Password'}
+            <button type="submit" className="login-btn" disabled={isLoading} style={{position: 'relative'}}>
+              {isLoading ? (
+                <>
+                  <span>Updating</span>
+                  <ButtonSpinner variant="clip" position="inline" size={12} />
+                </>
+              ) : 'Update Password'}
             </button>
             <p><Link to="/login">Back to Login</Link></p>
           </form>
         </div>
       </section>
-      {isLoading && <Loading />}
+
     </div>
   );
 }

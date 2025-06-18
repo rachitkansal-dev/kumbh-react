@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import Loading from './Loading';
+import ButtonSpinner from './ButtonSpinner';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -164,12 +165,17 @@ export default function BlogReview() {
                   onChange={handleReviewChange}
                   required
                 ></textarea>
-                <button type="submit" className="btn-primary lost-btn toCenter" disabled={isSubmitting}>
-                  {isSubmitting ? 'Submitting...' : 'Submit Review'}
+                <button type="submit" className="btn-primary lost-btn toCenter" disabled={isSubmitting} style={{position: 'relative'}}>
+                  {isSubmitting ? (
+                    <>
+                      <span>Submitting...</span>
+                      <ButtonSpinner variant="clip" position="inline" size={12} color="#fff" />
+                    </>
+                  ) : 'Submit Review'}
                 </button>
               </div>
             </form>
-            {isSubmitting && <Loading />}
+
           </section>
           {isModalOpen && selectedReview && (
             <div className="modal-overlay">
