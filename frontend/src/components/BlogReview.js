@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import Loading from './Loading';
 import ButtonSpinner from './ButtonSpinner';
+import { showSuccess, showError } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -99,12 +100,12 @@ export default function BlogReview() {
           const result = await response.json();
           setReviews([...reviews, result.comment]); // Add the new comment to the list
           setNewReview('');
-          alert('Comment submitted successfully');
+          showSuccess('Comment submitted successfully');
         } else {
-          alert('Failed to post comment');
+          showError('Failed to post comment');
         }
       } catch (error) {
-        alert('Error: ' + error.message);
+        showError('Error: ' + error.message);
       } finally {
         setIsSubmitting(false);
       }

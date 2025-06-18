@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Loading from './Loading';
 import ButtonSpinner from './ButtonSpinner';
+import { showSuccess, showError } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -29,14 +30,14 @@ export default function ResetPasswordForm() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(data.message); // Notify user of success
+        showSuccess(data.message); // Notify user of success
         navigate('/login');  // Redirect to login page
       } else {
-        alert(data.message); // Notify user of any error messages
+        showError(data.message); // Notify user of any error messages
       }
     } catch (error) {
       console.error('Error resetting password:', error);
-      alert('An error occurred. Please try again.');
+      showError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }

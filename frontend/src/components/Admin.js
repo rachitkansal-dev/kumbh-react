@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Loading from './Loading';
 import ButtonSpinner from './ButtonSpinner';
+import { showInfo, showConfirm, showSuccess, showError, showNetworkError } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -37,35 +38,42 @@ function Admin() {
     }, []);
 
     const handleDelete = async (id) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this User?");
-        if(confirmDelete) {
-            try {
-                setIsDeleting(true);
-                setDeletingUserId(id);
-                const response = await fetch(`${API_URL}/users/${id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-                const result = await response.json();
+        showConfirm(
+            "Are you sure you want to delete this user? This action cannot be undone.",
+            async () => {
+                try {
+                    setIsDeleting(true);
+                    setDeletingUserId(id);
+                    const response = await fetch(`${API_URL}/users/${id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+                    const result = await response.json();
 
-                if (!response.ok) {
-                    throw new Error(result.message || 'Failed to delete user');
+                    if (!response.ok) {
+                        throw new Error(result.message || 'Failed to delete user');
+                    }
+
+                    // Update the users list after successful deletion
+                    setUsers(users.filter((user) => user._id !== id));
+                    showSuccess('User deleted successfully');
+                } catch (err) {
+                    console.error('Error deleting user:', err.message);
+                    if (err.message.includes('Network') || err.message.includes('fetch')) {
+                        showNetworkError();
+                    } else {
+                        showError(err.message || 'Failed to delete user');
+                    }
+                    setError(err.message);
+                } finally {
+                    setIsDeleting(false);
+                    setDeletingUserId(null);
                 }
-
-                // Update the users list after successful deletion
-                setUsers(users.filter((user) => user._id !== id));
-                console.log(result.message); // Optionally log success message
-            } catch (err) {
-                console.error('Error deleting user:', err.message);
-                setError(err.message); // Optionally show an error message
-            } finally {
-                setIsDeleting(false);
-                setDeletingUserId(null);
+            },
+            () => {
+                showInfo('User deletion cancelled');
             }
-        }
-        else {
-            alert('Deletion cancelled');
-        }
+        );
     };
 
     const onclick = () => {

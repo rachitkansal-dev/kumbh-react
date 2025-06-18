@@ -7,6 +7,7 @@ import image4 from '../images/image4.jpeg';
 import image5 from '../images/image5.jpeg';
 import image3 from '../images/image3.jpeg';
 import { Helmet } from 'react-helmet-async';
+import { showSuccess, showError, showWarning, showInfo, showFieldRequired, showValidationError, showFileUploadSuccess, showFileSizeError, showFileTypeError, showLoading, dismissToast } from '../utils/toast';
 
 export default function Showcaselostandfound() {
   const [bgIndex, setBgIndex] = useState(0);
@@ -67,27 +68,76 @@ export default function Showcaselostandfound() {
   const handleClick = (e) => {
     e.preventDefault();
     
-    if (!item.landf || !item.type || !item.description || !item.location || !item.date || !item.contact) {
-      alert("Please fill all required fields.");
+    // Detailed validation
+    if (!item.landf) {
+      showFieldRequired('Lost/Found status');
+      return;
+    }
+    if (!item.type) {
+      showFieldRequired('Item type');
+      return;
+    }
+    if (!item.description || item.description.trim().length < 10) {
+      showValidationError('Description', 'Description must be at least 10 characters long');
+      return;
+    }
+    if (!item.location) {
+      showFieldRequired('Location');
+      return;
+    }
+    if (!item.date) {
+      showFieldRequired('Date');
+      return;
+    }
+    if (!item.contact) {
+      showFieldRequired('Contact number');
       return;
     }
     if(!isValidPhoneNumber(item.contact)) {
-      alert("Phone number invalid !");
+      showValidationError('Contact number', 'Please enter a valid phone number');
       return;
     }
-    setLoadingSubmit(true);
-    addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact , user.name,user.email);
-    alert("Report submitted successfully!");
-    setItem(initialItemState); // Clear form fields
-    setLoadingSubmit(false);
-    setIsActive(false);
     
+    setLoadingSubmit(true);
+    const loadingToast = showLoading('Submitting your report...');
+    
+    try {
+      addItems(item.landf, item.type, item.description, item.location, item.date, item.photo, item.contact , user.name,user.email);
+      dismissToast(loadingToast);
+      showSuccess("Report submitted successfully! We'll help you find your item.");
+      setItem(initialItemState); // Clear form fields
+      setIsActive(false);
+    } catch (error) {
+      dismissToast(loadingToast);
+      showError('Failed to submit report. Please try again.');
+    } finally {
+      setLoadingSubmit(false);
+    }
   };
 
   const onChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
-      setItem({ ...item, [name]: files[0] });
+      const file = files[0];
+      if (file) {
+        // Validate file size (5MB max)
+        if (file.size > 5 * 1024 * 1024) {
+          showFileSizeError();
+          e.target.value = ''; // Clear the input
+          return;
+        }
+        
+        // Validate file type
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedTypes.includes(file.type)) {
+          showFileTypeError();
+          e.target.value = ''; // Clear the input
+          return;
+        }
+        
+        setItem({ ...item, [name]: file });
+        showFileUploadSuccess();
+      }
     } else {
       setItem({ ...item, [name]: value });
     }
@@ -95,7 +145,7 @@ export default function Showcaselostandfound() {
 
   const openForm = () => {
     if(!user) {
-      alert('login to report a lost or found item');
+      showInfo('login to report a lost or found item');
       navigate('/login');
     }
     setIsActive(true);

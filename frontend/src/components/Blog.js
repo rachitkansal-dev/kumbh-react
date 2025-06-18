@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet-async';
 import BluetoBlack from './BluetoBlack';
 import BlogReview from './BlogReview';
 import Toblue from './Toblue';
+import { showSuccess, showError, showInfo } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -38,7 +39,7 @@ export default function Blog() {
           setBlog(localBlog);
           setIsLocalBlog(true);
         } else {
-          alert("Blog Not Found!");
+          showError("Blog Not Found!");
           navigate('/blog');
         }
       }
@@ -48,7 +49,7 @@ export default function Blog() {
 
   const handleLikeDislike = async (action) => {
     if (!user) {
-      alert(`Please log in to ${action === 'like' ? 'UpVote' : 'downvote'} the blog.`);
+      showInfo(`Please log in to ${action === 'like' ? 'UpVote' : 'downvote'} the blog.`);
       return;
     }
     try {
@@ -67,13 +68,13 @@ export default function Blog() {
       if (response.ok) {
         setLikeCount(data.likes);
         setIsLiked(action === 'like');
-        alert(`${action === 'like' ? 'Upvote' : 'DownVote'} Successful`);
+        showSuccess(`${action === 'like' ? 'Upvote' : 'DownVote'} Successful`);
       } else {
-        alert(data.error || `Error ${action === 'like' ? 'liking' : 'unliking'} the blog.`);
+        showError(data.error || `Error ${action === 'like' ? 'liking' : 'unliking'} the blog.`);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert(`Failed to ${action === 'like' ? 'like' : 'unlike'} the blog.`);
+      showError(`Failed to ${action === 'like' ? 'like' : 'unlike'} the blog.`);
     }
   };
 

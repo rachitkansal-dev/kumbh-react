@@ -21,10 +21,13 @@ import './css/userComments.css';
 import './css/admin.css';
 import './css/adminClaimed.css';
 import './css/loading.css';
+import './css/toast.css';
 
 import { HelmetProvider,Helmet } from 'react-helmet-async';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+import { showOffline, showOnline } from './utils/toast';
 import Navbar from './components/navbar';
 import Home from './components/Home';
 import Blog from './components/Blog';
@@ -68,6 +71,25 @@ import Loading from './components/Loading';
 import UserFeedback from './components/UserFeedback';
 
 function App() {
+  useEffect(() => {
+    // Network status detection
+    const handleOnline = () => showOnline();
+    const handleOffline = () => showOffline();
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Check initial connection status
+    if (!navigator.onLine) {
+      showOffline();
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   return (
     <HelmetProvider>
     <LfState>
@@ -343,6 +365,26 @@ function App() {
             />
           </Routes>
         </Router>
+        <Toaster 
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#333',
+              color: '#fff',
+            },
+            success: {
+              style: {
+                background: '#10B981',
+              },
+            },
+            error: {
+              style: {
+                background: '#EF4444',
+              },
+            },
+          }}
+        />
       </UserState>
       </BlogState>
     </LfState>

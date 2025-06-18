@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import LfContext from '../context/LfContext';
 import { Helmet } from 'react-helmet-async';
+import { showInfo } from '../utils/toast';
 
 export default function Review() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,7 +40,7 @@ export default function Review() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!user) {
-      alert("Please login to submit a review");
+      showInfo("Please login to submit a review");
       navigate('/login');
     } else {
       addComment(user.name, newReview);

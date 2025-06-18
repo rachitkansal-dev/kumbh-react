@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Loading from './Loading';
 import ButtonSpinner from './ButtonSpinner';
+import { showSuccess, showError, showInfo } from '../utils/toast';
 
 const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
@@ -32,18 +33,20 @@ function UserComments() {
           setComments((prevComments) =>
             prevComments.filter((c) => c._id !== comment._id)
           );
-          alert('Comment deleted successfully');
+          showSuccess('Comment deleted successfully');
         } else {
           const error = await response.json();
           console.error('Error deleting comment:', error.error);
+          showError('Failed to delete comment');
         }
       } catch (error) {
         console.error('Error deleting comment:', error);
+        showError('Error deleting comment');
       } finally {
         setIsDeleting(false);
       }
     } else {
-      alert('Deletion cancelled');
+      showInfo('Deletion cancelled');
     }
   };
 
