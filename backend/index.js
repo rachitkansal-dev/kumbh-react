@@ -15,6 +15,7 @@ app.set('trust proxy', 1);
 const userRouter = require('./routes/user');
 const blogRouter = require('./routes/blog');
 const lfRouter = require('./routes/lf');
+const chatbotRouter = require('./routes/chatbot');
 
 const PORT = process.env.PORT || 8080;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -78,6 +79,7 @@ mongoose.connect(dbUrl)
 app.use('', userRouter);
 app.use('/blog', blogRouter);
 app.use('/lf', lfRouter);
+app.use('/api/chatbot', chatbotRouter);
 
 app.get('/', (req,res) => {
     res.status(200).json({message : "Backend server running"});
