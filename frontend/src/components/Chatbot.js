@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../css/Chatbot.css';
-import { getApiUrl } from '../config/api';
 import FormattedMessage from './FormattedMessage';
+
+// Use the same API pattern as other components for deployment consistency
+const API_URL = process.env.REACT_APP_API_URI || "http://localhost:8080";
 
 const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +43,13 @@ const Chatbot = () => {
     useEffect(() => {
         const checkConfig = async () => {
             try {
-                const response = await fetch(getApiUrl('/api/chatbot/status'));
+                const response = await fetch(`${API_URL}/api/chatbot/status`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
                 const data = await response.json();
                 setIsConfigured(data.status === 'ready');
                 
@@ -112,8 +120,9 @@ const Chatbot = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch(getApiUrl('/api/chatbot/chat'), {
+            const response = await fetch(`${API_URL}/api/chatbot/chat`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
