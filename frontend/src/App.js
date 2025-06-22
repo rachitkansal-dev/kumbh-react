@@ -22,6 +22,7 @@ import './css/admin.css';
 import './css/adminClaimed.css';
 import './css/loading.css';
 import './css/toast.css';
+import './css/Chatbot.css';
 
 import { HelmetProvider,Helmet } from 'react-helmet-async';
 import React, { useEffect } from 'react';
@@ -69,6 +70,7 @@ import loading from './components/Loading';
 import AdminClaimed from './components//AdminClaimed';
 import Loading from './components/Loading';
 import UserFeedback from './components/UserFeedback';
+import Chatbot from './components/Chatbot';
 
 function App() {
   useEffect(() => {
@@ -365,6 +367,7 @@ function App() {
             />
           </Routes>
         </Router>
+        <Chatbot />
         <Toaster 
           position="top-right"
           toastOptions={{
